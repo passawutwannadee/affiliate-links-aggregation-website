@@ -18,14 +18,14 @@ export default function Profile() {
       </div>
       <div>
         <Tabs defaultValue="products" className="h-full space-y-6">
-          <div className="space-between flex items-center">
+          <div className="flex flex-col md:flex-row items-center justify-center lg:justify-between">
             <TabsList>
               <TabsTrigger value="products" className="relative">
                 Products
               </TabsTrigger>
               <TabsTrigger value="collections">Collections</TabsTrigger>
             </TabsList>
-            <div className="ml-auto mr-4">
+            <div className="">
               <TabsContent value="products">
                 <Button>
                   <PlusCircledIcon className="mr-2 h-4 w-4" />
