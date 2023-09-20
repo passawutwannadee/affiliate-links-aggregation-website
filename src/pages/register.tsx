@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
+  CardFooter,
   // CardDescription,
   // CardFooter,
   CardHeader,
@@ -21,6 +22,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Link } from 'react-router-dom';
 
 const formSchema = z
   .object({
@@ -66,7 +68,7 @@ export function Register() {
 
   return (
     <div className="container mx-auto flex items-center justify-center h-[85vh] ">
-      <Card>
+      <Card className="w-full lg:w-96">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">
             Create an account
@@ -142,6 +144,16 @@ export function Register() {
             </form>
           </Form>
         </CardContent>
+        <CardFooter className="self-center gap-1">
+          Already have an account?
+          <Link
+            to="/login"
+            className="flex text-primary font-bold hover:text-primary/70"
+          >
+            {' '}
+            Login
+          </Link>
+        </CardFooter>
       </Card>
     </div>
   );

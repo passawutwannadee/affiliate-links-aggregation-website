@@ -1,5 +1,14 @@
 import { Link } from 'react-router-dom';
 import { ModeToggle } from './mode-toggle';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 export function MainNav() {
   return (
@@ -12,7 +21,27 @@ export function MainNav() {
           >
             LOGO
           </Link>
-          <ModeToggle />
+          <div className="flex items-center gap-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar className="h-12 w-12">
+                  <AvatarImage src="https://avatars.githubusercontent.com/u/73711390?v=4" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuItem className="text-red-600">
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <ModeToggle />
+          </div>
         </nav>
       </div>
     </div>

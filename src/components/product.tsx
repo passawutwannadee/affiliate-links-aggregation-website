@@ -7,11 +7,11 @@ import {
 
 export function Product() {
   return (
-    <Card className="w-[320px] hover:cursor-pointer">
+    <Card className="w-full hover:cursor-pointer">
       <img src="./placeholder-images-image_large.webp" className="p-6" />
       <CardHeader>
         <CardTitle>ProductName</CardTitle>
-        <CardDescription className="line-clamp-5">
+        <CardDescription className="line-clamp-3">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
           sollicitudin odio ex, non lobortis nisl volutpat hendrerit. Quisque
           iaculis turpis tempus pretium ultrices. Quisque turpis quam, commodo

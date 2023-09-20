@@ -7,7 +7,7 @@ import {
 
 export function Collection() {
   return (
-    <Card className="w-[320px] hover:cursor-pointer">
+    <Card className="w-full hover:cursor-pointer">
       <div className="grid grid-cols-2">
         <img src="./placeholder-images-image_large.webp" className="p-1" />
         <img src="./placeholder-images-image_large.webp" className="p-1" />

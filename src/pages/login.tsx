@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
+  CardFooter,
   // CardDescription,
   // CardFooter,
   CardHeader,
@@ -20,6 +21,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Link } from 'react-router-dom';
 
 const formSchema = z.object({
   email: z.string().email({
@@ -90,6 +92,16 @@ export function Login() {
             </form>
           </Form>
         </CardContent>
+        <CardFooter className="self-center gap-1">
+          Don't have an account?
+          <Link
+            to="/register"
+            className="flex text-primary font-bold hover:text-primary/70"
+          >
+            {' '}
+            Register
+          </Link>
+        </CardFooter>
       </Card>
     </div>
   );
