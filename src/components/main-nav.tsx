@@ -32,8 +32,12 @@ export function MainNav() {
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/profile">Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/settings/account">Settings</Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem className="text-red-600">
                   Logout
                 </DropdownMenuItem>

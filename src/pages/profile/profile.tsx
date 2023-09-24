@@ -3,8 +3,8 @@ import { PlusCircledIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Product } from '@/components/product';
-import { Collection } from '@/components/collection';
+import { Product } from './components/product';
+import { Collection } from './components/collection';
 
 export default function Profile() {
   return (
