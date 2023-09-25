@@ -1,10 +1,8 @@
-import { PlusCircledIcon } from '@radix-ui/react-icons';
-
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Product } from './components/product';
 import { Collection } from './components/collection';
+import AddProduct from './add-product/add-product';
 
 export default function Profile() {
   return (
@@ -28,17 +26,11 @@ export default function Profile() {
           </TabsList>
           <div className="">
             <TabsContent value="products">
-              <Button>
-                <PlusCircledIcon className="mr-2 h-4 w-4" />
-                Add Product
-              </Button>
+              <AddProduct />
             </TabsContent>
 
             <TabsContent value="collections">
-              <Button>
-                <PlusCircledIcon className="mr-2 h-4 w-4" />
-                Add Collection
-              </Button>
+              <AddProduct />
             </TabsContent>
           </div>
         </div>
