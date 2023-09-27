@@ -78,7 +78,7 @@ export function AccountForm() {
           name="profile_picture"
           render={({ field: { onChange } }) => (
             <FormItem>
-              <div className="flex gap-10">
+              <div className="flex flex-col md:flex-row gap-10">
                 <Avatar className="h-36 w-36">
                   <AvatarImage src={defaultValues.profile_picture} />
                   <AvatarFallback />

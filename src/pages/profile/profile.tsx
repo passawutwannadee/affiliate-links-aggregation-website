@@ -3,6 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Product } from './components/product';
 import { Collection } from './components/collection';
 import AddProduct from './add-product/add-product';
+import AddCollection from './add-collection/add-collection';
 
 export default function Profile() {
   return (
@@ -30,7 +31,7 @@ export default function Profile() {
             </TabsContent>
 
             <TabsContent value="collections">
-              <AddProduct />
+              <AddCollection />
             </TabsContent>
           </div>
         </div>

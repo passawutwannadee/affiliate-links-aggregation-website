@@ -44,7 +44,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function AddProduct() {
+export default function AddCollection() {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,12 +67,12 @@ export default function AddProduct() {
       <AlertDialogTrigger>
         <Button>
           <PlusIcon className="mr-2 h-4 w-4" />
-          Add Product
+          Add Collection
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Add Product</AlertDialogTitle>
+          <AlertDialogTitle>Add Collection</AlertDialogTitle>
           <AlertDialogDescription>
             <Form {...form}>
               <form
@@ -122,18 +122,32 @@ export default function AddProduct() {
                           <SelectValue placeholder="Select level" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem
-                            value="lorem"
-                            className="hover:bg-primary/10"
-                          >
-                            Lorem
-                          </SelectItem>
-                          <SelectItem
-                            value="ipsum"
-                            className="hover:bg-primary/10"
-                          >
-                            Ipsum
-                          </SelectItem>
+                          <div className="flex">
+                            {' '}
+                            <img
+                              src="./placeholder-images-image_large.webp"
+                              className="w-12 h-12"
+                            />
+                            <SelectItem
+                              value="lorem"
+                              className="hover:bg-primary/10"
+                            >
+                              <p>Lorem</p>
+                            </SelectItem>
+                          </div>
+                          <div className="flex">
+                            {' '}
+                            <img
+                              src="./placeholder-images-image_large.webp"
+                              className="w-12 h-12"
+                            />
+                            <SelectItem
+                              value="lorem"
+                              className="hover:bg-primary/10"
+                            >
+                              <p>Ipsum</p>
+                            </SelectItem>
+                          </div>
                         </SelectContent>
                         <FormMessage />
                       </Select>
