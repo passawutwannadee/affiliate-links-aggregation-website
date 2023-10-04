@@ -6,7 +6,7 @@ import {
 } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 
-export function Product() {
+export function ProductPreviewCard() {
   return (
     <Link to="/product">
       <Card className="w-full hover:cursor-pointer">

@@ -32,6 +32,13 @@ import {
 } from '@/components/ui/select';
 import { Select } from '@radix-ui/react-select';
 
+const ACCEPTED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+];
+
 const formSchema = z.object({
   product_name: z.string().nonempty({
     message: 'Please enter product name.',
@@ -42,6 +49,12 @@ const formSchema = z.object({
   category: z.string().nonempty({
     message: 'Please enter product name.',
   }),
+  product_picture: z
+    .any()
+    .refine(
+      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      'Only .jpg, .jpeg, .png and .webp formats are supported.'
+    ),
 });
 
 export default function AddProduct() {
@@ -52,7 +65,9 @@ export default function AddProduct() {
       product_name: '',
       product_description: '',
       category: '',
+      product_picture: '',
     },
+    mode: 'onChange',
   });
 
   // 2. Define a submit handler.
@@ -137,6 +152,31 @@ export default function AddProduct() {
                         </SelectContent>
                         <FormMessage />
                       </Select>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="product_picture"
+                  render={({ field: { onChange } }) => (
+                    <FormItem>
+                      <div className="flex flex-col md:flex-row gap-10">
+                        <div className="grid w-full max-w-sm items-center gap-1.5">
+                          <Input
+                            id="picture"
+                            type="file"
+                            onChange={(event) => {
+                              if (
+                                event.target.files &&
+                                event.target.files.length > 0
+                              ) {
+                                onChange(event.target.files[0]);
+                              }
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />

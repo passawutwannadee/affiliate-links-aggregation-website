@@ -1,9 +1,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Product } from './components/product';
-import { Collection } from './components/collection';
 import AddProduct from './add-product/add-product';
 import AddCollection from './add-collection/add-collection';
+import { ProductPreviewCard } from '@/components/product-preview-card';
+import { CollectionPreviewCard } from '../../components/collection-preview-card';
 
 export default function Profile() {
   return (
@@ -37,12 +37,12 @@ export default function Profile() {
         </div>
         <TabsContent value="products" className="border-none p-0 outline-none">
           <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-10 justify-center items-center">
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
+            <ProductPreviewCard />
+            <ProductPreviewCard />
+            <ProductPreviewCard />
+            <ProductPreviewCard />
+            <ProductPreviewCard />
+            <ProductPreviewCard />
           </div>
         </TabsContent>
 
@@ -51,13 +51,10 @@ export default function Profile() {
           className="h-full flex-col border-none p-0 data-[state=active]:flex"
         >
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 justify-center items-center">
-            <Collection />
-            <Collection />
-            <Collection />
-            <Collection />
-            <Collection />
-            <Collection />
-            <Collection />
+            <CollectionPreviewCard />
+            <CollectionPreviewCard />
+            <CollectionPreviewCard />
+            <CollectionPreviewCard />
           </div>
         </TabsContent>
       </Tabs>

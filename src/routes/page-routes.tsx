@@ -7,6 +7,7 @@ import Settings from '@/pages/settings/settings';
 import { AccountForm } from '@/pages/settings/account/account-form';
 import { PasswordForm } from '@/pages/settings/password/password-form';
 import Product from '@/pages/product/product';
+import Collection from '@/pages/collection/collection';
 
 function PageRoutes() {
   return (
@@ -18,6 +19,7 @@ function PageRoutes() {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/product" element={<Product />} />
+        <Route path="/collection" element={<Collection />} />
         <Route
           path="/settings"
           element={<Settings children={<AccountForm />} />}

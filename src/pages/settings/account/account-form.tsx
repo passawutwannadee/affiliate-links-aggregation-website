@@ -14,15 +14,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select"
-// import { Textarea } from "@/components/ui/textarea"
-// import { toast } from "@/components/ui/use-toast"
 
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -88,7 +79,9 @@ export function AccountForm() {
                     id="picture"
                     type="file"
                     onChange={(event) => {
-                      onChange(event.target.files);
+                      if (event.target.files && event.target.files.length > 0) {
+                        onChange(event.target.files[0]);
+                      }
                     }}
                   />
                 </div>
@@ -107,8 +100,7 @@ export function AccountForm() {
                 <Input placeholder="shadcn" {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name. It can be your real name or a
-                pseudonym. You can only change this once every 30 days.
+                This is the name that will be displayed on your profile.
               </FormDescription>
               <FormMessage />
             </FormItem>
