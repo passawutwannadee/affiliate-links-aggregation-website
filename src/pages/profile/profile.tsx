@@ -36,7 +36,7 @@ export default function Profile() {
           </div>
         </div>
         <TabsContent value="products" className="border-none p-0 outline-none">
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-10 justify-center items-center">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 justify-center items-center">
             <ProductPreviewCard />
             <ProductPreviewCard />
             <ProductPreviewCard />

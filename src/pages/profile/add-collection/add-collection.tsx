@@ -34,13 +34,13 @@ import { Select } from '@radix-ui/react-select';
 
 const formSchema = z.object({
   product_name: z.string().nonempty({
-    message: 'Please enter product name.',
+    message: 'Please enter collection name.',
   }),
   product_description: z.string().nonempty({
-    message: 'Please enter product name.',
+    message: 'Please enter collection description name.',
   }),
   category: z.string().nonempty({
-    message: 'Please enter product name.',
+    message: 'Please enter select a product.',
   }),
 });
 
@@ -84,9 +84,9 @@ export default function AddCollection() {
                   name="product_name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Product Name</FormLabel>
+                      <FormLabel>Collection Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="JohnDoe123" {...field} />
+                        <Input {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -98,7 +98,7 @@ export default function AddCollection() {
                   name="product_description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Product Description</FormLabel>
+                      <FormLabel>Collection Description</FormLabel>
                       <FormControl>
                         <Textarea
                           id="description"
@@ -116,14 +116,13 @@ export default function AddCollection() {
                   name="category"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Category</FormLabel>
+                      <FormLabel>Products</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue="2">
                         <SelectTrigger id="security-level" className="w-full">
                           <SelectValue placeholder="Select level" />
                         </SelectTrigger>
                         <SelectContent>
                           <div className="flex">
-                            {' '}
                             <img
                               src="./placeholder-images-image_large.webp"
                               className="w-12 h-12"
@@ -136,7 +135,6 @@ export default function AddCollection() {
                             </SelectItem>
                           </div>
                           <div className="flex">
-                            {' '}
                             <img
                               src="./placeholder-images-image_large.webp"
                               className="w-12 h-12"

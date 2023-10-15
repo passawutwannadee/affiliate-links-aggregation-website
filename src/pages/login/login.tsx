@@ -50,7 +50,7 @@ export function Login() {
   }
 
   return (
-    <div className="container mx-auto flex items-center justify-center h-[85vh]">
+    <div className="container mx-auto flex items-center justify-center lg:h-[85vh]">
       <Card className="w-full lg:w-1/4">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">Login</CardTitle>

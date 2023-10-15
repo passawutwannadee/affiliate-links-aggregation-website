@@ -10,7 +10,10 @@ export function ProductPreviewCard() {
   return (
     <Link to="/product">
       <Card className="w-full hover:cursor-pointer">
-        <img src="./placeholder-images-image_large.webp" className="p-6" />
+        <img
+          src="./placeholder-images-image_large.webp"
+          className="p-6 w-full"
+        />
         <CardHeader>
           <CardTitle>ProductName</CardTitle>
           <CardDescription className="line-clamp-3">
