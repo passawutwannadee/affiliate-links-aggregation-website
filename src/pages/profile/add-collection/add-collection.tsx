@@ -1,4 +1,5 @@
 import { PlusIcon } from '@radix-ui/react-icons';
+import { X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -24,34 +25,74 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Textarea } from '@/components/ui/textarea';
-import {
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Select } from '@radix-ui/react-select';
+
+import { Badge } from '@/components/ui/badge';
+import { Command, CommandGroup, CommandItem } from '@/components/ui/command';
+import { Command as CommandPrimitive } from 'cmdk';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const formSchema = z.object({
-  product_name: z.string().nonempty({
+  collection_name: z.string().nonempty({
     message: 'Please enter collection name.',
   }),
-  product_description: z.string().nonempty({
-    message: 'Please enter collection description name.',
+  collection_description: z.string().nonempty({
+    message: 'Please enter collection description.',
   }),
-  category: z.string().nonempty({
-    message: 'Please enter select a product.',
+  products: z.any().array().min(2, {
+    message: 'Please select at least two products.',
   }),
 });
 
+type Products = Record<'value' | 'label', string>;
+
+const PRODUCTS = [
+  {
+    value: 'next.js',
+    label: 'Next.js',
+  },
+  {
+    value: 'sveltekit',
+    label: 'SvelteKit',
+  },
+  {
+    value: 'nuxt.js',
+    label: 'Nuxt.js',
+  },
+  {
+    value: 'remix',
+    label: 'Remix',
+  },
+  {
+    value: 'astro',
+    label: 'Astro',
+  },
+  {
+    value: 'wordpress',
+    label: 'WordPress',
+  },
+  {
+    value: 'express.js',
+    label: 'Express.js',
+  },
+  {
+    value: 'nest.js',
+    label: 'Nest.js',
+  },
+] satisfies Products[];
+
 export default function AddCollection() {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState<Products[]>([PRODUCTS[4]]);
+  const [inputValue, setInputValue] = useState('');
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      product_name: '',
-      product_description: '',
-      category: '',
+      collection_name: '',
+      collection_description: '',
+      products: [],
     },
   });
 
@@ -59,8 +100,45 @@ export default function AddCollection() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    form.setValue('products', selected);
     console.log(values);
+    console.log(selected);
   }
+
+  const handleUnselect = useCallback((Products: Products) => {
+    setSelected((prev) => prev.filter((s) => s.value !== Products.value));
+    form.setValue('products', selected);
+  }, []);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      const input = inputRef.current;
+      if (input) {
+        if (e.key === 'Delete' || e.key === 'Backspace') {
+          if (input.value === '') {
+            setSelected((prev) => {
+              const newSelected = [...prev];
+              newSelected.pop();
+              return newSelected;
+            });
+          }
+        }
+        // This is not a default behaviour of the <input /> field
+        if (e.key === 'Escape') {
+          input.blur();
+        }
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    form.setValue('products', selected);
+  }, [selected]);
+
+  const selectables = PRODUCTS.filter(
+    (Products) => !selected.includes(Products)
+  );
 
   return (
     <AlertDialog>
@@ -81,7 +159,7 @@ export default function AddCollection() {
               >
                 <FormField
                   control={form.control}
-                  name="product_name"
+                  name="collection_name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Collection Name</FormLabel>
@@ -95,7 +173,7 @@ export default function AddCollection() {
 
                 <FormField
                   control={form.control}
-                  name="product_description"
+                  name="collection_description"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Collection Description</FormLabel>
@@ -113,42 +191,82 @@ export default function AddCollection() {
 
                 <FormField
                   control={form.control}
-                  name="category"
+                  name="products"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Products</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue="2">
-                        <SelectTrigger id="security-level" className="w-full">
-                          <SelectValue placeholder="Select level" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <div className="flex">
-                            <img
-                              src="./placeholder-images-image_large.webp"
-                              className="w-12 h-12"
+                      <Command
+                        onKeyDown={handleKeyDown}
+                        className="overflow-visible bg-transparent"
+                      >
+                        <div className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+                          <div className="flex gap-1 flex-wrap">
+                            {selected.map((Products) => {
+                              return (
+                                <Badge key={Products.value} variant="secondary">
+                                  {Products.label}
+                                  <button
+                                    className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                                    onKeyDown={(e) => {
+                                      if (e.key === 'Enter') {
+                                        handleUnselect(Products);
+                                      }
+                                    }}
+                                    onMouseDown={(e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                    }}
+                                    onClick={() => handleUnselect(Products)}
+                                  >
+                                    <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                                  </button>
+                                </Badge>
+                              );
+                            })}
+                            {/* Avoid having the "Search" Icon */}
+                            <CommandPrimitive.Input
+                              ref={inputRef}
+                              value={inputValue}
+                              onValueChange={setInputValue}
+                              onBlur={() => setOpen(false)}
+                              onFocus={() => setOpen(true)}
+                              placeholder="Select PRODUCTS..."
+                              className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
                             />
-                            <SelectItem
-                              value="lorem"
-                              className="hover:bg-primary/10"
-                            >
-                              <p>Lorem</p>
-                            </SelectItem>
                           </div>
-                          <div className="flex">
-                            <img
-                              src="./placeholder-images-image_large.webp"
-                              className="w-12 h-12"
-                            />
-                            <SelectItem
-                              value="lorem"
-                              className="hover:bg-primary/10"
-                            >
-                              <p>Ipsum</p>
-                            </SelectItem>
-                          </div>
-                        </SelectContent>
+                        </div>
+                        <div className="relative mt-2">
+                          {open && selectables.length > 0 ? (
+                            <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+                              <CommandGroup className="h-full overflow-auto">
+                                {selectables.map((Products) => {
+                                  return (
+                                    <CommandItem
+                                      key={Products.value}
+                                      onMouseDown={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                      }}
+                                      onSelect={(value) => {
+                                        setInputValue('');
+                                        setSelected((prev) => [
+                                          ...prev,
+                                          Products,
+                                        ]);
+                                        form.setValue('products', selected);
+                                      }}
+                                      className={'cursor-pointer'}
+                                    >
+                                      {Products.label}
+                                    </CommandItem>
+                                  );
+                                })}
+                              </CommandGroup>
+                            </div>
+                          ) : null}
+                        </div>
                         <FormMessage />
-                      </Select>
+                      </Command>
                     </FormItem>
                   )}
                 />
