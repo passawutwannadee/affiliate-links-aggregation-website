@@ -47,43 +47,43 @@ type Products = Record<'value' | 'label', string>;
 
 const PRODUCTS = [
   {
-    value: 'next.js',
-    label: 'Next.js',
+    value: 'product1',
+    label: 'product1',
   },
   {
-    value: 'sveltekit',
-    label: 'SvelteKit',
+    value: 'product2',
+    label: 'product2',
   },
   {
-    value: 'nuxt.js',
-    label: 'Nuxt.js',
+    value: 'product3',
+    label: 'product3',
   },
   {
-    value: 'remix',
-    label: 'Remix',
+    value: 'product4',
+    label: 'product4',
   },
   {
-    value: 'astro',
-    label: 'Astro',
+    value: 'product5',
+    label: 'product5',
   },
   {
-    value: 'wordpress',
-    label: 'WordPress',
+    value: 'product6',
+    label: 'product6',
   },
   {
-    value: 'express.js',
-    label: 'Express.js',
+    value: 'product7',
+    label: 'product7',
   },
   {
-    value: 'nest.js',
-    label: 'Nest.js',
+    value: 'product8',
+    label: 'product8',
   },
 ] satisfies Products[];
 
 export default function AddCollection() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<Products[]>([PRODUCTS[4]]);
+  const [selected, setSelected] = useState<Products[]>([]);
   const [inputValue, setInputValue] = useState('');
 
   // 1. Define your form.
@@ -178,11 +178,7 @@ export default function AddCollection() {
                     <FormItem>
                       <FormLabel>Collection Description</FormLabel>
                       <FormControl>
-                        <Textarea
-                          id="description"
-                          placeholder="Please include all information relevant to your issue."
-                          {...field}
-                        />
+                        <Textarea id="description" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -230,7 +226,7 @@ export default function AddCollection() {
                               onValueChange={setInputValue}
                               onBlur={() => setOpen(false)}
                               onFocus={() => setOpen(true)}
-                              placeholder="Select PRODUCTS..."
+                              placeholder="Select products..."
                               className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
                             />
                           </div>
@@ -293,7 +289,7 @@ export default function AddCollection() {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <Button className="w-full" type="submit">
-                    Create account
+                    Create Collection
                   </Button>
                 </AlertDialogFooter>
               </form>

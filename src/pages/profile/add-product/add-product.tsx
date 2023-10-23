@@ -117,7 +117,7 @@ export default function AddProduct() {
                       <FormControl>
                         <Textarea
                           id="description"
-                          placeholder="Please include all information relevant to your issue."
+                          // placeholder="Please include all information relevant to your issue."
                           {...field}
                         />
                       </FormControl>
@@ -155,11 +155,13 @@ export default function AddProduct() {
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="product_picture"
                   render={({ field: { onChange } }) => (
                     <FormItem>
+                      <FormLabel>Product Image</FormLabel>
                       <div className="flex flex-col md:flex-row gap-10">
                         <div className="grid w-full max-w-sm items-center gap-1.5">
                           <Input
@@ -203,7 +205,7 @@ export default function AddProduct() {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <Button className="w-full" type="submit">
-                    Create account
+                    Add product
                   </Button>
                 </AlertDialogFooter>
               </form>

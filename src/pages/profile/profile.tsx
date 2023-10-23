@@ -8,7 +8,7 @@ import { CollectionPreviewCard } from '../../components/collection-preview-card'
 export default function Profile() {
   return (
     <div className="container mx-auto py-8">
-      <div className="flex items-center gap-6">
+      <div className="flex flex-col lg:flex-row items-center gap-6">
         <Avatar className="h-36 w-36">
           <AvatarImage src="https://avatars.githubusercontent.com/u/73711390?v=4" />
           <AvatarFallback />
