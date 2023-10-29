@@ -6,6 +6,34 @@ import { ProductPreviewCard } from '@/components/product-preview-card';
 import { CollectionPreviewCard } from '../../components/collection-preview-card';
 
 export default function Profile() {
+  const productExample = [
+    {
+      image: 'next.js',
+      title: 'Next.js',
+      description: 'sdadasd',
+    },
+    {
+      image: 'next.js',
+      title: 'Next.js',
+      description: 'sdadasd',
+    },
+    {
+      image: 'next.js',
+      title: 'Next.js',
+      description: 'sdadasd',
+    },
+    {
+      image: 'next.js',
+      title: 'Next.js',
+      description: 'sdadasd',
+    },
+    {
+      image: 'next.js',
+      title: 'Next.js',
+      description: 'sdadasd',
+    },
+  ];
+
   return (
     <div className="container mx-auto py-8">
       <div className="flex flex-col lg:flex-row items-center gap-6">
@@ -13,7 +41,7 @@ export default function Profile() {
           <AvatarImage src="https://avatars.githubusercontent.com/u/73711390?v=4" />
           <AvatarFallback />
         </Avatar>
-        <p className="text-4xl font-bold">@USERNAME</p>
+        <p className="text-2xl lg:text-3xl font-bold">@USERNAME</p>
       </div>
       <Tabs defaultValue="products" className="h-full space-y-6 pt-8">
         <div className="flex flex-col md:flex-row items-center justify-center md:justify-between">
@@ -36,13 +64,14 @@ export default function Profile() {
           </div>
         </div>
         <TabsContent value="products" className="border-none p-0 outline-none">
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 justify-center items-center">
-            <ProductPreviewCard />
-            <ProductPreviewCard />
-            <ProductPreviewCard />
-            <ProductPreviewCard />
-            <ProductPreviewCard />
-            <ProductPreviewCard />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 justify-center items-center">
+            {productExample.map((item, index) => (
+              <ProductPreviewCard
+                image={item.image}
+                title={item.title}
+                description={item.description}
+              />
+            ))}
           </div>
         </TabsContent>
 
