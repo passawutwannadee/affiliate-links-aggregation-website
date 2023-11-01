@@ -8,29 +8,54 @@ import { CollectionPreviewCard } from '../../components/collection-preview-card'
 export default function Profile() {
   const productExample = [
     {
-      image: 'next.js',
-      title: 'Next.js',
-      description: 'sdadasd',
+      image: 'https://example.com/product1.jpg',
+      title: 'Product 1',
+      description: 'This is the description for Product 1.',
     },
     {
-      image: 'next.js',
-      title: 'Next.js',
-      description: 'sdadasd',
+      image: 'https://example.com/product2.jpg',
+      title: 'Product 2',
+      description: 'This is the description for Product 2.',
     },
     {
-      image: 'next.js',
-      title: 'Next.js',
-      description: 'sdadasd',
+      image: 'https://example.com/product3.jpg',
+      title: 'Product 3',
+      description: 'This is the description for Product 3.',
     },
     {
-      image: 'next.js',
-      title: 'Next.js',
-      description: 'sdadasd',
+      image: 'https://example.com/product4.jpg',
+      title: 'Product 4',
+      description: 'This is the description for Product 4.',
     },
     {
-      image: 'next.js',
-      title: 'Next.js',
-      description: 'sdadasd',
+      image: 'https://example.com/product5.jpg',
+      title: 'Product 5',
+      description: 'This is the description for Product 5.',
+    },
+    {
+      image: 'https://example.com/product6.jpg',
+      title: 'Product 6',
+      description: 'This is the description for Product 6.',
+    },
+    {
+      image: 'https://example.com/product7.jpg',
+      title: 'Product 7',
+      description: 'This is the description for Product 7.',
+    },
+    {
+      image: 'https://example.com/product8.jpg',
+      title: 'Product 8',
+      description: 'This is the description for Product 8.',
+    },
+    {
+      image: 'https://example.com/product9.jpg',
+      title: 'Product 9',
+      description: 'This is the description for Product 9.',
+    },
+    {
+      image: 'https://example.com/product10.jpg',
+      title: 'Product 10',
+      description: 'This is the description for Product 10.',
     },
   ];
 

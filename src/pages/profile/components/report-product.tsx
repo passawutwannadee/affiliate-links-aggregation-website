@@ -57,7 +57,7 @@ const formSchema = z.object({
     ),
 });
 
-export default function AddProduct() {
+export default function EditProduct() {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -79,15 +79,14 @@ export default function AddProduct() {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger>
-        <Button>
-          <PlusIcon className="mr-2 h-4 w-4" />
-          Add Product
+      <AlertDialogTrigger className="w-full">
+        <Button variant="ghost" className="w-full justify-start">
+          Report
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Add Product</AlertDialogTitle>
+          <AlertDialogTitle>Report</AlertDialogTitle>
           <AlertDialogDescription>
             <Form {...form}>
               <form
@@ -162,18 +161,22 @@ export default function AddProduct() {
                   render={({ field: { onChange } }) => (
                     <FormItem>
                       <FormLabel>Product Image</FormLabel>
-                      <Input
-                        id="picture"
-                        type="file"
-                        onChange={(event) => {
-                          if (
-                            event.target.files &&
-                            event.target.files.length > 0
-                          ) {
-                            onChange(event.target.files[0]);
-                          }
-                        }}
-                      />
+                      <div className="flex flex-col md:flex-row gap-10">
+                        <div className="grid w-full max-w-sm items-center gap-1.5">
+                          <Input
+                            id="picture"
+                            type="file"
+                            onChange={(event) => {
+                              if (
+                                event.target.files &&
+                                event.target.files.length > 0
+                              ) {
+                                onChange(event.target.files[0]);
+                              }
+                            }}
+                          />
+                        </div>
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
