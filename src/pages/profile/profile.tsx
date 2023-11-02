@@ -4,6 +4,14 @@ import AddProduct from './add-product/add-product';
 import AddCollection from './add-collection/add-collection';
 import { ProductPreviewCard } from '@/components/product-preview-card';
 import { CollectionPreviewCard } from '../../components/collection-preview-card';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import ReportUser from './components/report-user';
 
 export default function Profile() {
   const productExample = [
@@ -67,6 +75,18 @@ export default function Profile() {
           <AvatarFallback />
         </Avatar>
         <p className="text-2xl lg:text-3xl font-bold">@USERNAME</p>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="text-xl">
+              ⋯
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuGroup>
+              <ReportUser />
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <Tabs defaultValue="products" className="h-full space-y-6 pt-8">
         <div className="flex flex-col md:flex-row items-center justify-center md:justify-between">

@@ -57,7 +57,7 @@ const formSchema = z.object({
     ),
 });
 
-export default function EditProduct() {
+export default function ReportUser() {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
