@@ -65,7 +65,32 @@ const formSchema = z.object({
 });
 
 export default function AddProduct() {
-  const [linkList, setLinkList] = useState(0);
+  const [linkList, setLinkList] = useState<number>(0);
+
+  const handlePlus = () => {
+    setLinkList(linkList + 1);
+  };
+
+  const renderLinks = () => {
+    const links = [];
+    for (let i = 1; i <= linkList; i++) {
+      links.push(
+        <FormField
+          control={form.control}
+          name="link_1"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      );
+    }
+    return links;
+  };
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -191,19 +216,10 @@ export default function AddProduct() {
                 <div className="pt-1 pb-0.5">
                   <FormLabel>Product Links</FormLabel>
                 </div>
-                <FormField
-                  control={form.control}
-                  name="link_1"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
+                {renderLinks()}
+                <div>
+                  <Button onClick={handlePlus}>+</Button>
+                </div>
                 {/* <FormField
                   control={form.control}
                   name="confirmpassword"
