@@ -31,6 +31,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Select } from '@radix-ui/react-select';
+import { useState } from 'react';
 
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -55,9 +56,17 @@ const formSchema = z.object({
       (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
       'Only .jpg, .jpeg, .png and .webp formats are supported.'
     ),
+  link_1: z.string().nonempty({
+    message: 'Please enter link.',
+  }),
+  link_2: z.string().nonempty({
+    message: 'Please enter link.',
+  }),
 });
 
 export default function AddProduct() {
+  const [linkList, setLinkList] = useState(0);
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -174,6 +183,22 @@ export default function AddProduct() {
                           }
                         }}
                       />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="pt-1 pb-0.5">
+                  <FormLabel>Product Links</FormLabel>
+                </div>
+                <FormField
+                  control={form.control}
+                  name="link_1"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}

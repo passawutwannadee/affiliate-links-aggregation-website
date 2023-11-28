@@ -23,9 +23,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Link } from 'react-router-dom';
+import { Required } from '@/components/ui/required';
 
 const formSchema = z
   .object({
+    displayname: z.string(),
     username: z.string().min(2, {
       message: 'Username must be at least 2 characters.',
     }),
@@ -47,11 +49,12 @@ const formSchema = z
     path: ['confirmpassword'],
   });
 
-export function Register() {
+export default function Register() {
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      displayname: '',
       username: '',
       email: '',
       password: '',
@@ -79,10 +82,26 @@ export function Register() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
               <FormField
                 control={form.control}
-                name="username"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>
+                      Email <Required />
+                    </FormLabel>
+                    <FormControl>
+                      <Input placeholder="JohnDoe@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="displayname"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Display Name</FormLabel>
                     <FormControl>
                       <Input placeholder="JohnDoe123" {...field} />
                     </FormControl>
@@ -93,12 +112,14 @@ export function Register() {
 
               <FormField
                 control={form.control}
-                name="email"
+                name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>
+                      Username <Required />
+                    </FormLabel>
                     <FormControl>
-                      <Input placeholder="JohnDoe@example.com" {...field} />
+                      <Input placeholder="JohnDoe123" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -110,7 +131,9 @@ export function Register() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>
+                      Password <Required />
+                    </FormLabel>
                     <FormDescription>
                       Password must be at least 8 characters long and contain at
                       least one number, one lowercase letter, one uppercase
@@ -129,7 +152,9 @@ export function Register() {
                 name="confirmpassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
+                    <FormLabel>
+                      Confirm Password <Required />
+                    </FormLabel>
                     <FormControl>
                       <Input {...field} type="password" />
                     </FormControl>
