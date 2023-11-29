@@ -120,107 +120,108 @@ export default function AddProduct() {
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Add Product</AlertDialogTitle>
-          <AlertDialogDescription>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-3"
-              >
-                <FormField
-                  control={form.control}
-                  name="product_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Product Name</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="product_description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Product Description</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          id="description"
-                          // placeholder="Please include all information relevant to your issue."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="category"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Category</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue="2">
-                        <SelectTrigger id="security-level" className="w-full">
-                          <SelectValue placeholder="Select level" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem
-                            value="lorem"
-                            className="hover:bg-primary/10"
-                          >
-                            Lorem
-                          </SelectItem>
-                          <SelectItem
-                            value="ipsum"
-                            className="hover:bg-primary/10"
-                          >
-                            Ipsum
-                          </SelectItem>
-                        </SelectContent>
+        <div className="h-screen overflow-scroll p-4">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Add Product</AlertDialogTitle>
+            <AlertDialogDescription>
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-3"
+                >
+                  <FormField
+                    control={form.control}
+                    name="product_name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Product Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
                         <FormMessage />
-                      </Select>
-                    </FormItem>
-                  )}
-                />
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="product_picture"
-                  render={({ field: { onChange } }) => (
-                    <FormItem>
-                      <FormLabel>Product Image</FormLabel>
-                      <Input
-                        id="picture"
-                        type="file"
-                        onChange={(event) => {
-                          if (
-                            event.target.files &&
-                            event.target.files.length > 0
-                          ) {
-                            onChange(event.target.files[0]);
-                          }
-                        }}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                  <FormField
+                    control={form.control}
+                    name="product_description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Product Description</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            id="description"
+                            // placeholder="Please include all information relevant to your issue."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-                <div className="pt-1 pb-0.5">
-                  <FormLabel>Product Links</FormLabel>
-                </div>
-                {renderLinks()}
-                <div>
-                  <Button onClick={handlePlus}>+</Button>
-                </div>
-                {/* <FormField
+                  <FormField
+                    control={form.control}
+                    name="category"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Category</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue="2">
+                          <SelectTrigger id="security-level" className="w-full">
+                            <SelectValue placeholder="Select level" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem
+                              value="lorem"
+                              className="hover:bg-primary/10"
+                            >
+                              Lorem
+                            </SelectItem>
+                            <SelectItem
+                              value="ipsum"
+                              className="hover:bg-primary/10"
+                            >
+                              Ipsum
+                            </SelectItem>
+                          </SelectContent>
+                          <FormMessage />
+                        </Select>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="product_picture"
+                    render={({ field: { onChange } }) => (
+                      <FormItem>
+                        <FormLabel>Product Image</FormLabel>
+                        <Input
+                          id="picture"
+                          type="file"
+                          onChange={(event) => {
+                            if (
+                              event.target.files &&
+                              event.target.files.length > 0
+                            ) {
+                              onChange(event.target.files[0]);
+                            }
+                          }}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="pt-1 pb-0.5">
+                    <FormLabel>Product Links</FormLabel>
+                  </div>
+                  {renderLinks()}
+                  <div>
+                    <Button onClick={handlePlus}>+</Button>
+                  </div>
+                  {/* <FormField
                   control={form.control}
                   name="confirmpassword"
                   render={({ field }) => (
@@ -239,16 +240,17 @@ export default function AddProduct() {
                   )}
                 /> */}
 
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <Button className="w-full" type="submit">
-                    Add product
-                  </Button>
-                </AlertDialogFooter>
-              </form>
-            </Form>
-          </AlertDialogDescription>
-        </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <Button className="w-full" type="submit">
+                      Add product
+                    </Button>
+                  </AlertDialogFooter>
+                </form>
+              </Form>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+        </div>
         {/* <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction type="submit">Continue</AlertDialogAction>

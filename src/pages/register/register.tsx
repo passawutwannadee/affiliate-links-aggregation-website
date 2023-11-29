@@ -70,7 +70,7 @@ export default function Register() {
   }
 
   return (
-    <div className="container mx-auto flex items-center justify-center pt-10 lg:pt-0 lg:h-[85vh] ">
+    <div className="container mx-auto flex items-center justify-center mt-36 lg:mt-30 2xl:mt-0 lg:h-[85vh] ">
       <Card className="w-full lg:w-96">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">

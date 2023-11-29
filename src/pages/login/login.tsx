@@ -22,7 +22,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Link } from 'react-router-dom';
-import ApiService from '@/utils/api-services';
+import ApiService from '@/config/api-services';
 import { useState } from 'react';
 import { Loading } from '@/components/ui/loading';
 
