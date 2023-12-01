@@ -11,11 +11,16 @@ import ReportUser from '../profile/components/report-user';
 export default function Product() {
   return (
     <div className="container mx-auto py-8">
-      <div className="flex flex-col lg:flex-row p-20 gap-12">
-        <img src="./placeholder-images-image_large.webp" className="p-6 w-96" />
-        <div className="flex flex-col self-center gap-16">
-          <div className="flex flex-col gap-2">
-            <p className="text-4xl font-bold">Product Name</p>
+      <div className="flex flex-col lg:flex-row lg:pl-20 lg:pr-20 gap-12">
+        <img
+          src="./placeholder-images-image_large.webp"
+          className="flex self-center p-6 w-96"
+        />
+        <div className="flex flex-col self-center gap-16 items">
+          <div className="flex flex-col gap-2 items-center lg:items-start">
+            <p className="text-4xl font-bold text-center lg:text-left">
+              Product Name
+            </p>
             <div className="flex items-center gap-2">
               <Avatar className="h-12 w-12">
                 <AvatarImage src="https://avatars.githubusercontent.com/u/73711390?v=4" />

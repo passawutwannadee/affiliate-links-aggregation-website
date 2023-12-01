@@ -65,10 +65,14 @@ const formSchema = z.object({
 });
 
 export default function AddProduct() {
-  const [linkList, setLinkList] = useState<number>(0);
+  const [linkList, setLinkList] = useState<number>(1);
 
   const handlePlus = () => {
     setLinkList(linkList + 1);
+  };
+
+  const handleMinus = () => {
+    setLinkList(linkList - 1);
   };
 
   const renderLinks = () => {
@@ -218,8 +222,30 @@ export default function AddProduct() {
                     <FormLabel>Product Links</FormLabel>
                   </div>
                   {renderLinks()}
-                  <div>
-                    <Button onClick={handlePlus}>+</Button>
+                  <div className="flex gap-2">
+                    {linkList === 4 ? (
+                      <Button disabled onClick={handlePlus}>
+                        +
+                      </Button>
+                    ) : (
+                      <Button onClick={handlePlus}>+</Button>
+                    )}
+                    {linkList === 1 ? (
+                      <Button
+                        disabled
+                        className="bg-primary-background text-primary hover:bg-primary-foreground"
+                        onClick={handleMinus}
+                      >
+                        -
+                      </Button>
+                    ) : (
+                      <Button
+                        className="bg-primary-background text-primary hover:bg-primary-foreground"
+                        onClick={handleMinus}
+                      >
+                        -
+                      </Button>
+                    )}
                   </div>
                   {/* <FormField
                   control={form.control}
