@@ -28,9 +28,12 @@ interface Item {
 
 export function ProductPreviewCard({ image, title, description }: Item) {
   return (
-    <Card className="hover:cursor-pointer w-full">
+    <Card className="w-full">
       <Link to="/product">
-        <img src={image} className="p-6 w-full" />
+        <img
+          src={image}
+          className="p-4 w-full aspect-square object-cover hover:cursor-pointer "
+        />
       </Link>
       <CardHeader>
         <div className="flex flex-row justify-between items-center">

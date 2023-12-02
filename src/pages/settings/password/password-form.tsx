@@ -25,6 +25,9 @@ import { Input } from '@/components/ui/input';
 
 const profileFormSchema = z
   .object({
+    password_old: z.string().min(8, {
+      message: 'Please enter your password.',
+    }),
     password: z
       .string()
       .regex(
@@ -72,6 +75,20 @@ export function PasswordForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="password_old"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Current Password</FormLabel>
+              <FormControl>
+                <Input {...field} type="password" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="password"

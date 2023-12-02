@@ -27,7 +27,7 @@ export default function Product() {
                 <AvatarFallback />
               </Avatar>
               <p className="text-1xl font-semibold text-primary/80">
-                @USERNAME
+                DisplayName
               </p>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

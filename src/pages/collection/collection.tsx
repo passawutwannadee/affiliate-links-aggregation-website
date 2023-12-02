@@ -65,7 +65,12 @@ export default function Collection() {
               <AvatarImage src="https://avatars.githubusercontent.com/u/73711390?v=4" />
               <AvatarFallback />
             </Avatar>
-            <p className="text-1xl font-semibold text-primary/80">@USERNAME</p>
+            <div className="flex flex-col items-center lg:items-start">
+              <p className="text-2xl lg:text-xl font-bold">DisplayName</p>
+              <p className="textsm lg:text-sm font-bold text- text-primary/80">
+                @USERNAME
+              </p>
+            </div>
           </div>
         </div>
         <div className="flex flex-col md:flex-row items-center justify-center md:justify-between"></div>

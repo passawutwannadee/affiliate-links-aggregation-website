@@ -62,6 +62,12 @@ const formSchema = z.object({
   link_2: z.string().nonempty({
     message: 'Please enter link.',
   }),
+  link_3: z.string().nonempty({
+    message: 'Please enter link.',
+  }),
+  link_4: z.string().nonempty({
+    message: 'Please enter link.',
+  }),
 });
 
 export default function AddProduct() {
@@ -81,7 +87,15 @@ export default function AddProduct() {
       links.push(
         <FormField
           control={form.control}
-          name="link_1"
+          name={
+            i === 1
+              ? 'link_1'
+              : i === 2
+              ? 'link_2'
+              : i === 4
+              ? 'link_3'
+              : 'link_4'
+          }
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -124,7 +138,7 @@ export default function AddProduct() {
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
-        <div className="h-screen overflow-scroll p-4">
+        <div className="max-h-screen overflow-auto p-4">
           <AlertDialogHeader>
             <AlertDialogTitle>Add Product</AlertDialogTitle>
             <AlertDialogDescription>
