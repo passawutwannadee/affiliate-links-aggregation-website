@@ -1,10 +1,6 @@
-import axios from 'axios';
+import axiosInstance from '@/configs/axios-instance';
 
-const ApiService = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-});
-
-ApiService.interceptors.response.use(
+axiosInstance.interceptors.response.use(
   (response: any) => {
     return response;
   },
@@ -16,5 +12,3 @@ ApiService.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export default ApiService;
