@@ -28,12 +28,18 @@ interface Item {
 
 export function ProductPreviewCard({ image, title, description }: Item) {
   return (
-    // <Link to="/product">
-    <Card className="hover:cursor-pointer w-full">
-      <img src={image} className="p-6 w-full" />
+    <Card className="w-full">
+      <Link to="/product">
+        <img
+          src={image}
+          className="p-4 w-full aspect-square object-cover hover:cursor-pointer "
+        />
+      </Link>
       <CardHeader>
         <div className="flex flex-row justify-between items-center">
-          <CardTitle>{title}</CardTitle>
+          <Link to="/product">
+            <CardTitle>{title}</CardTitle>
+          </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="text-xl">
@@ -49,11 +55,12 @@ export function ProductPreviewCard({ image, title, description }: Item) {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <CardDescription className="line-clamp-3">
-          {description}
-        </CardDescription>
+        <Link to="/product">
+          <CardDescription className="line-clamp-3">
+            {description}
+          </CardDescription>
+        </Link>
       </CardHeader>
     </Card>
-    // </Link>
   );
 }

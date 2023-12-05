@@ -178,11 +178,11 @@ export function AdminDashboard() {
             className="max-w-sm"
           /> */}
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
+            {/* <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
-                Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
+                Columndfsdsfsdfs <ChevronDownIcon className="ml-2 h-4 w-4" />
               </Button>
-            </DropdownMenuTrigger>
+            </DropdownMenuTrigger> */}
             <DropdownMenuContent align="end">
               {table
                 .getAllColumns()
