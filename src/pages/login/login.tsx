@@ -22,9 +22,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Link } from 'react-router-dom';
-import ApiService from '@/config/api-services';
+import axiosInstance from '@/configs/axios-instance';
 import { useState } from 'react';
 import { Loading } from '@/components/ui/loading';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const formSchema = z.object({
   email: z.string().email({
@@ -37,6 +38,7 @@ const formSchema = z.object({
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
+  const [loginFalse, setLoginFalse] = useState(false);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -51,9 +53,12 @@ export default function Login() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+
+    setLoginFalse(false);
+
     try {
       setLoading(true);
-      const response = await ApiService.post(
+      const response = await axiosInstance.post(
         `/auth/login`,
         {
           email: values.email,
@@ -61,6 +66,19 @@ export default function Login() {
         },
         { withCredentials: true }
       );
+
+      console.log(response);
+
+      // login is successful
+      if (response.status === 200 && response.data.login === true) {
+        sessionStorage.setItem('token', response.data.token);
+        window.location.reload();
+      }
+
+      // login is not successful wrong password or email
+      if (response.status === 200 && response.data.login === false) {
+        setLoginFalse(true);
+      }
 
       const getToken = document.cookie.replace(
         /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
@@ -115,6 +133,15 @@ export default function Login() {
                     </FormItem>
                   )}
                 />
+
+                {loginFalse ? (
+                  <Alert variant="destructive">
+                    {/* <ExclamationTriangleIcon className="h-4 w-4" /> */}
+                    <AlertDescription>
+                      Incorrect email or password
+                    </AlertDescription>
+                  </Alert>
+                ) : null}
 
                 <Button className="w-full" type="submit">
                   Login

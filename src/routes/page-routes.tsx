@@ -25,8 +25,8 @@ function PageRoutes() {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/product" element={<Product />} />
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/product/:id" element={<Product />} />
           <Route path="/collection" element={<Collection />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route

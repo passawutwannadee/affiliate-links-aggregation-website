@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Button } from './ui/button';
 
 export function MainNav() {
   return (
@@ -22,27 +23,34 @@ export function MainNav() {
             LOGO
           </Link>
           <div className="flex items-center gap-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src="https://avatars.githubusercontent.com/u/73711390?v=4" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link to="/profile">Profile</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/settings/account">Settings</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="text-red-600">
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {sessionStorage.getItem('token') !== null ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Avatar className="h-12 w-12">
+                    <AvatarImage src="https://avatars.githubusercontent.com/u/73711390?v=4" />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Link to="/profile">Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link to="/settings/account">Settings</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="text-red-600"
+                    onClick={() => sessionStorage.clear()}
+                  >
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button>Login</Button>
+            )}
 
             <ModeToggle />
           </div>
