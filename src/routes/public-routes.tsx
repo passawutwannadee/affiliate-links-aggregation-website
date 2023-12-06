@@ -1,12 +1,11 @@
-import React from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
-const PublicRoutes = () => {
+const PublicRoutes = (_: any) => {
   // if user is already login redirect to their profile
   return sessionStorage.getItem('token') === null ? (
     <Outlet />
   ) : (
-    <Navigate to="/home/dashboard" />
+    <Navigate to="/profile" />
   );
 };
 
