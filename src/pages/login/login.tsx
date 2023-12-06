@@ -26,6 +26,7 @@ import axiosInstance from '@/configs/axios-instance';
 import { useState } from 'react';
 import { Loading } from '@/components/ui/loading';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { loginAPI } from '@/services/login-api';
 
 const formSchema = z.object({
   email: z.string().email({
@@ -56,17 +57,7 @@ export default function Login() {
 
     setLoginFalse(false);
 
-    try {
-      setLoading(true);
-      const response = await axiosInstance.post(
-        `/auth/login`,
-        {
-          email: values.email,
-          password: values.password,
-        },
-        { withCredentials: true }
-      );
-
+    loginAPI(values.email, values.password).then((response) => {
       console.log(response);
 
       // login is successful
@@ -79,16 +70,41 @@ export default function Login() {
       if (response.status === 200 && response.data.login === false) {
         setLoginFalse(true);
       }
+    });
 
-      const getToken = document.cookie.replace(
-        /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
-        '$1'
-      );
+    // try {
+    //   setLoading(true);
+    //   const response = await axiosInstance.post(
+    //     `/auth/login`,
+    //     {
+    //       email: values.email,
+    //       password: values.password,
+    //     },
+    //     { withCredentials: true }
+    //   );
 
-      console.log(document.cookie);
-    } catch (err) {
-      console.log(err);
-    }
+    //   console.log(response);
+
+    //   // login is successful
+    //   if (response.status === 200 && response.data.login === true) {
+    //     sessionStorage.setItem('token', response.data.token);
+    //     window.location.reload();
+    //   }
+
+    //   // login is not successful wrong password or email
+    //   if (response.status === 200 && response.data.login === false) {
+    //     setLoginFalse(true);
+    //   }
+
+    //   const getToken = document.cookie.replace(
+    //     /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
+    //     '$1'
+    //   );
+
+    //   console.log(document.cookie);
+    // } catch (err) {
+    //   console.log(err);
+    // }
 
     setLoading(false);
   }

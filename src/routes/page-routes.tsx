@@ -14,6 +14,8 @@ import Collection from '@/pages/collection/collection';
 import { AdminDashboard } from '@/pages/admin-dashboard/admin-dashboard';
 import { Loading } from '@/components/ui/loading';
 import NotFound from '@/pages/not-found/not-found';
+import PublicRoutes from './public-routes';
+import PrivateRoutes from './private-routes';
 
 function PageRoutes() {
   return (
@@ -21,26 +23,36 @@ function PageRoutes() {
       <MainNav />
       <Suspense fallback={<Loading />}>
         <Routes>
-          {/* <Route path="*" element={<NotFound />} /> */}
-          <Route path="/" element={<Login />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/product/:id" element={<Product />} />
-          <Route path="/collection" element={<Collection />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route
-            path="/settings"
-            element={<Settings children={<AccountForm />} />}
-          />
-          <Route
-            path="/settings/account"
-            element={<Settings children={<AccountForm />} />}
-          />
-          <Route
-            path="/settings/password"
-            element={<Settings children={<PasswordForm />} />}
-          />
+          <Route element={<PublicRoutes />}>
+            {/* <Route path="*" element={<NotFound />} /> */}
+            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile/:id" element={<Profile />} />
+            <Route path="/product/:id" element={<Product />} />
+            <Route path="/collection" element={<Collection />} />
+          </Route>
+        </Routes>
+        <Routes>
+          <Route element={<PrivateRoutes />}>
+            {/* <Route path="*" element={<NotFound />} /> */}
+            <Route path="/profile/:id" element={<Profile />} />
+            <Route path="/product/:id" element={<Product />} />
+            <Route path="/collection" element={<Collection />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route
+              path="/settings"
+              element={<Settings children={<AccountForm />} />}
+            />
+            <Route
+              path="/settings/account"
+              element={<Settings children={<AccountForm />} />}
+            />
+            <Route
+              path="/settings/password"
+              element={<Settings children={<PasswordForm />} />}
+            />
+          </Route>
         </Routes>
       </Suspense>
     </BrowserRouter>
