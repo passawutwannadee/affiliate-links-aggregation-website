@@ -13,6 +13,7 @@ import Product from '@/pages/product/product';
 import Collection from '@/pages/collection/collection';
 import { AdminDashboard } from '@/pages/admin-dashboard/admin-dashboard';
 import { Loading } from '@/components/ui/loading';
+import NotFound from '@/pages/not-found/not-found';
 
 function PageRoutes() {
   return (
@@ -20,11 +21,12 @@ function PageRoutes() {
       <MainNav />
       <Suspense fallback={<Loading />}>
         <Routes>
+          {/* <Route path="*" element={<NotFound />} /> */}
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/product" element={<Product />} />
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/product/:id" element={<Product />} />
           <Route path="/collection" element={<Collection />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route
