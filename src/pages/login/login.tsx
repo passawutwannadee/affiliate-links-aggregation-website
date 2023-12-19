@@ -27,6 +27,10 @@ import { useState } from 'react';
 import { Loading } from '@/components/ui/loading';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { loginAPI } from '@/services/login-api';
+import { useMutation } from 'react-query';
+import { ring2 } from 'ldrs';
+
+ring2.register();
 
 const formSchema = z.object({
   email: z.string().email({
@@ -38,7 +42,6 @@ const formSchema = z.object({
 });
 
 export default function Login() {
-  const [loading, setLoading] = useState(false);
   const [loginFalse, setLoginFalse] = useState(false);
 
   // 1. Define your form.
@@ -50,16 +53,8 @@ export default function Login() {
     },
   });
 
-  // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-
-    setLoginFalse(false);
-
-    loginAPI(values.email, values.password).then((response) => {
-      console.log(response);
-
+  const { mutate, isLoading, isError, error, data } = useMutation(loginAPI, {
+    onSuccess: (response) => {
       // login is successful
       if (response.status === 200 && response.data.login === true) {
         sessionStorage.setItem('token', response.data.token);
@@ -70,47 +65,23 @@ export default function Login() {
       if (response.status === 200 && response.data.login === false) {
         setLoginFalse(true);
       }
-    });
+    },
+  });
 
-    // try {
-    //   setLoading(true);
-    //   const response = await axiosInstance.post(
-    //     `/auth/login`,
-    //     {
-    //       email: values.email,
-    //       password: values.password,
-    //     },
-    //     { withCredentials: true }
-    //   );
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
 
-    //   console.log(response);
+    setLoginFalse(false);
 
-    //   // login is successful
-    //   if (response.status === 200 && response.data.login === true) {
-    //     sessionStorage.setItem('token', response.data.token);
-    //     window.location.reload();
-    //   }
+    const email = values.email;
+    const password = values.password;
 
-    //   // login is not successful wrong password or email
-    //   if (response.status === 200 && response.data.login === false) {
-    //     setLoginFalse(true);
-    //   }
-
-    //   const getToken = document.cookie.replace(
-    //     /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
-    //     '$1'
-    //   );
-
-    //   console.log(document.cookie);
-    // } catch (err) {
-    //   console.log(err);
-    // }
-
-    setLoading(false);
+    mutate({ email, password });
   }
   return (
     <>
-      {loading ? <Loading /> : null}
       <div className="container mx-auto flex items-center justify-center pt-20 lg:pt-0 lg:h-[85vh]">
         <Card className="w-full lg:w-1/4">
           <CardHeader className="space-y-1">
@@ -159,9 +130,22 @@ export default function Login() {
                   </Alert>
                 ) : null}
 
-                <Button className="w-full" type="submit">
-                  Login
-                </Button>
+                {isLoading ? (
+                  <Button disabled className="w-full" type="submit">
+                    <l-ring-2
+                      size="15"
+                      stroke="2"
+                      stroke-length="0.25"
+                      bg-opacity="0.1"
+                      speed="0.8"
+                      color="black"
+                    />
+                  </Button>
+                ) : (
+                  <Button className="w-full" type="submit">
+                    <p>Login</p>
+                  </Button>
+                )}
               </form>
             </Form>
           </CardContent>

@@ -1,12 +1,12 @@
 import { Navigate, Outlet } from 'react-router-dom';
 
-const PublicRoutes = (_: any) => {
+const PublicRoutes = ({ currentUser }: any) => {
   // if user is already login redirect to their profile
-  return sessionStorage.getItem('token') === null ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/profile" />
-  );
+  if (sessionStorage.getItem('token') === null) {
+    return <Outlet />;
+  } else {
+    return <Navigate to={`/profile/${currentUser}`} />;
+  }
 };
 
 export default PublicRoutes;
