@@ -5,6 +5,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 export default function VerifyEmail() {
   let { email_verify_token } = useParams<string>();
+
   const navigate = useNavigate();
   const { mutate, isLoading, isError, error, data } = useMutation(
     ['user_data'],

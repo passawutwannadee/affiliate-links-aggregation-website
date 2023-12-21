@@ -53,10 +53,10 @@ function PageRoutes() {
               }
             />
             <Route
-              path="/verify_email/:email_verify_token"
+              path="/verify-email/:email_verify_token"
               element={<VerifyEmail />}
             />
-            <Route path="/verify_email" element={<VerifyEmailAlert />} />
+            <Route path="/verify-email" element={<VerifyEmailAlert />} />
 
             {/* ///////////////////////// PUBLIC ROUTES ////////////////////////// */}
             <Route
