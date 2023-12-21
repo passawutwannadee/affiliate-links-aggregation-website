@@ -1,5 +1,4 @@
 import axiosInstance from '@/configs/axios-instance';
-import { useNavigate } from 'react-router-dom';
 
 axiosInstance.interceptors.response.use(
   (response: any) => {

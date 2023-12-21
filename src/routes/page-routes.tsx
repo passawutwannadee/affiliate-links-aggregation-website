@@ -39,7 +39,10 @@ function PageRoutes() {
     <>
       {data ? console.log(data.data.email_verify) : null}
       <BrowserRouter>
-        <MainNav username={data ? data.data.username : null} />
+        <MainNav
+          username={data ? data.data.username : null}
+          profilePicture={data ? data.data.profile_picture : null}
+        />
         <Suspense fallback={<Loading />}>
           <Routes>
             <Route path="*" element={<NotFound />} />
