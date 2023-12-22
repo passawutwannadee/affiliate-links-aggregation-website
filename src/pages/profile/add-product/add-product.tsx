@@ -31,7 +31,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Select } from '@radix-ui/react-select';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -40,35 +40,76 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/webp',
 ];
 
-const formSchema = z.object({
-  product_name: z.string().nonempty({
-    message: 'Please enter product name.',
-  }),
-  product_description: z.string().nonempty({
-    message: 'Please enter product name.',
-  }),
-  category: z.string().nonempty({
-    message: 'Please enter product name.',
-  }),
-  product_picture: z
-    .any()
-    .refine(
-      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-      'Only .jpg, .jpeg, .png and .webp formats are supported.'
-    ),
-  link_1: z.string().nonempty({
-    message: 'Please enter link.',
-  }),
-  link_2: z.string().nonempty({
-    message: 'Please enter link.',
-  }),
-  link_3: z.string().nonempty({
-    message: 'Please enter link.',
-  }),
-  link_4: z.string().nonempty({
-    message: 'Please enter link.',
-  }),
-});
+const formSchema = z
+  .object({
+    product_name: z.string().nonempty({
+      message: 'Please enter product name.',
+    }),
+    product_description: z.string().nonempty({
+      message: 'Please enter product name.',
+    }),
+    category: z.string().nonempty({
+      message: 'Please enter product name.',
+    }),
+    product_picture: z
+      .any()
+      .refine(
+        (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+        'Only .jpg, .jpeg, .png and .webp formats are supported.'
+      ),
+  })
+  .and(
+    z.discriminatedUnion('link_list', [
+      z.object({
+        link_list: z.literal(1),
+        link_1: z.string().nonempty({
+          message: 'Please enter link.',
+        }),
+        link_2: z.string().optional(),
+        link_3: z.string().optional(),
+        link_4: z.string().optional(),
+      }),
+      z.object({
+        link_list: z.literal(2),
+        link_1: z.string().nonempty({
+          message: 'Please enter link.',
+        }),
+        link_2: z.string().nonempty({
+          message: 'Please enter link.',
+        }),
+        link_3: z.string().optional(),
+        link_4: z.string().optional(),
+      }),
+      z.object({
+        link_list: z.literal(3),
+        link_1: z.string().nonempty({
+          message: 'Please enter link.',
+        }),
+        link_2: z.string().nonempty({
+          message: 'Please enter link.',
+        }),
+        link_3: z.string().nonempty({
+          message: 'Please enter link.',
+        }),
+        link_4: z.string().optional(),
+      }),
+      z.object({
+        link_list: z.literal(4),
+        link_1: z.string().nonempty({
+          message: 'Please enter link.',
+        }),
+        link_2: z.string().nonempty({
+          message: 'Please enter link.',
+        }),
+        link_3: z.string().nonempty({
+          message: 'Please enter link.',
+        }),
+        link_4: z.string().nonempty({
+          message: 'Please enter link.',
+        }),
+      }),
+    ])
+  );
 
 export default function AddProduct() {
   const [linkList, setLinkList] = useState<number>(1);
@@ -92,7 +133,7 @@ export default function AddProduct() {
               ? 'link_1'
               : i === 2
               ? 'link_2'
-              : i === 4
+              : i === 3
               ? 'link_3'
               : 'link_4'
           }
@@ -111,14 +152,9 @@ export default function AddProduct() {
   };
 
   // 1. Define your form.
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      product_name: '',
-      product_description: '',
-      category: '',
-      product_picture: '',
-    },
     mode: 'onChange',
   });
 
