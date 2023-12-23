@@ -21,15 +21,21 @@ import DeleteProduct from '@/pages/profile/components/delete-product';
 import ReportProduct from '@/pages/profile/components/report-product';
 
 interface Item {
+  productId: string;
   image: string;
   title: string;
   description: string;
 }
 
-export function ProductPreviewCard({ image, title, description }: Item) {
+export function ProductPreviewCard({
+  productId,
+  image,
+  title,
+  description,
+}: Item) {
   return (
     <Card className="w-full">
-      <Link to="/product">
+      <Link to={`/product/${productId}`}>
         <img
           src={image}
           className="p-4 w-full aspect-square object-cover hover:cursor-pointer "
@@ -37,7 +43,7 @@ export function ProductPreviewCard({ image, title, description }: Item) {
       </Link>
       <CardHeader>
         <div className="flex flex-row justify-between items-center">
-          <Link to="/product">
+          <Link to={`/product/${productId}`}>
             <CardTitle>{title}</CardTitle>
           </Link>
           <DropdownMenu>
@@ -55,7 +61,7 @@ export function ProductPreviewCard({ image, title, description }: Item) {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <Link to="/product">
+        <Link to={`/product/${productId}`}>
           <CardDescription className="line-clamp-3">
             {description}
           </CardDescription>

@@ -23,6 +23,7 @@ export default function Products() {
         {data.data.map(
           (
             item: {
+              product_id: string;
               product_image: string;
               product_name: string;
               product_description: string;
@@ -30,6 +31,7 @@ export default function Products() {
             index: any
           ) => (
             <ProductPreviewCard
+              productId={item.product_id}
               image={item.product_image}
               title={item.product_name}
               description={item.product_description}
