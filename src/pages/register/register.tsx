@@ -24,6 +24,8 @@ import {
 } from '@/components/ui/form';
 import { Link } from 'react-router-dom';
 import { Required } from '@/components/ui/required';
+import { useMutation } from 'react-query';
+import { registerAPI } from '@/services/register-api';
 
 const formSchema = z
   .object({
@@ -62,10 +64,22 @@ export default function Register() {
     },
   });
 
+  const { mutate, isLoading, isError, error, data } = useMutation(registerAPI, {
+    onSuccess: (response) => {},
+  });
+
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+
+    const email = values.email;
+    const password = values.password;
+    const username = values.username;
+    const display_name = values.displayname;
+
+    mutate({ email, password, username, display_name });
+
     console.log(values);
   }
 

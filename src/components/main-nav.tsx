@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from './ui/button';
 
-export function MainNav() {
+export function MainNav({ username, profilePicture }: any) {
   return (
     <div className="shadow-sm sticky top-0 z-50 bg-background">
       <div className="container mx-auto">
@@ -27,7 +27,7 @@ export function MainNav() {
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar className="h-12 w-12">
-                    <AvatarImage src="https://avatars.githubusercontent.com/u/73711390?v=4" />
+                    <AvatarImage src={profilePicture} />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
@@ -35,7 +35,7 @@ export function MainNav() {
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
-                    <Link to="/profile">Profile</Link>
+                    <Link to={`/profile/${username}`}>Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Link to="/settings/account">Settings</Link>

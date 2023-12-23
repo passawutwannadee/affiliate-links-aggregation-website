@@ -1,17 +1,19 @@
-import axiosInstance from '@/configs/axios-instance';
+import axiosInstance from '@/middlewares/axios-interceptors';
 
-export const registerAPI = async (
-  email: string,
-  password: string,
-  username: string,
-  display_name: string
-): Promise<any> => {
+interface RegisterForm {
+  email: string;
+  password: string;
+  username: string;
+  display_name: string;
+}
+
+export const registerAPI = async (form: RegisterForm): Promise<any> => {
   try {
     const response = await axiosInstance.post(`/auth/register`, {
-      email: email,
-      password: password,
-      username: username,
-      display_name: display_name,
+      email: form.email,
+      password: form.password,
+      username: form.username,
+      display_name: form.display_name,
     });
 
     return response;

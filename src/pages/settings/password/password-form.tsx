@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -13,6 +14,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { changePasswordAPI } from '@/services/password-api';
+import { useMutation } from 'react-query';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { ErrorAlert } from '@/components/ui/error-alert';
+import { SuccessAlert } from '@/components/ui/success-alert';
 // import {
 //   Select,
 //   SelectContent,
@@ -23,12 +29,12 @@ import { Input } from '@/components/ui/input';
 // import { Textarea } from "@/components/ui/textarea"
 // import { toast } from "@/components/ui/use-toast"
 
-const profileFormSchema = z
+const passwordFormSchema = z
   .object({
-    password_old: z.string().min(8, {
+    old_password: z.string().min(8, {
       message: 'Please enter your password.',
     }),
-    password: z
+    new_password: z
       .string()
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
@@ -36,14 +42,14 @@ const profileFormSchema = z
           message: 'Password does not meet the minimum requirements.',
         }
       ),
-    confirmpassword: z.string(),
+    confirm_password: z.string(),
   })
-  .refine((data) => data.password === data.confirmpassword, {
+  .refine((data) => data.new_password === data.confirm_password, {
     message: 'Passwords does not match.',
     path: ['confirmpassword'],
   });
 
-type ProfileFormValues = z.infer<typeof profileFormSchema>;
+type ProfileFormValues = z.infer<typeof passwordFormSchema>;
 
 // // This can come from your database or API.
 // const defaultValues: Partial<ProfileFormValues> = {
@@ -55,29 +61,55 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 // };
 
 export function PasswordForm() {
+  const [wrongPassword, setWrongPassword] = useState(false);
+  const [success, setSucesss] = useState(false);
+
   const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileFormSchema),
+    resolver: zodResolver(passwordFormSchema),
     mode: 'onChange',
   });
 
-  function onSubmit(data: ProfileFormValues) {
-    console.log(data);
-    // toast({
-    //   title: 'You submitted the following values:',
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
+  const { mutate, isLoading, isError, error, data } = useMutation(
+    changePasswordAPI,
+    {
+      onSuccess: (response: any) => {
+        if (response.respose) {
+          if (response.response.status === 400) {
+            setWrongPassword(true);
+          }
+        }
+
+        if (response.data) {
+          if (response.data.status === 200) {
+            setSucesss(true);
+          }
+        }
+      },
+    }
+  );
+
+  function onSubmit(values: ProfileFormValues) {
+    setWrongPassword(false);
+
+    const old_password = values.old_password;
+    const new_password = values.new_password;
+
+    mutate({
+      old_password,
+      new_password,
+    });
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {wrongPassword ? <ErrorAlert>Incorrect password.</ErrorAlert> : null}
+        {success ? (
+          <SuccessAlert>Password changed successfully.</SuccessAlert>
+        ) : null}
         <FormField
           control={form.control}
-          name="password_old"
+          name="old_password"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Current Password</FormLabel>
@@ -91,7 +123,7 @@ export function PasswordForm() {
 
         <FormField
           control={form.control}
-          name="password"
+          name="new_password"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Password</FormLabel>
@@ -110,7 +142,7 @@ export function PasswordForm() {
 
         <FormField
           control={form.control}
-          name="confirmpassword"
+          name="confirm_password"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Confirm Password</FormLabel>
@@ -121,7 +153,20 @@ export function PasswordForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Update profile</Button>
+        {isLoading ? (
+          <Button disabled type="submit">
+            <l-ring-2
+              size="15"
+              stroke="2"
+              stroke-length="0.25"
+              bg-opacity="0.1"
+              speed="0.8"
+              color="black"
+            />
+          </Button>
+        ) : (
+          <Button type="submit">Update profile</Button>
+        )}
       </form>
     </Form>
   );

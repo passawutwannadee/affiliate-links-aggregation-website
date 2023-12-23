@@ -1,13 +1,15 @@
-import axiosInstance from '@/configs/axios-instance';
+import axiosInstance from '@/middlewares/axios-interceptors';
 
-export const loginAPI = async (
-  email: string,
-  password: string
-): Promise<any> => {
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+export const loginAPI = async (credentials: LoginCredentials): Promise<any> => {
   try {
     const response = await axiosInstance.post(`/auth/login`, {
-      email: email,
-      password: password,
+      email: credentials.email,
+      password: credentials.password,
     });
 
     return response;

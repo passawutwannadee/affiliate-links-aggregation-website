@@ -1,10 +1,15 @@
+import { QueryClientProvider, QueryClient } from 'react-query';
 import { ThemeProvider } from './components/theme-provider';
 import PageRoutes from './routes/page-routes';
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <PageRoutes />
+      <QueryClientProvider client={queryClient}>
+        <PageRoutes />
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }
