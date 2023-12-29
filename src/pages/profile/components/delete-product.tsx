@@ -1,86 +1,59 @@
-import { PlusIcon } from '@radix-ui/react-icons';
-
 import { Button } from '@/components/ui/button';
 import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Textarea } from '@/components/ui/textarea';
-import {
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Select } from '@radix-ui/react-select';
+import { useMutation } from 'react-query';
+import { removeProductsAPI } from '@/services/products-api';
+import { toast } from 'sonner';
 
-const ACCEPTED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/jpg',
-  'image/png',
-  'image/webp',
-];
-
-const formSchema = z.object({
-  product_name: z.string().nonempty({
-    message: 'Please enter product name.',
-  }),
-  product_description: z.string().nonempty({
-    message: 'Please enter product name.',
-  }),
-  category: z.string().nonempty({
-    message: 'Please enter product name.',
-  }),
-  product_picture: z
-    .any()
-    .refine(
-      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-      'Only .jpg, .jpeg, .png and .webp formats are supported.'
-    ),
-});
-
-export default function DeleteProduct() {
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      product_name: '',
-      product_description: '',
-      category: '',
-      product_picture: '',
-    },
-    mode: 'onChange',
-  });
+export default function DeleteProduct({ productId }: any) {
+  const { mutate, isLoading, isError, error, data } = useMutation(
+    removeProductsAPI,
+    {
+      onSuccess: (response) => {
+        // login is successful
+        if (response.status === 200) {
+          toast(
+            <>
+              {' '}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                data-slot="icon"
+                className="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <p>Successfully deleted product.</p>
+            </>
+          );
+        }
+      },
+    }
+  );
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  function onSubmit() {
+    mutate(productId);
   }
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger className="w-full">
+      <AlertDialogTrigger asChild className="w-full">
         <Button variant="ghost" className="w-full justify-start">
           Delete
         </Button>
@@ -94,7 +67,7 @@ export default function DeleteProduct() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Confirm</AlertDialogAction>
+          <AlertDialogAction onClick={onSubmit}>Confirm</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

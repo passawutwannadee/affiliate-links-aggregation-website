@@ -37,7 +37,6 @@ function PageRoutes() {
 
   return (
     <>
-      {data ? console.log(data.data.email_verify) : null}
       <BrowserRouter>
         <MainNav
           username={data ? data.data.username : null}
@@ -52,6 +51,7 @@ function PageRoutes() {
                 <Profile currentUser={data ? data.data.username : null} />
               }
             />
+            <Route path="/product/:id" element={<Product />} />
             <Route
               path="/verify-email/:email_verify_token"
               element={<VerifyEmail />}
@@ -78,7 +78,6 @@ function PageRoutes() {
                 />
               }
             >
-              <Route path="/product/:id" element={<Product />} />
               <Route path="/collection" element={<Collection />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route

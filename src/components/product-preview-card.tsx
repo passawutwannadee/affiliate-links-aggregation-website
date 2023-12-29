@@ -55,7 +55,7 @@ export function ProductPreviewCard({
             <DropdownMenuContent className="w-56">
               <DropdownMenuGroup>
                 <EditProduct />
-                <DeleteProduct />
+                <DeleteProduct productId={productId} />
                 <ReportProduct />
               </DropdownMenuGroup>
             </DropdownMenuContent>
