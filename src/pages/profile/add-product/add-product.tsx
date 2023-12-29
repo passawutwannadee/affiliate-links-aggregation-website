@@ -14,13 +14,14 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Textarea } from '@/components/ui/textarea';
@@ -32,6 +33,10 @@ import {
 } from '@/components/ui/select';
 import { Select } from '@radix-ui/react-select';
 import { useState } from 'react';
+import { useMutation, useQuery } from 'react-query';
+import { addProductsAPI, productCategoriesAPI } from '@/services/products-api';
+import { Loading } from '@/components/ui/loading';
+import { AlertDialogAction } from '@radix-ui/react-alert-dialog';
 
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -50,65 +55,39 @@ const formSchema = z.object({
   category: z.string().nonempty({
     message: 'Please enter product name.',
   }),
-  product_picture: z
+  product_image: z
     .any()
     .refine(
       (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
       'Only .jpg, .jpeg, .png and .webp formats are supported.'
     ),
-  link_1: z.string().nonempty({
-    message: 'Please enter link.',
-  }),
-  link_2: z.string().nonempty({
-    message: 'Please enter link.',
-  }),
-  link_3: z.string().nonempty({
-    message: 'Please enter link.',
-  }),
-  link_4: z.string().nonempty({
-    message: 'Please enter link.',
-  }),
+  product_links: z.array(
+    z.object({
+      value: z
+        .string()
+        .nonempty({
+          message: 'Please enter product URL.',
+        })
+        .url({ message: 'Please enter a valid URL.' }),
+    })
+  ),
 });
 
 export default function AddProduct() {
   const [linkList, setLinkList] = useState<number>(1);
 
-  const handlePlus = () => {
-    setLinkList(linkList + 1);
-  };
+  // get categories
+  const { data, isLoading, isError } = useQuery(['product_categories'], () =>
+    productCategoriesAPI()
+  );
 
-  const handleMinus = () => {
-    setLinkList(linkList - 1);
-  };
-
-  const renderLinks = () => {
-    const links = [];
-    for (let i = 1; i <= linkList; i++) {
-      links.push(
-        <FormField
-          control={form.control}
-          name={
-            i === 1
-              ? 'link_1'
-              : i === 2
-              ? 'link_2'
-              : i === 4
-              ? 'link_3'
-              : 'link_4'
-          }
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      );
-    }
-    return links;
-  };
+  const { mutate } = useMutation(addProductsAPI, {
+    onSuccess: (response) => {
+      if (response.status === 200) {
+        console.log('hello');
+      }
+    },
+  });
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -117,16 +96,40 @@ export default function AddProduct() {
       product_name: '',
       product_description: '',
       category: '',
-      product_picture: '',
+      product_image: '',
+      product_links: [{ value: '' }],
     },
     mode: 'onChange',
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    name: 'product_links',
+    control: form.control,
   });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+
+    const product_name = values.product_name;
+    const product_description = values.product_description;
+    const category = values.category;
+    const product_image = values.product_image;
+    const product_links = values.product_links;
+
+    mutate({
+      product_name,
+      product_description,
+      category,
+      product_image,
+      product_links,
+    });
     console.log(values);
+  }
+
+  if (isLoading) {
+    return <Loading />;
   }
 
   return (
@@ -185,23 +188,26 @@ export default function AddProduct() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Category</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue="2">
-                          <SelectTrigger id="security-level" className="w-full">
-                            <SelectValue placeholder="Select level" />
+                        <Select onValueChange={field.onChange}>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select Category" />
                           </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem
-                              value="lorem"
-                              className="hover:bg-primary/10"
-                            >
-                              Lorem
-                            </SelectItem>
-                            <SelectItem
-                              value="ipsum"
-                              className="hover:bg-primary/10"
-                            >
-                              Ipsum
-                            </SelectItem>
+                          <SelectContent className="">
+                            {data.data.map(
+                              (value: {
+                                category_name: string;
+                                category_id: string;
+                              }) => {
+                                return (
+                                  <SelectItem
+                                    value={value.category_id.toString()}
+                                    className="hover:bg-primary/10"
+                                  >
+                                    {value.category_name}
+                                  </SelectItem>
+                                );
+                              }
+                            )}
                           </SelectContent>
                           <FormMessage />
                         </Select>
@@ -211,7 +217,7 @@ export default function AddProduct() {
 
                   <FormField
                     control={form.control}
-                    name="product_picture"
+                    name="product_image"
                     render={({ field: { onChange } }) => (
                       <FormItem>
                         <FormLabel>Product Image</FormLabel>
@@ -235,30 +241,53 @@ export default function AddProduct() {
                   <div className="pt-1 pb-0.5">
                     <FormLabel>Product Links</FormLabel>
                   </div>
-                  {renderLinks()}
+                  {fields.map((field, index) => (
+                    <div className="flex flex-row w-full gap-4">
+                      <FormField
+                        control={form.control}
+                        key={field.id}
+                        name={`product_links.${index}.value`}
+                        render={({ field }) => (
+                          <FormItem className="w-full">
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {index !== 0 ? (
+                        <Button
+                          className="bg-primary  hover:bg-primary/80"
+                          onClick={() => remove(index)}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            className="w-5 h-5 stroke-primary-foreground"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                            />
+                          </svg>
+                        </Button>
+                      ) : null}
+                    </div>
+                  ))}
                   <div className="flex gap-2">
-                    {linkList === 4 ? (
-                      <Button disabled onClick={handlePlus}>
-                        +
-                      </Button>
+                    {fields.length === 4 ? (
+                      <div className="flex flex-row items-center gap-2">
+                        <Button disabled onClick={() => append({ value: '' })}>
+                          +
+                        </Button>
+                        <p className="text-primary">Only 4 links is allowed.</p>
+                      </div>
                     ) : (
-                      <Button onClick={handlePlus}>+</Button>
-                    )}
-                    {linkList === 1 ? (
-                      <Button
-                        disabled
-                        className="bg-primary-background text-primary hover:bg-primary-foreground"
-                        onClick={handleMinus}
-                      >
-                        -
-                      </Button>
-                    ) : (
-                      <Button
-                        className="bg-primary-background text-primary hover:bg-primary-foreground"
-                        onClick={handleMinus}
-                      >
-                        -
-                      </Button>
+                      <Button onClick={() => append({ value: '' })}>+</Button>
                     )}
                   </div>
                   {/* <FormField
@@ -282,9 +311,11 @@ export default function AddProduct() {
 
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <Button className="w-full" type="submit">
-                      Add product
-                    </Button>
+                    <AlertDialogAction>
+                      <Button className="w-full" type="submit">
+                        Add product
+                      </Button>
+                    </AlertDialogAction>
                   </AlertDialogFooter>
                 </form>
               </Form>
