@@ -10,8 +10,26 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from './ui/button';
+import { session } from '@/lib/session';
+import { useMutation } from 'react-query';
+import { logoutAPI } from '@/services/auth-api';
 
 export function MainNav({ username, profilePicture }: any) {
+  const { mutate } = useMutation(logoutAPI, {
+    onSuccess: (response: any) => {
+      // login is successful
+      if (response.status === 200) {
+        window.location.reload();
+      }
+    },
+  });
+
+  const deleteCookie = () => {
+    document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+
+    mutate();
+  };
+
   return (
     <div className="shadow-sm sticky top-0 z-50 bg-background">
       <div className="container mx-auto">
@@ -23,7 +41,7 @@ export function MainNav({ username, profilePicture }: any) {
             LOGO
           </Link>
           <div className="flex items-center gap-4">
-            {sessionStorage.getItem('token') !== null ? (
+            {session() ? (
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar className="h-12 w-12">
@@ -42,7 +60,7 @@ export function MainNav({ username, profilePicture }: any) {
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="text-red-600"
-                    onClick={() => sessionStorage.clear()}
+                    onClick={() => deleteCookie()}
                   >
                     Logout
                   </DropdownMenuItem>

@@ -17,3 +17,13 @@ export const loginAPI = async (credentials: LoginCredentials): Promise<any> => {
     return err;
   }
 };
+
+export const logoutAPI = async (): Promise<any> => {
+  try {
+    const response = await axiosInstance.post(`/auth/logout`, {});
+
+    return response;
+  } catch (err) {
+    return err;
+  }
+};

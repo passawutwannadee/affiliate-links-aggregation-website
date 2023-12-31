@@ -22,11 +22,9 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Link } from 'react-router-dom';
-import axiosInstance from '@/configs/axios-instance';
 import { useState } from 'react';
-import { Loading } from '@/components/ui/loading';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { loginAPI } from '@/services/login-api';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { loginAPI } from '@/services/auth-api';
 import { useMutation } from 'react-query';
 import { ring2 } from 'ldrs';
 
@@ -53,11 +51,13 @@ export default function Login() {
     },
   });
 
-  const { mutate, isLoading, isError, error, data } = useMutation(loginAPI, {
+  const { mutate, isLoading } = useMutation(loginAPI, {
     onSuccess: (response) => {
       // login is successful
       if (response.status === 200 && response.data.login === true) {
-        sessionStorage.setItem('token', response.data.token);
+        document.cookie = `session=true; expires=${new Date(
+          Date.now() + 24 * 60 * 60 * 1000
+        )}; path=/`;
         window.location.reload();
       }
 

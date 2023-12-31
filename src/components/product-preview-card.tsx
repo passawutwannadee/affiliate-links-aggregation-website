@@ -9,13 +9,9 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { Button } from './ui/button';
-import AddProduct from '@/pages/profile/add-product/add-product';
 import EditProduct from '@/pages/profile/components/edit-product';
 import DeleteProduct from '@/pages/profile/components/delete-product';
 import ReportProduct from '@/pages/profile/components/report-product';
@@ -54,7 +50,7 @@ export function ProductPreviewCard({
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
               <DropdownMenuGroup>
-                <EditProduct />
+                <EditProduct productId={productId} />
                 <DeleteProduct productId={productId} />
                 <ReportProduct />
               </DropdownMenuGroup>
