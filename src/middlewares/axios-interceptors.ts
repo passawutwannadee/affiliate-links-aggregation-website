@@ -6,6 +6,7 @@ axiosInstance.interceptors.response.use(
   },
   (error: { response: { request: { status: number } } }) => {
     if (error.response.request.status === 401) {
+      document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
       sessionStorage.clear();
       //   window.location = '/NotAuthorized';
     }

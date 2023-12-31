@@ -8,9 +8,8 @@ import { useParams } from 'react-router-dom';
 export default function Products() {
   let { username } = useParams<string>();
 
-  const { data, isLoading, isError } = useQuery(
-    ['product_data', username],
-    () => productsAPI(username!)
+  const { data, isLoading } = useQuery(['product_data', username], () =>
+    productsAPI(username!)
   );
 
   if (isLoading) {
@@ -31,6 +30,7 @@ export default function Products() {
             index: any
           ) => (
             <ProductPreviewCard
+              key={index}
               productId={item.product_id}
               image={item.product_image}
               title={item.product_name}

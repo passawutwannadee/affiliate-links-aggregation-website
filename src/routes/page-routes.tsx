@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 import { MainNav } from '@/components/main-nav';
 
@@ -20,15 +20,12 @@ import VerifyEmail from '@/pages/verify-email/verify-email';
 import VerifyEmailAlert from '@/pages/verify-email/verify-email-alert';
 import { useQuery } from 'react-query';
 import { accountAPI } from '@/services/account-api';
+import { session } from '@/lib/session';
 
 function PageRoutes() {
-  const hasSessionToken = Boolean(sessionStorage.getItem('token'));
-
-  const { data, isLoading, isError } = useQuery(
-    ['account_data'],
-    () => accountAPI(),
-    { enabled: hasSessionToken }
-  );
+  const { data, isLoading } = useQuery(['account_data'], () => accountAPI(), {
+    enabled: session(),
+  });
 
   if (isLoading) {
     // Render loading state
