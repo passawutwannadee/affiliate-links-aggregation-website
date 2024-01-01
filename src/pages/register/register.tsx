@@ -64,9 +64,10 @@ export default function Register() {
     },
   });
 
-  const { mutate, isLoading, isError, error, data } = useMutation(registerAPI, {
-    onSuccess: (response) => {},
-  });
+  const { mutate } = useMutation(
+    registerAPI
+    // , {onSuccess: (response) => {}, }
+  );
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {

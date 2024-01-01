@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '@/middlewares/axios-interceptors';
+import { ProductType } from '@/models/user';
+import { AxiosResponse } from 'axios';
 
-export const productsAPI = async (args: String): Promise<any> => {
+export const productsAPI = async (args: string): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.get(
       `/products?username=${args ? args : ''}`,
@@ -8,12 +11,12 @@ export const productsAPI = async (args: String): Promise<any> => {
     );
 
     return response;
-  } catch (err) {
+  } catch (err: any) {
     return err;
   }
 };
 
-export const productAPI = async (args: String): Promise<any> => {
+export const productAPI = async (args: string): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.get(
       `/products?product_id=${args ? args : ''}`,
@@ -21,39 +24,33 @@ export const productAPI = async (args: String): Promise<any> => {
     );
 
     return response;
-  } catch (err) {
+  } catch (err: any) {
     return err;
   }
 };
 
-export const productCategoriesAPI = async (): Promise<any> => {
+export const productCategoriesAPI = async (): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.get(`/products/categories`, {});
 
     return response;
-  } catch (err) {
+  } catch (err: any) {
     return err;
   }
 };
 
-interface ProductInfo {
-  product_name: string;
-  product_description: string;
-  category: string;
-  product_image: Blob;
-  product_links: { value: string }[];
-}
-
-export const addProductsAPI = async (info: ProductInfo): Promise<any> => {
+export const addProductsAPI = async (
+  info: ProductType
+): Promise<AxiosResponse> => {
   // Create a FormData object
   const formData = new FormData();
 
   // Append data to the FormData object
-  formData.append('product_name', info.product_name);
-  formData.append('product_description', info.product_description);
+  formData.append('product_name', info.productName);
+  formData.append('product_description', info.productDescription);
   formData.append('category_id', info.category);
-  formData.append('product_image', info.product_image);
-  info.product_links.forEach((element, index) => {
+  formData.append('product_image', info.productImage);
+  info.productLinks.forEach((element, index) => {
     formData.append(`product_links[${index}]`, element.value);
   });
 
@@ -65,12 +62,14 @@ export const addProductsAPI = async (info: ProductInfo): Promise<any> => {
     });
 
     return response;
-  } catch (err) {
+  } catch (err: any) {
     return err;
   }
 };
 
-export const removeProductsAPI = async (args: String): Promise<any> => {
+export const removeProductsAPI = async (
+  args: string
+): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.delete(
       `/products?id=${args ? args : ''}`,
@@ -78,7 +77,7 @@ export const removeProductsAPI = async (args: String): Promise<any> => {
     );
 
     return response;
-  } catch (err) {
+  } catch (err: any) {
     return err;
   }
 };

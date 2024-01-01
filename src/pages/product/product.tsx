@@ -11,12 +11,11 @@ import { productAPI } from '@/services/products-api';
 import { useQuery } from 'react-query';
 import { Loading } from '@/components/ui/loading';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
 
 export default function Product() {
-  let { id } = useParams<string>();
+  const { id } = useParams<string>();
 
-  const { data, isLoading, isError } = useQuery(['product_data', id], () =>
+  const { data, isLoading } = useQuery(['product_data', id], () =>
     productAPI(id!)
   );
 
@@ -42,21 +41,21 @@ export default function Product() {
       <div className="container mx-auto py-8">
         <div className="flex flex-col lg:flex-row lg:pl-20 lg:pr-20 gap-12">
           <img
-            src={data.data[0].product_image}
+            src={data!.data[0].product_image}
             className="flex self-center p-6 w-96 aspect-square"
           />
           <div className="flex flex-col self-center gap-16 items w-full">
             <div className="flex flex-col gap-2 items-center lg:items-start">
               <p className="text-4xl font-bold text-center lg:text-left">
-                {data.data[0].product_name}
+                {data!.data[0].product_name}
               </p>
               <div className="flex items-center gap-2">
                 <Avatar className="h-12 w-12">
-                  <AvatarImage src={data.data[0].profile_picture} />
+                  <AvatarImage src={data!.data[0].profile_picture} />
                   <AvatarFallback />
                 </Avatar>
                 <p className="text-1xl font-semibold text-primary/80">
-                  {data.data[0].display_name}
+                  {data!.data[0].display_name}
                 </p>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -73,18 +72,19 @@ export default function Product() {
               </div>
             </div>
             <p className="text-1xl font-medium break-words">
-              {data.data[0].product_description}
+              {data!.data[0].product_description}
             </p>
 
             <div className="grid grid-cols-2 gap-6 w-full">
-              {data.data[0].links.map((item: {}, index: any) => (
+              {data!.data[0].links.map((index: number) => (
                 <a
+                  key={index}
                   className="border rounded-3xl bg-primary w-full hover:bg-primary/90 hover:cursor-pointer"
-                  href={data.data[0].links[index]}
+                  href={data!.data[0].links[index]}
                   target="_blank"
                 >
                   <p className="text-2xl font-semibold text-center text-secondary">
-                    {new URL(data.data[0].links[index]).hostname.replace(
+                    {new URL(data!.data[0].links[index]).hostname.replace(
                       /^www\./,
                       ''
                     )}

@@ -1,14 +1,15 @@
 import { session } from '@/lib/session';
 import { Navigate, Outlet } from 'react-router-dom';
 
-const PrivateRoutes = ({ emailVerified }: any) => {
+const PrivateRoutes = ({ emailVerified }: { emailVerified: number }) => {
   console.log(emailVerified);
 
-  if (session() === null) {
+  // if user has not login redirect to their login
+  if (session() === false) {
     return <Navigate to="/" />;
   }
-  // if user has not login redirect to their login
-  if (session() !== null && emailVerified === 1) {
+
+  if (session() === true && emailVerified === 1) {
     return <Outlet />;
   }
   if (emailVerified === 0) {

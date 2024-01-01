@@ -1,5 +1,3 @@
-import { PlusIcon } from '@radix-ui/react-icons';
-
 import { Button } from '@/components/ui/button';
 import {
   AlertDialog,
@@ -19,7 +17,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';

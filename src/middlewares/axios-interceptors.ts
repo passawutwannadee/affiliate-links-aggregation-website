@@ -1,7 +1,7 @@
 import axiosInstance from '@/configs/axios-instance';
 
 axiosInstance.interceptors.response.use(
-  (response: any) => {
+  (response) => {
     return response;
   },
   (error: { response: { request: { status: number } } }) => {

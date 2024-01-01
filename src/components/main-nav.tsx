@@ -14,9 +14,15 @@ import { session } from '@/lib/session';
 import { useMutation } from 'react-query';
 import { logoutAPI } from '@/services/auth-api';
 
-export function MainNav({ username, profilePicture }: any) {
+export function MainNav({
+  username,
+  profilePicture,
+}: {
+  username: string;
+  profilePicture: string;
+}) {
   const { mutate } = useMutation(logoutAPI, {
-    onSuccess: (response: any) => {
+    onSuccess: (response) => {
       // login is successful
       if (response.status === 200) {
         window.location.reload();

@@ -77,6 +77,8 @@ export default function Collection() {
         <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-10 justify-center items-center">
           {productExample.map((item, index) => (
             <ProductPreviewCard
+              key={index}
+              productId="temp"
               image={item.image}
               title={item.title}
               description={item.description}

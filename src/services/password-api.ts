@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '@/middlewares/axios-interceptors';
+import { AxiosResponse } from 'axios';
 
 interface PasswordCredentials {
   old_password: string;
@@ -7,7 +9,7 @@ interface PasswordCredentials {
 
 export const changePasswordAPI = async (
   credentials: PasswordCredentials
-): Promise<any> => {
+): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.patch(`/auth/password`, {
       old_password: credentials.old_password,
@@ -15,7 +17,7 @@ export const changePasswordAPI = async (
     });
 
     return response;
-  } catch (err) {
+  } catch (err: any) {
     return err;
   }
 };

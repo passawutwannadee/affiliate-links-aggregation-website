@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 
 export default function Categories() {
   // get categories
-  const { data, isLoading, isError } = useQuery(['product_categories'], () =>
+  const { data, isLoading } = useQuery(['product_categories'], () =>
     productCategoriesAPI()
   );
 
@@ -15,10 +15,11 @@ export default function Categories() {
 
   return (
     <SelectContent>
-      {data.data.map(
+      {data!.data.map(
         (value: { category_name: string; category_id: string }) => {
           return (
             <SelectItem
+              defaultChecked
               value={value.category_id.toString()}
               className="hover:bg-primary/10"
             >
