@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { PlusIcon } from '@radix-ui/react-icons';
 import { X } from 'lucide-react';
 
@@ -134,7 +135,7 @@ export default function AddCollection() {
 
   useEffect(() => {
     form.setValue('products', selected);
-  }, [selected]);
+  }, [form, selected]);
 
   const selectables = PRODUCTS.filter(
     (Products) => !selected.includes(Products)
@@ -188,7 +189,7 @@ export default function AddCollection() {
                 <FormField
                   control={form.control}
                   name="products"
-                  render={({ field }) => (
+                  render={() => (
                     <FormItem>
                       <FormLabel>Products</FormLabel>
                       <Command
@@ -243,7 +244,7 @@ export default function AddCollection() {
                                         e.preventDefault();
                                         e.stopPropagation();
                                       }}
-                                      onSelect={(value) => {
+                                      onSelect={() => {
                                         setInputValue('');
                                         setSelected((prev) => [
                                           ...prev,

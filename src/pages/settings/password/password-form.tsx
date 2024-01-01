@@ -16,9 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { changePasswordAPI } from '@/services/password-api';
 import { useMutation } from 'react-query';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { ErrorAlert } from '@/components/ui/error-alert';
-import { SuccessAlert } from '@/components/ui/success-alert';
 // import {
 //   Select,
 //   SelectContent,
@@ -62,31 +60,27 @@ type ProfileFormValues = z.infer<typeof passwordFormSchema>;
 
 export function PasswordForm() {
   const [wrongPassword, setWrongPassword] = useState(false);
-  const [success, setSucesss] = useState(false);
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(passwordFormSchema),
     mode: 'onChange',
   });
 
-  const { mutate, isLoading, isError, error, data } = useMutation(
-    changePasswordAPI,
-    {
-      onSuccess: (response: any) => {
-        if (response.respose) {
-          if (response.response.status === 400) {
-            setWrongPassword(true);
-          }
+  const { mutate, isLoading } = useMutation(changePasswordAPI, {
+    onSuccess: (response) => {
+      if (response.data) {
+        if (response.data.status === 400) {
+          setWrongPassword(true);
         }
+      }
 
-        if (response.data) {
-          if (response.data.status === 200) {
-            setSucesss(true);
-          }
+      if (response.data) {
+        if (response.data.status === 200) {
+          alert('Password changed successfully.');
         }
-      },
-    }
-  );
+      }
+    },
+  });
 
   function onSubmit(values: ProfileFormValues) {
     setWrongPassword(false);
@@ -104,9 +98,6 @@ export function PasswordForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         {wrongPassword ? <ErrorAlert>Incorrect password.</ErrorAlert> : null}
-        {success ? (
-          <SuccessAlert>Password changed successfully.</SuccessAlert>
-        ) : null}
         <FormField
           control={form.control}
           name="old_password"

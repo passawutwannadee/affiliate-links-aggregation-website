@@ -1,6 +1,7 @@
+import { AlertDialogDescriptionProps } from '@radix-ui/react-alert-dialog';
 import { Alert, AlertDescription } from './alert';
 
-export function ErrorAlert({ children }: any) {
+export function ErrorAlert({ children }: AlertDialogDescriptionProps) {
   return (
     <Alert variant="destructive">
       {/* <ExclamationTriangleIcon className="h-4 w-4" /> */}

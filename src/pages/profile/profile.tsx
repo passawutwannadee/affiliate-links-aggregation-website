@@ -17,8 +17,8 @@ import { useParams } from 'react-router-dom';
 import { Loading } from '@/components/ui/loading';
 import Products from './products';
 
-export default function Profile({ currentUser }: any) {
-  let { username } = useParams<string>();
+export default function Profile({ currentUser }: { currentUser: string }) {
+  const { username } = useParams<string>();
 
   const { data, isLoading, isError } = useQuery(
     ['profile_data', username],

@@ -7,13 +7,10 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { sendEmailVerificationlAPI } from '@/services/verify-email-api';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 
 export default function VerifyEmailAlert() {
-  const { mutate, isLoading, isError, error, data } = useMutation(
-    sendEmailVerificationlAPI,
-    {}
-  );
+  const { mutate, isLoading } = useMutation(sendEmailVerificationlAPI, {});
 
   async function onSubmit() {
     mutate();

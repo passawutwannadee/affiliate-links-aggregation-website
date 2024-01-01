@@ -111,20 +111,20 @@ export default function AddProduct() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
 
-    const product_name = values.product_name;
-    const product_description = values.product_description;
+    const productName = values.product_name;
+    const productDescription = values.product_description;
     const category = values.category;
-    const product_image = values.product_image;
-    const product_links = values.product_links;
+    const productImage = values.product_image;
+    const productLinks = values.product_links;
 
     mutate({
-      product_name,
-      product_description,
+      productName,
+      productDescription,
       category,
-      product_image,
-      product_links,
+      productImage,
+      productLinks,
+      productId: '',
     });
-    console.log(values);
 
     setOpen(false);
   }
@@ -208,7 +208,7 @@ export default function AddProduct() {
                               <SelectValue placeholder="Select Category" />
                             </SelectTrigger>
                             <SelectContent className="">
-                              {data.data.map(
+                              {data!.data.map(
                                 (value: {
                                   category_name: string;
                                   category_id: string;

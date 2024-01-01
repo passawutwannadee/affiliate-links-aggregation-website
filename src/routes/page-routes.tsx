@@ -58,7 +58,9 @@ function PageRoutes() {
             {/* ///////////////////////// PUBLIC ROUTES ////////////////////////// */}
             <Route
               element={
-                <PublicRoutes currentUser={data ? data.data.username : null} />
+                <PublicRoutes
+                  currentUser={data ? data.data.username : undefined}
+                />
               }
             >
               <Route path="/" element={<Login />} />

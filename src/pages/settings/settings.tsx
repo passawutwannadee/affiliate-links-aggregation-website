@@ -1,17 +1,6 @@
 import { Separator } from '@/components/ui/separator';
 import { SidebarNav } from './components/sidebar-nav';
 
-// const sidebarNavItems = {
-//   account: [
-//     href: 'account',
-//     page: <AccountForm />,
-//   ],
-//   password: {
-//     href: 'password',
-//     page: <AccountForm />,
-//   },
-// };
-
 const sidebarNavItems = [
   {
     title: 'Account',

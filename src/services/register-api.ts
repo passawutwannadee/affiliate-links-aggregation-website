@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '@/middlewares/axios-interceptors';
+import { AxiosResponse } from 'axios';
 
 interface RegisterForm {
   email: string;
@@ -7,7 +9,9 @@ interface RegisterForm {
   display_name: string;
 }
 
-export const registerAPI = async (form: RegisterForm): Promise<any> => {
+export const registerAPI = async (
+  form: RegisterForm
+): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.post(`/auth/register`, {
       email: form.email,
@@ -17,7 +21,7 @@ export const registerAPI = async (form: RegisterForm): Promise<any> => {
     });
 
     return response;
-  } catch (err) {
+  } catch (err: any) {
     return err;
   }
 };
