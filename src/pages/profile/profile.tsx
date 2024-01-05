@@ -2,7 +2,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import AddProduct from './add-product/add-product';
 import AddCollection from './add-collection/add-collection';
-import { CollectionPreviewCard } from '../../components/collection-preview-card';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,27 +9,23 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import ReportUser from './components/report-user';
+import ReportUser from './products/components/report-user';
 import { useQuery } from 'react-query';
 import { usersAPI } from '@/services/users-api';
 import { useParams } from 'react-router-dom';
 import { Loading } from '@/components/ui/loading';
-import Products from './products';
+import Products from './products/products';
+import Collections from './collections/collections';
 
 export default function Profile({ currentUser }: { currentUser: string }) {
   const { username } = useParams<string>();
 
-  const { data, isLoading, isError } = useQuery(
-    ['profile_data', username],
-    () => usersAPI(username!)
+  const { data, isLoading } = useQuery(['profile_data', username], () =>
+    usersAPI(username!)
   );
 
   if (isLoading) {
     return <Loading />;
-  }
-
-  if (isError) {
-    return <>HELLO</>;
   }
 
   return (
@@ -86,18 +81,7 @@ export default function Profile({ currentUser }: { currentUser: string }) {
             </div>
           </div>
           <Products />
-
-          <TabsContent
-            value="collections"
-            className="h-full flex-col border-none p-0 data-[state=active]:flex"
-          >
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 justify-center items-center">
-              <CollectionPreviewCard />
-              <CollectionPreviewCard />
-              <CollectionPreviewCard />
-              <CollectionPreviewCard />
-            </div>
-          </TabsContent>
+          <Collections />
         </Tabs>
       </div>
     </>

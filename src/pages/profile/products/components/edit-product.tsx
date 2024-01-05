@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Required } from '@/components/ui/required';
-import Categories from './components/categories';
+import Categories from './categories/categories';
 import { Loading } from '@/components/ui/loading';
 
 const ACCEPTED_IMAGE_TYPES = [

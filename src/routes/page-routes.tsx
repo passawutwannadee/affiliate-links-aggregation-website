@@ -10,7 +10,7 @@ import Settings from '@/pages/settings/settings';
 import { AccountForm } from '@/pages/settings/account/account-form';
 import { PasswordForm } from '@/pages/settings/password/password-form';
 import Product from '@/pages/product/product';
-import Collection from '@/pages/collection/collection';
+import Collection from '@/pages/profile/collections/collection/collection';
 import { AdminDashboard } from '@/pages/admin-dashboard/admin-dashboard';
 import { Loading } from '@/components/ui/loading';
 import NotFound from '@/pages/not-found/not-found';
@@ -77,7 +77,7 @@ function PageRoutes() {
                 />
               }
             >
-              <Route path="/collection" element={<Collection />} />
+              <Route path="/collection/:id" element={<Collection />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route
                 path="/settings"

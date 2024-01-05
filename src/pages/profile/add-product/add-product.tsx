@@ -137,6 +137,7 @@ export default function AddProduct() {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger>
         <Button
+          type="button"
           onClick={() => {
             setOpen(true);
           }}
@@ -279,6 +280,7 @@ export default function AddProduct() {
                           />
                           {index !== 0 ? (
                             <Button
+                              type="button"
                               className="bg-primary  hover:bg-primary/80"
                               onClick={() => remove(index)}
                             >
@@ -304,6 +306,7 @@ export default function AddProduct() {
                       {fields.length === 4 ? (
                         <div className="flex flex-row items-center gap-2">
                           <Button
+                            type="button"
                             disabled
                             onClick={() => append({ value: '' })}
                           >
@@ -314,7 +317,12 @@ export default function AddProduct() {
                           </p>
                         </div>
                       ) : (
-                        <Button onClick={() => append({ value: '' })}>+</Button>
+                        <Button
+                          type="button"
+                          onClick={() => append({ value: '' })}
+                        >
+                          +
+                        </Button>
                       )}
                     </div>
                     {/* <FormField
@@ -338,6 +346,7 @@ export default function AddProduct() {
 
                     <SheetFooter>
                       <Button
+                        type="button"
                         variant="secondary"
                         onClick={() => {
                           setOpen(false);

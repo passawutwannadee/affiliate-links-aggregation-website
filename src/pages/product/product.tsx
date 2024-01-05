@@ -6,7 +6,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import ReportUser from '../profile/components/report-user';
+import ReportUser from '../profile/products/components/report-user';
 import { productAPI } from '@/services/products-api';
 import { useQuery } from 'react-query';
 import { Loading } from '@/components/ui/loading';
@@ -37,7 +37,6 @@ export default function Product() {
 
   return (
     <>
-      {console.log(data)}
       <div className="container mx-auto py-8">
         <div className="flex flex-col lg:flex-row lg:pl-20 lg:pr-20 gap-12">
           <img
@@ -76,7 +75,7 @@ export default function Product() {
             </p>
 
             <div className="grid grid-cols-2 gap-6 w-full">
-              {data!.data[0].links.map((index: number) => (
+              {data!.data[0].links.map((_items: null, index: number) => (
                 <a
                   key={index}
                   className="border rounded-3xl bg-primary w-full hover:bg-primary/90 hover:cursor-pointer"
