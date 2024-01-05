@@ -12,9 +12,9 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { Button } from './ui/button';
-import EditProduct from '@/pages/profile/components/edit-product';
-import DeleteProduct from '@/pages/profile/components/delete-product';
-import ReportProduct from '@/pages/profile/components/report-product';
+import EditProduct from '@/pages/profile/products/components/edit-product';
+import DeleteProduct from '@/pages/profile/products/components/delete-product';
+import ReportProduct from '@/pages/profile/products/components/report-product';
 
 interface Item {
   productId: string;

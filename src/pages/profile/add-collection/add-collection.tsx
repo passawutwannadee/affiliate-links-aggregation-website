@@ -4,16 +4,6 @@ import { X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import {
   Form,
   FormControl,
   FormField,
@@ -31,6 +21,19 @@ import { Badge } from '@/components/ui/badge';
 import { Command, CommandGroup, CommandItem } from '@/components/ui/command';
 import { Command as CommandPrimitive } from 'cmdk';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { useMutation, useQuery } from 'react-query';
+import { productsAPI } from '@/services/products-api';
+import { createCollectionsAPI } from '@/services/collections-api';
 
 const formSchema = z.object({
   collection_name: z.string().nonempty({
@@ -44,48 +47,29 @@ const formSchema = z.object({
   }),
 });
 
-type Products = Record<'value' | 'label', string>;
-
-const PRODUCTS = [
-  {
-    value: 'product1',
-    label: 'product1',
-  },
-  {
-    value: 'product2',
-    label: 'product2',
-  },
-  {
-    value: 'product3',
-    label: 'product3',
-  },
-  {
-    value: 'product4',
-    label: 'product4',
-  },
-  {
-    value: 'product5',
-    label: 'product5',
-  },
-  {
-    value: 'product6',
-    label: 'product6',
-  },
-  {
-    value: 'product7',
-    label: 'product7',
-  },
-  {
-    value: 'product8',
-    label: 'product8',
-  },
-] satisfies Products[];
+type Products = Record<
+  'product_id' | 'product_image' | 'product_name' | 'product_description',
+  string
+>;
 
 export default function AddCollection() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
+  const [dropdown, setDropdown] = useState(false);
   const [selected, setSelected] = useState<Products[]>([]);
   const [inputValue, setInputValue] = useState('');
+
+  const { data } = useQuery(['product_data', 'johndoe'], () =>
+    productsAPI('johndoe')
+  );
+
+  const { mutate } = useMutation(createCollectionsAPI, {
+    onSuccess: (response) => {
+      if (response.status === 200) {
+        console.log('hello');
+      }
+    },
+  });
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -102,12 +86,31 @@ export default function AddCollection() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     form.setValue('products', selected);
+
+    // const collectionName = values.collection_name;
+    // const collectionDescription = values.collection_description;
+    const products = [];
+
+    for (let i = 0; i < selected.length; i++) {
+      products.push(selected[i].product_id);
+    }
+
+    mutate({
+      collectionName: values.collection_name,
+      collectionDescription: values.collection_description,
+      products: products,
+    });
+
+    console.log(products);
+
     console.log(values);
     console.log(selected);
   }
 
   const handleUnselect = useCallback((Products: Products) => {
-    setSelected((prev) => prev.filter((s) => s.value !== Products.value));
+    setSelected((prev) =>
+      prev.filter((s) => s.product_id !== Products.product_id)
+    );
     form.setValue('products', selected);
   }, []);
 
@@ -137,138 +140,153 @@ export default function AddCollection() {
     form.setValue('products', selected);
   }, [form, selected]);
 
-  const selectables = PRODUCTS.filter(
-    (Products) => !selected.includes(Products)
+  const selectables = data!.data.filter(
+    (Products: Products) => !selected.includes(Products)
   );
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger>
-        <Button>
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger>
+        <Button
+          type="button"
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
           <PlusIcon className="mr-2 h-4 w-4" />
           Add Collection
         </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Add Collection</AlertDialogTitle>
-          <AlertDialogDescription>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-3"
-              >
-                <FormField
-                  control={form.control}
-                  name="collection_name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Collection Name</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+      </SheetTrigger>
+      <SheetContent className="flex">
+        <ScrollArea className="h-[95vh] self-center">
+          <div className="m-6 mt-0 pb-5">
+            <SheetHeader>
+              <SheetTitle>Add Product</SheetTitle>
+              <SheetDescription>
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-3"
+                  >
+                    <FormField
+                      control={form.control}
+                      name="collection_name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Collection Name</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="collection_description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Collection Description</FormLabel>
-                      <FormControl>
-                        <Textarea id="description" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                    <FormField
+                      control={form.control}
+                      name="collection_description"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Collection Description</FormLabel>
+                          <FormControl>
+                            <Textarea id="description" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <FormField
-                  control={form.control}
-                  name="products"
-                  render={() => (
-                    <FormItem>
-                      <FormLabel>Products</FormLabel>
-                      <Command
-                        onKeyDown={handleKeyDown}
-                        className="overflow-visible bg-transparent"
-                      >
-                        <div className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
-                          <div className="flex gap-1 flex-wrap">
-                            {selected.map((Products) => {
-                              return (
-                                <Badge key={Products.value} variant="secondary">
-                                  {Products.label}
-                                  <button
-                                    className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                                    onKeyDown={(e) => {
-                                      if (e.key === 'Enter') {
-                                        handleUnselect(Products);
-                                      }
-                                    }}
-                                    onMouseDown={(e) => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                    }}
-                                    onClick={() => handleUnselect(Products)}
-                                  >
-                                    <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
-                                  </button>
-                                </Badge>
-                              );
-                            })}
-                            {/* Avoid having the "Search" Icon */}
-                            <CommandPrimitive.Input
-                              ref={inputRef}
-                              value={inputValue}
-                              onValueChange={setInputValue}
-                              onBlur={() => setOpen(false)}
-                              onFocus={() => setOpen(true)}
-                              placeholder="Select products..."
-                              className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
-                            />
-                          </div>
-                        </div>
-                        <div className="relative mt-2">
-                          {open && selectables.length > 0 ? (
-                            <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-                              <CommandGroup className="h-full overflow-auto">
-                                {selectables.map((Products) => {
+                    <FormField
+                      control={form.control}
+                      name="products"
+                      render={() => (
+                        <FormItem>
+                          <FormLabel>Products</FormLabel>
+                          <Command
+                            onKeyDown={handleKeyDown}
+                            className="overflow-visible bg-transparent"
+                          >
+                            <div className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+                              <div className="flex gap-1 flex-wrap">
+                                {selected.map((item: Products) => {
                                   return (
-                                    <CommandItem
-                                      key={Products.value}
-                                      onMouseDown={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                      }}
-                                      onSelect={() => {
-                                        setInputValue('');
-                                        setSelected((prev) => [
-                                          ...prev,
-                                          Products,
-                                        ]);
-                                        form.setValue('products', selected);
-                                      }}
-                                      className={'cursor-pointer'}
+                                    <Badge
+                                      key={item.product_id}
+                                      variant="secondary"
                                     >
-                                      {Products.label}
-                                    </CommandItem>
+                                      {item.product_name}
+                                      <button
+                                        type="button"
+                                        className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                                        onKeyDown={(e) => {
+                                          if (e.key === 'Enter') {
+                                            handleUnselect(item);
+                                          }
+                                        }}
+                                        onMouseDown={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                        }}
+                                        onClick={() => handleUnselect(item)}
+                                      >
+                                        <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                                      </button>
+                                    </Badge>
                                   );
                                 })}
-                              </CommandGroup>
+                                {/* Avoid having the "Search" Icon */}
+                                <CommandPrimitive.Input
+                                  ref={inputRef}
+                                  value={inputValue}
+                                  onValueChange={setInputValue}
+                                  onBlur={() => setDropdown(false)}
+                                  onFocus={() => setDropdown(true)}
+                                  placeholder="Select products..."
+                                  className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
+                                />
+                              </div>
                             </div>
-                          ) : null}
-                        </div>
-                        <FormMessage />
-                      </Command>
-                    </FormItem>
-                  )}
-                />
+                            <div className="relative mt-2">
+                              {dropdown && selectables.length > 0 ? (
+                                <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+                                  <CommandGroup className="h-full overflow-auto">
+                                    {selectables.map((item: Products) => {
+                                      return (
+                                        <CommandItem
+                                          key={item.product_id}
+                                          onMouseDown={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                          }}
+                                          onSelect={() => {
+                                            setInputValue('');
+                                            setSelected((prev) => [
+                                              ...prev,
+                                              item,
+                                            ]);
+                                            form.setValue('products', selected);
+                                          }}
+                                          className={'cursor-pointer gap-2'}
+                                        >
+                                          <img
+                                            className="w-10 h-10 aspect-square"
+                                            src={item.product_image}
+                                          />
+                                          {item.product_name}
+                                        </CommandItem>
+                                      );
+                                    })}
+                                  </CommandGroup>
+                                </div>
+                              ) : null}
+                            </div>
+                            <FormMessage />
+                          </Command>
+                        </FormItem>
+                      )}
+                    />
 
-                {/* <FormField
+                    {/* <FormField
                   control={form.control}
                   name="confirmpassword"
                   render={({ field }) => (
@@ -287,21 +305,29 @@ export default function AddCollection() {
                   )}
                 /> */}
 
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <Button className="w-full" type="submit">
-                    Create Collection
-                  </Button>
-                </AlertDialogFooter>
-              </form>
-            </Form>
-          </AlertDialogDescription>
-        </AlertDialogHeader>
+                    <SheetFooter>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={() => {
+                          setOpen(false);
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button type="submit">Add Product</Button>
+                    </SheetFooter>
+                  </form>
+                </Form>
+              </SheetDescription>
+            </SheetHeader>
+          </div>
+        </ScrollArea>
         {/* <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction type="submit">Continue</AlertDialogAction>
         </AlertDialogFooter> */}
-      </AlertDialogContent>
-    </AlertDialog>
+      </SheetContent>
+    </Sheet>
   );
 }

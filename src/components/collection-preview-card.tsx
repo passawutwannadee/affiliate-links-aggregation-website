@@ -5,36 +5,65 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
+import { Button } from './ui/button';
+import DeleteCollection from '@/pages/profile/collections/components/delete-collection';
 
-export function CollectionPreviewCard() {
+interface Collection {
+  collectionId: string;
+  title: string;
+  description: string;
+}
+
+export function CollectionPreviewCard({
+  collectionId,
+  title,
+  description,
+}: Collection) {
   return (
-    <Link to="/collection">
-      <Card className="w-full hover:cursor-pointer">
+    <Card className="w-full hover:cursor-pointer">
+      <Link to={`/collection/${collectionId}`}>
         <div className="grid grid-cols-2">
           <img src="./placeholder-images-image_large.webp" className="p-1" />
           <img src="./placeholder-images-image_large.webp" className="p-1" />
           <img src="./placeholder-images-image_large.webp" className="p-1" />
           <img src="./placeholder-images-image_large.webp" className="p-1" />
         </div>
-        <CardHeader>
-          <CardTitle>CollectionName</CardTitle>
+      </Link>
+      <CardHeader>
+        <CardTitle>
+          <div className="flex flex-row justify-between items-center">
+            <Link to={`/collection/${collectionId}`}>
+              <CardTitle>{title}</CardTitle>
+            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="text-xl">
+                  ⋯
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuGroup>
+                  <DeleteCollection collectionId={collectionId} />
+                  {/* <EditProduct productId={productId} />
+                    <<DeleteProduct productId={productId} />>
+                    <ReportProduct /> */}
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </CardTitle>
+        <Link to={`/collection/${collectionId}`}>
           <CardDescription className="line-clamp-5">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
-            sollicitudin odio ex, non lobortis nisl volutpat hendrerit. Quisque
-            iaculis turpis tempus pretium ultrices. Quisque turpis quam, commodo
-            sed laoreet in, mollis eu diam. Vivamus non sapien at mi convallis
-            ultricies. Nunc ac quam non lorem ultricies accumsan ac aliquam
-            eros. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Pellentesque aliquam vestibulum ex, in dignissim erat aliquet eu.
-            Fusce ullamcorper lorem odio, ut lacinia massa convallis a. Duis
-            lacinia ante a laoreet ullamcorper. Fusce mattis sem in facilisis
-            molestie. Phasellus vehicula felis sit amet arcu sollicitudin, quis
-            sodales diam ultricies. In in risus non mi sagittis aliquet.
-            Praesent iaculis tempor laoreet. Proin sit amet rhoncus nisi. Sed ac
-            augue eget ligula mattis lacinia eu eget nisl.{' '}
+            {description}
           </CardDescription>
-        </CardHeader>
-      </Card>
-    </Link>
+        </Link>
+      </CardHeader>
+    </Card>
   );
 }

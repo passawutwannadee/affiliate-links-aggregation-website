@@ -1,4 +1,5 @@
 import { hatch } from 'ldrs';
+import { Loader2 } from 'lucide-react';
 
 hatch.register();
 
@@ -8,7 +9,7 @@ export function Loading() {
     <>
       <div className="flex justify-center items-center h-screen fixed center top-0 left-0 right-0 bg-muted opacity-50" />
       <div className="flex justify-center items-center h-screen fixed center top-0 left-0 right-0">
-        <l-hatch size="30" stroke="4" speed="3.5" color="black"></l-hatch>
+        <Loader2 className="animate-spin stroke-primary h-16 w-16" />
       </div>
     </>
   );
