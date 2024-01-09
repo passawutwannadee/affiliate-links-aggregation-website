@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -26,6 +25,7 @@ import { Link } from 'react-router-dom';
 import { Required } from '@/components/ui/required';
 import { useMutation } from 'react-query';
 import { registerAPI } from '@/services/register-api';
+import { SubmitButton } from '@/components/ui/submit-button';
 
 const formSchema = z
   .object({
@@ -64,7 +64,7 @@ export default function Register() {
     },
   });
 
-  const { mutate } = useMutation(
+  const { mutate, isLoading } = useMutation(
     registerAPI
     // , {onSuccess: (response) => {}, }
   );
@@ -178,9 +178,7 @@ export default function Register() {
                 )}
               />
 
-              <Button className="w-full" type="submit">
-                Create account
-              </Button>
+              <SubmitButton isLoading={isLoading}>Create Account</SubmitButton>
             </form>
           </Form>
         </CardContent>

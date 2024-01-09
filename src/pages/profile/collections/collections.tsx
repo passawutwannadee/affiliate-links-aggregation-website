@@ -21,9 +21,9 @@ export default function Collections() {
       value="collections"
       className="h-full flex-col border-none p-0 data-[state=active]:flex"
     >
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 justify-center items-center">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 justify-center items-center place-items-center">
         {/* {console.log(data)} */}
-        {data!.data.map(
+        {data?.data.map(
           (
             item: {
               collection_id: string;
@@ -37,6 +37,7 @@ export default function Collections() {
               collectionId={item.collection_id}
               title={item.collection_name}
               description={item.collection_description}
+              username={username!}
             />
           )
         )}
