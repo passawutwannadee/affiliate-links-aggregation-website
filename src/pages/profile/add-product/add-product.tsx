@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/select';
 import { Select } from '@radix-ui/react-select';
 import { useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { addProductsAPI, productCategoriesAPI } from '@/services/products-api';
 import { Loading } from '@/components/ui/loading';
 import {
@@ -36,6 +36,7 @@ import {
 } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Required } from '@/components/ui/required';
+import { toast } from 'sonner';
 
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -72,7 +73,7 @@ const formSchema = z.object({
   ),
 });
 
-export default function AddProduct() {
+export default function AddProduct({ username }: { username: string }) {
   const [open, setOpen] = useState<boolean>(false);
 
   // get categories
@@ -80,10 +81,36 @@ export default function AddProduct() {
     productCategoriesAPI()
   );
 
+  const queryClient = useQueryClient();
+
   const { mutate } = useMutation(addProductsAPI, {
     onSuccess: (response) => {
-      if (response.status === 200) {
-        console.log('hello');
+      if (response.status === 201) {
+        queryClient.invalidateQueries({
+          queryKey: ['product_data', username],
+        });
+        toast(
+          <>
+            {' '}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              data-slot="icon"
+              className="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            <p>Report successfully submitted.</p>
+          </>
+        );
+        setOpen(false);
       }
     },
   });
@@ -125,8 +152,6 @@ export default function AddProduct() {
       productLinks,
       productId: '',
     });
-
-    setOpen(false);
   }
 
   if (isLoading) {

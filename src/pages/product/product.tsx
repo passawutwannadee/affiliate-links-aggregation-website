@@ -6,11 +6,11 @@ import {
   DropdownMenuGroup,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import ReportUser from '../profile/products/components/report-user';
 import { productAPI } from '@/services/products-api';
 import { useQuery } from 'react-query';
 import { Loading } from '@/components/ui/loading';
 import { useParams } from 'react-router-dom';
+import Report from '@/components/report';
 
 export default function Product() {
   const { id } = useParams<string>();
@@ -64,7 +64,10 @@ export default function Product() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56">
                     <DropdownMenuGroup>
-                      <ReportUser />
+                      <Report
+                        link={window.location.href}
+                        username={data!.data[0].username}
+                      />
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>

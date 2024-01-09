@@ -18,14 +18,15 @@ export default function Products() {
 
   return (
     <TabsContent value="products" className="border-none p-0 outline-none">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 justify-center items-center">
-        {data!.data.map(
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 justify-center items-center place-items-center">
+        {data?.data.map(
           (
             item: {
               product_id: string;
               product_image: string;
               product_name: string;
               product_description: string;
+              username: string;
             },
             index: number
           ) => (
@@ -35,6 +36,7 @@ export default function Products() {
               image={item.product_image}
               title={item.product_name}
               description={item.product_description}
+              username={username!}
             />
           )
         )}

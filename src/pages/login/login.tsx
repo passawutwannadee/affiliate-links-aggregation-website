@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -27,6 +26,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { loginAPI } from '@/services/auth-api';
 import { useMutation } from 'react-query';
 import { ring2 } from 'ldrs';
+import { SubmitButton } from '@/components/ui/submit-button';
 
 ring2.register();
 
@@ -130,22 +130,7 @@ export default function Login() {
                   </Alert>
                 ) : null}
 
-                {isLoading ? (
-                  <Button disabled className="w-full" type="submit">
-                    <l-ring-2
-                      size="15"
-                      stroke="2"
-                      stroke-length="0.25"
-                      bg-opacity="0.1"
-                      speed="0.8"
-                      color="black"
-                    />
-                  </Button>
-                ) : (
-                  <Button className="w-full" type="submit">
-                    <p>Login</p>
-                  </Button>
-                )}
+                <SubmitButton isLoading={isLoading}>Login</SubmitButton>
               </form>
             </Form>
           </CardContent>

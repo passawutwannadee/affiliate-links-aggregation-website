@@ -13,6 +13,7 @@ import { Button } from './ui/button';
 import { session } from '@/lib/session';
 import { useMutation } from 'react-query';
 import { logoutAPI } from '@/services/auth-api';
+import { User } from 'lucide-react';
 
 export function MainNav({
   username,
@@ -52,7 +53,9 @@ export function MainNav({
                 <DropdownMenuTrigger>
                   <Avatar className="h-12 w-12">
                     <AvatarImage src={profilePicture} />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarFallback>
+                      <User />
+                    </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>

@@ -1,23 +1,31 @@
-import { Button } from '@/components/ui/button';
 import {
-  AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { removeProductsAPI } from '@/services/products-api';
 import { toast } from 'sonner';
 
-export default function DeleteProduct({ productId }: { productId: string }) {
+export default function DeleteProduct({
+  productId,
+  username,
+}: {
+  productId: string;
+  username: string;
+}) {
+  const queryClient = useQueryClient();
+
   const { mutate } = useMutation(removeProductsAPI, {
     onSuccess: (response) => {
       // login is successful
       if (response.status === 200) {
+        queryClient.invalidateQueries({
+          queryKey: ['product_data', username],
+        });
         toast(
           <>
             {' '}
@@ -49,24 +57,17 @@ export default function DeleteProduct({ productId }: { productId: string }) {
   }
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild className="w-full">
-        <Button variant="ghost" className="w-full justify-start">
-          Delete
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>
-            Are you sure you want to delete this product?
-          </AlertDialogTitle>
-          {/* <AlertDialogDescription>dasfdfdsfdsfdsf</AlertDialogDescription> */}
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onSubmit}>Confirm</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>
+          Are you sure you want to delete this product?
+        </AlertDialogTitle>
+        {/* <AlertDialogDescription>dasfdfdsfdsfdsf</AlertDialogDescription> */}
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogAction onClick={onSubmit}>Confirm</AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
   );
 }

@@ -8,62 +8,76 @@ import { Link } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { Button } from './ui/button';
 import DeleteCollection from '@/pages/profile/collections/components/delete-collection';
+import { AlertDialog } from './ui/alert-dialog';
+import { useState } from 'react';
 
 interface Collection {
   collectionId: string;
   title: string;
   description: string;
+  username: string;
 }
 
 export function CollectionPreviewCard({
   collectionId,
   title,
   description,
+  username,
 }: Collection) {
+  const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
+
   return (
-    <Card className="w-full hover:cursor-pointer">
-      <Link to={`/collection/${collectionId}`}>
-        <div className="grid grid-cols-2">
-          <img src="./placeholder-images-image_large.webp" className="p-1" />
-          <img src="./placeholder-images-image_large.webp" className="p-1" />
-          <img src="./placeholder-images-image_large.webp" className="p-1" />
-          <img src="./placeholder-images-image_large.webp" className="p-1" />
-        </div>
-      </Link>
-      <CardHeader>
-        <CardTitle>
-          <div className="flex flex-row justify-between items-center">
-            <Link to={`/collection/${collectionId}`}>
-              <CardTitle>{title}</CardTitle>
-            </Link>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="text-xl">
-                  ⋯
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
-                <DropdownMenuGroup>
-                  <DeleteCollection collectionId={collectionId} />
-                  {/* <EditProduct productId={productId} />
-                    <<DeleteProduct productId={productId} />>
-                    <ReportProduct /> */}
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </CardTitle>
+    <>
+      <Card className="w-96 md:w-full">
         <Link to={`/collection/${collectionId}`}>
-          <CardDescription className="line-clamp-5">
-            {description}
-          </CardDescription>
+          <div className="grid grid-cols-2">
+            <img src="./placeholder-images-image_large.webp" className="p-1" />
+            <img src="./placeholder-images-image_large.webp" className="p-1" />
+            <img src="./placeholder-images-image_large.webp" className="p-1" />
+            <img src="./placeholder-images-image_large.webp" className="p-1" />
+          </div>
         </Link>
-      </CardHeader>
-    </Card>
+        <CardHeader>
+          <CardTitle>
+            <div className="flex flex-row justify-between items-center">
+              <Link to={`/collection/${collectionId}`}>
+                <CardTitle>{title}</CardTitle>
+              </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="text-xl">
+                    ⋯
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {/* <DropdownMenuItem onSelect={() => setEditOpen(true)}>
+                    Edit
+                  </DropdownMenuItem> */}
+                  <DropdownMenuItem
+                    onSelect={() => setDeleteOpen(true)}
+                    className="text-red-600"
+                  >
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </CardTitle>
+          <Link to={`/collection/${collectionId}`}>
+            <CardDescription className="line-clamp-5">
+              {description}
+            </CardDescription>
+          </Link>
+        </CardHeader>
+      </Card>
+      <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <DeleteCollection collectionId={collectionId} username={username} />
+      </AlertDialog>
+    </>
   );
 }

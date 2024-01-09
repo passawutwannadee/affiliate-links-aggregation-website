@@ -34,6 +34,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useMutation, useQuery } from 'react-query';
 import { productsAPI } from '@/services/products-api';
 import { createCollectionsAPI } from '@/services/collections-api';
+import { toast } from 'sonner';
+import { ErrorAlert } from '@/components/ui/error-alert';
 
 const formSchema = z.object({
   collection_name: z.string().nonempty({
@@ -52,21 +54,42 @@ type Products = Record<
   string
 >;
 
-export default function AddCollection() {
+export default function AddCollection({ username }: { username: string }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [dropdown, setDropdown] = useState(false);
   const [selected, setSelected] = useState<Products[]>([]);
   const [inputValue, setInputValue] = useState('');
 
-  const { data } = useQuery(['product_data', 'johndoe'], () =>
-    productsAPI('johndoe')
+  const { data } = useQuery(['product_data', username], () =>
+    productsAPI(username)
   );
 
   const { mutate } = useMutation(createCollectionsAPI, {
     onSuccess: (response) => {
-      if (response.status === 200) {
-        console.log('hello');
+      if (response.status === 201) {
+        toast(
+          <>
+            {' '}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              data-slot="icon"
+              className="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            <p>Report successfully submitted.</p>
+          </>
+        );
+        setOpen(false);
       }
     },
   });
@@ -100,11 +123,6 @@ export default function AddCollection() {
       collectionDescription: values.collection_description,
       products: products,
     });
-
-    console.log(products);
-
-    console.log(values);
-    console.log(selected);
   }
 
   const handleUnselect = useCallback((Products: Products) => {
@@ -140,7 +158,7 @@ export default function AddCollection() {
     form.setValue('products', selected);
   }, [form, selected]);
 
-  const selectables = data!.data.filter(
+  const selectables = data?.data?.filter(
     (Products: Products) => !selected.includes(Products)
   );
 
@@ -158,7 +176,7 @@ export default function AddCollection() {
         </Button>
       </SheetTrigger>
       <SheetContent className="flex">
-        <ScrollArea className="h-[95vh] self-center">
+        <ScrollArea className="h-[95vh] self-center w-full">
           <div className="m-6 mt-0 pb-5">
             <SheetHeader>
               <SheetTitle>Add Product</SheetTitle>
@@ -206,80 +224,91 @@ export default function AddCollection() {
                             onKeyDown={handleKeyDown}
                             className="overflow-visible bg-transparent"
                           >
-                            <div className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
-                              <div className="flex gap-1 flex-wrap">
-                                {selected.map((item: Products) => {
-                                  return (
-                                    <Badge
-                                      key={item.product_id}
-                                      variant="secondary"
-                                    >
-                                      {item.product_name}
-                                      <button
-                                        type="button"
-                                        className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                                        onKeyDown={(e) => {
-                                          if (e.key === 'Enter') {
-                                            handleUnselect(item);
-                                          }
-                                        }}
-                                        onMouseDown={(e) => {
-                                          e.preventDefault();
-                                          e.stopPropagation();
-                                        }}
-                                        onClick={() => handleUnselect(item)}
-                                      >
-                                        <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
-                                      </button>
-                                    </Badge>
-                                  );
-                                })}
-                                {/* Avoid having the "Search" Icon */}
-                                <CommandPrimitive.Input
-                                  ref={inputRef}
-                                  value={inputValue}
-                                  onValueChange={setInputValue}
-                                  onBlur={() => setDropdown(false)}
-                                  onFocus={() => setDropdown(true)}
-                                  placeholder="Select products..."
-                                  className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
-                                />
-                              </div>
-                            </div>
-                            <div className="relative mt-2">
-                              {dropdown && selectables.length > 0 ? (
-                                <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-                                  <CommandGroup className="h-full overflow-auto">
-                                    {selectables.map((item: Products) => {
+                            {data!.data[0] ? (
+                              <>
+                                <div className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+                                  <div className="flex gap-1 flex-wrap">
+                                    {selected.map((item: Products) => {
                                       return (
-                                        <CommandItem
+                                        <Badge
                                           key={item.product_id}
-                                          onMouseDown={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                          }}
-                                          onSelect={() => {
-                                            setInputValue('');
-                                            setSelected((prev) => [
-                                              ...prev,
-                                              item,
-                                            ]);
-                                            form.setValue('products', selected);
-                                          }}
-                                          className={'cursor-pointer gap-2'}
+                                          variant="secondary"
                                         >
-                                          <img
-                                            className="w-10 h-10 aspect-square"
-                                            src={item.product_image}
-                                          />
                                           {item.product_name}
-                                        </CommandItem>
+                                          <button
+                                            type="button"
+                                            className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                                            onKeyDown={(e) => {
+                                              if (e.key === 'Enter') {
+                                                handleUnselect(item);
+                                              }
+                                            }}
+                                            onMouseDown={(e) => {
+                                              e.preventDefault();
+                                              e.stopPropagation();
+                                            }}
+                                            onClick={() => handleUnselect(item)}
+                                          >
+                                            <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                                          </button>
+                                        </Badge>
                                       );
                                     })}
-                                  </CommandGroup>
+                                    {/* Avoid having the "Search" Icon */}
+                                    <CommandPrimitive.Input
+                                      ref={inputRef}
+                                      value={inputValue}
+                                      onValueChange={setInputValue}
+                                      onBlur={() => setDropdown(false)}
+                                      onFocus={() => setDropdown(true)}
+                                      placeholder="Select products..."
+                                      className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
+                                    />
+                                  </div>
                                 </div>
-                              ) : null}
-                            </div>
+                                <div className="relative mt-2">
+                                  {dropdown && selectables.length > 0 ? (
+                                    <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+                                      <CommandGroup className="h-full overflow-auto">
+                                        {selectables.map((item: Products) => {
+                                          return (
+                                            <CommandItem
+                                              key={item.product_id}
+                                              onMouseDown={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                              }}
+                                              onSelect={() => {
+                                                setInputValue('');
+                                                setSelected((prev) => [
+                                                  ...prev,
+                                                  item,
+                                                ]);
+                                                form.setValue(
+                                                  'products',
+                                                  selected
+                                                );
+                                              }}
+                                              className={'cursor-pointer gap-2'}
+                                            >
+                                              <img
+                                                className="w-10 h-10 aspect-square"
+                                                src={item.product_image}
+                                              />
+                                              {item.product_name}
+                                            </CommandItem>
+                                          );
+                                        })}
+                                      </CommandGroup>
+                                    </div>
+                                  ) : null}
+                                </div>
+                              </>
+                            ) : (
+                              <ErrorAlert>
+                                You currently do not have any product.
+                              </ErrorAlert>
+                            )}
                             <FormMessage />
                           </Command>
                         </FormItem>

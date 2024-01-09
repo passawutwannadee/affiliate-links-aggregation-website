@@ -9,13 +9,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import ReportUser from './products/components/report-user';
 import { useQuery } from 'react-query';
 import { usersAPI } from '@/services/users-api';
 import { useParams } from 'react-router-dom';
 import { Loading } from '@/components/ui/loading';
 import Products from './products/products';
 import Collections from './collections/collections';
+import Report from '@/components/report';
+import { User } from 'lucide-react';
 
 export default function Profile({ currentUser }: { currentUser: string }) {
   const { username } = useParams<string>();
@@ -33,15 +34,17 @@ export default function Profile({ currentUser }: { currentUser: string }) {
       <div className="container mx-auto py-8">
         <div className="flex flex-col lg:flex-row items-center gap-6">
           <Avatar className="h-36 w-36">
-            <AvatarImage src="https://avatars.githubusercontent.com/u/73711390?v=4" />
-            <AvatarFallback />
+            <AvatarImage src={data!.data.profile_picture} />
+            <AvatarFallback>
+              <User className="w-2/4 h-2/4" />
+            </AvatarFallback>
           </Avatar>
           <div className="flex flex-col items-center lg:items-start gap-2">
             <p className="text-2xl lg:text-3xl font-bold">
-              {data ? data.data.display_name : null}
+              {data!.data.display_name}
             </p>
             <p className="textsm lg:text-sm font-bold text- text-primary/80">
-              @{data ? data.data.username : null}
+              @{data!.data.username}
             </p>
           </div>
           <DropdownMenu>
@@ -52,7 +55,10 @@ export default function Profile({ currentUser }: { currentUser: string }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
               <DropdownMenuGroup>
-                <ReportUser />
+                <Report
+                  link={window.location.href}
+                  username={data!.data.username}
+                />
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -71,10 +77,10 @@ export default function Profile({ currentUser }: { currentUser: string }) {
               {currentUser === username?.toString().toLocaleLowerCase() ? (
                 <>
                   <TabsContent value="products">
-                    <AddProduct />
+                    <AddProduct username={username} />
                   </TabsContent>
                   <TabsContent value="collections">
-                    <AddCollection />
+                    <AddCollection username={username} />
                   </TabsContent>
                 </>
               ) : null}

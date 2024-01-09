@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -6,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { SubmitButton } from '@/components/ui/submit-button';
 import { sendEmailVerificationlAPI } from '@/services/verify-email-api';
 import { useMutation } from 'react-query';
 
@@ -28,26 +28,13 @@ export default function VerifyEmailAlert() {
           <CardContent className="grid gap-4">
             <p>
               You'll have limited access to this site's features until you
-              verify it
+              verify your email address.
             </p>
           </CardContent>
           <CardFooter className="self-center gap-1">
-            {isLoading ? (
-              <Button disabled className="w-full" type="submit">
-                <l-ring-2
-                  size="15"
-                  stroke="2"
-                  stroke-length="0.25"
-                  bg-opacity="0.1"
-                  speed="0.8"
-                  color="black"
-                />
-              </Button>
-            ) : (
-              <Button className="w-full" type="submit" onClick={onSubmit}>
-                <p>Send verification email</p>
-              </Button>
-            )}
+            <SubmitButton isLoading={isLoading} onClick={onSubmit}>
+              Resend verification email
+            </SubmitButton>
           </CardFooter>
         </Card>
       </div>

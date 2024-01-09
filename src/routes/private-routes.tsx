@@ -13,7 +13,7 @@ const PrivateRoutes = ({ emailVerified }: { emailVerified: number }) => {
     return <Outlet />;
   }
   if (emailVerified === 0) {
-    return <Navigate to="/verify_email" />;
+    return <Navigate to="/verify-email" />;
   }
 };
 

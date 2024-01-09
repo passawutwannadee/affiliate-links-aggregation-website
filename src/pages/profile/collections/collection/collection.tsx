@@ -54,6 +54,7 @@ export default function Collection() {
                 product_image: string;
                 product_name: string;
                 product_description: string;
+                username: string;
               },
               index: number
             ) => (
@@ -63,6 +64,7 @@ export default function Collection() {
                 image={item.product_image}
                 title={item.product_name}
                 description={item.product_description}
+                username={item.username}
               />
             )
           )}
