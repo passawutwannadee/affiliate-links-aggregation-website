@@ -41,7 +41,7 @@ export default function Product() {
         <div className="flex flex-col lg:flex-row lg:pl-20 lg:pr-20 gap-12">
           <img
             src={data!.data[0].product_image}
-            className="flex self-center p-6 w-96 aspect-square"
+            className="flex self-center w-96 aspect-square rounded-lg object-cover border"
           />
           <div className="flex flex-col self-center gap-16 items w-full">
             <div className="flex flex-col gap-2 items-center lg:items-start">
@@ -85,7 +85,7 @@ export default function Product() {
                   href={data!.data[0].links[index]}
                   target="_blank"
                 >
-                  <p className="text-2xl font-semibold text-center text-secondary">
+                  <p className="px-6 text-2xl font-semibold text-center text-secondary truncate ...">
                     {new URL(data!.data[0].links[index]).hostname.replace(
                       /^www\./,
                       ''

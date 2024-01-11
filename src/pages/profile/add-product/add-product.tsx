@@ -37,6 +37,8 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Required } from '@/components/ui/required';
 import { toast } from 'sonner';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store/store';
 
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -49,7 +51,7 @@ const formSchema = z.object({
   product_name: z.string().nonempty({
     message: 'Please enter product name.',
   }),
-  product_description: z.string().nonempty({
+  product_description: z.string().min(2).max(512).nonempty({
     message: 'Please enter product name.',
   }),
   category: z.string().nonempty({
@@ -73,8 +75,9 @@ const formSchema = z.object({
   ),
 });
 
-export default function AddProduct({ username }: { username: string }) {
+export default function AddProduct() {
   const [open, setOpen] = useState<boolean>(false);
+  const username = useSelector((state: RootState) => state.user.currentUser);
 
   // get categories
   const { data, isLoading } = useQuery(['product_categories'], () =>

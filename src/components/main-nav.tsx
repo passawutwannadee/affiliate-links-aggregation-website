@@ -14,14 +14,12 @@ import { session } from '@/lib/session';
 import { useMutation } from 'react-query';
 import { logoutAPI } from '@/services/auth-api';
 import { User } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store/store';
 
-export function MainNav({
-  username,
-  profilePicture,
-}: {
-  username: string;
-  profilePicture: string;
-}) {
+export function MainNav({ profilePicture }: { profilePicture: string }) {
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
+
   const { mutate } = useMutation(logoutAPI, {
     onSuccess: (response) => {
       // login is successful
@@ -62,7 +60,7 @@ export function MainNav({
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
-                    <Link to={`/profile/${username}`}>Profile</Link>
+                    <Link to={`/profile/${currentUser}`}>Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Link to="/settings/account">Settings</Link>
