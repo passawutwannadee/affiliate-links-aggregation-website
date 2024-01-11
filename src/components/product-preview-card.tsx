@@ -25,6 +25,7 @@ interface Item {
   title: string;
   description: string;
   username: string;
+  meatballsMenu: boolean;
 }
 
 export function ProductPreviewCard({
@@ -33,6 +34,7 @@ export function ProductPreviewCard({
   title,
   description,
   username,
+  meatballsMenu,
 }: Item) {
   const [editOpen, setEditOpen] = useState<boolean>(false);
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
@@ -43,7 +45,7 @@ export function ProductPreviewCard({
         <Link to={`/product/${productId}`}>
           <img
             src={image}
-            className="p-4 w-full aspect-square object-cover hover:cursor-pointer "
+            className="w-full aspect-square object-cover hover:cursor-pointer border rounded-t-lg"
           />
         </Link>
         <CardHeader>
@@ -51,24 +53,26 @@ export function ProductPreviewCard({
             <Link to={`/product/${productId}`}>
               <CardTitle>{title}</CardTitle>
             </Link>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="text-xl">
-                  ⋯
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onSelect={() => setEditOpen(true)}>
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onSelect={() => setDeleteOpen(true)}
-                  className="text-red-600"
-                >
-                  Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {meatballsMenu ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="text-xl">
+                    ⋯
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onSelect={() => setEditOpen(true)}>
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={() => setDeleteOpen(true)}
+                    className="text-red-600"
+                  >
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : null}
           </div>
           <Link to={`/product/${productId}`}>
             <CardDescription className="line-clamp-3">

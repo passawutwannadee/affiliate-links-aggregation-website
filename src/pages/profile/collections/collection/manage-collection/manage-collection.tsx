@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { PlusIcon } from '@radix-ui/react-icons';
 import { X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -11,11 +10,9 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Textarea } from '@/components/ui/textarea';
 
 import { Badge } from '@/components/ui/badge';
 import { Command, CommandGroup, CommandItem } from '@/components/ui/command';
@@ -31,13 +28,18 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { productsAPI } from '@/services/products-api';
-import { createCollectionsAPI } from '@/services/collections-api';
+import {
+  ManageCollectionsAPI,
+  createCollectionsAPI,
+} from '@/services/collections-api';
 import { toast } from 'sonner';
 import { ErrorAlert } from '@/components/ui/error-alert';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 const formSchema = z.object({
   collection_name: z.string().nonempty({
@@ -56,7 +58,17 @@ type Products = Record<
   string
 >;
 
-export default function AddCollection() {
+export default function ManageCollection({
+  collectionName,
+  collectionDescription,
+  collectionProducts,
+  collectionId,
+}: {
+  collectionProducts: Products[];
+  collectionId: string;
+  collectionName: string;
+  collectionDescription: string;
+}) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [dropdown, setDropdown] = useState(false);
@@ -68,7 +80,41 @@ export default function AddCollection() {
     productsAPI(username!)
   );
 
-  const { mutate } = useMutation(createCollectionsAPI, {
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation(ManageCollectionsAPI, {
+    onSuccess: (response) => {
+      if (response.status === 201) {
+        queryClient.invalidateQueries({
+          queryKey: ['collection_data', collectionId],
+        });
+        toast(
+          <>
+            {' '}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              data-slot="icon"
+              className="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            <p>Report successfully submitted.</p>
+          </>
+        );
+        setOpen(false);
+      }
+    },
+  });
+
+  useMutation(createCollectionsAPI, {
     onSuccess: (response) => {
       if (response.status === 201) {
         toast(
@@ -101,11 +147,15 @@ export default function AddCollection() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      collection_name: '',
-      collection_description: '',
+      collection_name: collectionName,
+      collection_description: collectionDescription,
       products: [],
     },
   });
+
+  useEffect(() => {
+    setSelected(collectionProducts);
+  }, []);
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -113,15 +163,14 @@ export default function AddCollection() {
     // ✅ This will be type-safe and validated.
     form.setValue('products', selected);
 
-    // const collectionName = values.collection_name;
-    // const collectionDescription = values.collection_description;
     const products = [];
 
-    for (let i = 0; i < selected.length; i++) {
-      products.push(selected[i].product_id);
+    for (let i = 0; i < values['products'].length; i++) {
+      products.push(values['products'][i].product_id);
     }
 
     mutate({
+      collectionId: collectionId,
       collectionName: values.collection_name,
       collectionDescription: values.collection_description,
       products: products,
@@ -162,8 +211,14 @@ export default function AddCollection() {
   }, [form, selected]);
 
   const selectables = data?.data?.filter(
-    (Products: Products) => !selected.includes(Products)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (item: any) =>
+      !selected.some((fItem) => fItem.product_id === item.product_id)
   );
+
+  // const selectables = data?.data?.filter(
+  //   (products: Products) => !selected.indexOf(products)
+  // );
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -174,15 +229,14 @@ export default function AddCollection() {
             setOpen(true);
           }}
         >
-          <PlusIcon className="mr-2 h-4 w-4" />
-          Add Collection
+          Manage Products
         </Button>
       </SheetTrigger>
       <SheetContent className="flex">
         <ScrollArea className="h-[95vh] self-center w-full">
           <div className="m-6 mt-0 pb-5">
             <SheetHeader>
-              <SheetTitle>Add Product</SheetTitle>
+              <SheetTitle>Manage Products</SheetTitle>
               <SheetDescription>
                 <Form {...form}>
                   <form
@@ -347,7 +401,7 @@ export default function AddCollection() {
                       >
                         Cancel
                       </Button>
-                      <Button type="submit">Add Product</Button>
+                      <Button type="submit">Apply</Button>
                     </SheetFooter>
                   </form>
                 </Form>

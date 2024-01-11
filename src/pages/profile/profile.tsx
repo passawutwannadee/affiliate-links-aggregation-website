@@ -17,9 +17,15 @@ import Products from './products/products';
 import Collections from './collections/collections';
 import Report from '@/components/report';
 import { User } from 'lucide-react';
+import { RootState } from '@/redux/store/store';
+import { useSelector } from 'react-redux';
 
-export default function Profile({ currentUser }: { currentUser: string }) {
+export default function Profile() {
   const { username } = useParams<string>();
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  const emailVerified = useSelector(
+    (state: RootState) => state.user.emailVerified
+  );
 
   const { data, isLoading } = useQuery(['profile_data', username], () =>
     usersAPI(username!)
@@ -47,21 +53,24 @@ export default function Profile({ currentUser }: { currentUser: string }) {
               @{data!.data.username}
             </p>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="text-xl">
-                ⋯
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-              <DropdownMenuGroup>
-                <Report
-                  link={window.location.href}
-                  username={data!.data.username}
-                />
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {currentUser !==
+          data!.data.username.toString().toLocaleLowerCase() ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="text-xl">
+                  ⋯
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuGroup>
+                  <Report
+                    link={window.location.href}
+                    username={data!.data.username}
+                  />
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : null}
         </div>
         <Tabs defaultValue="products" className="h-full space-y-6 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-center md:justify-between">
@@ -74,13 +83,15 @@ export default function Profile({ currentUser }: { currentUser: string }) {
               </TabsTrigger>
             </TabsList>
             <div className="">
-              {currentUser === username?.toString().toLocaleLowerCase() ? (
+              {currentUser ===
+                data!.data.username.toString().toLocaleLowerCase() &&
+              emailVerified === 1 ? (
                 <>
                   <TabsContent value="products">
-                    <AddProduct username={username} />
+                    <AddProduct />
                   </TabsContent>
                   <TabsContent value="collections">
-                    <AddCollection username={username} />
+                    <AddCollection />
                   </TabsContent>
                 </>
               ) : null}

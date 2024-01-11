@@ -37,6 +37,7 @@ export default function Products() {
               title={item.product_name}
               description={item.product_description}
               username={username!}
+              meatballsMenu={true}
             />
           )
         )}

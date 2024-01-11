@@ -21,10 +21,19 @@ import VerifyEmailAlert from '@/pages/verify-email/verify-email-alert';
 import { useQuery } from 'react-query';
 import { accountAPI } from '@/services/account-api';
 import { session } from '@/lib/session';
+import { useDispatch } from 'react-redux';
+import { setCurrentUser, setEmailVerified } from '@/redux/features/userSlice';
 
 function PageRoutes() {
+  const dispatch = useDispatch();
   const { data, isLoading } = useQuery(['account_data'], () => accountAPI(), {
     enabled: session(),
+    onSuccess: (response) => {
+      if (response.status === 200) {
+        dispatch(setCurrentUser(response.data.username));
+        dispatch(setEmailVerified(response.data.email_verify));
+      }
+    },
   });
 
   if (isLoading) {
@@ -35,19 +44,11 @@ function PageRoutes() {
   return (
     <>
       <BrowserRouter>
-        <MainNav
-          username={data ? data.data.username : null}
-          profilePicture={data ? data.data.profile_picture : null}
-        />
+        <MainNav profilePicture={data ? data.data.profile_picture : null} />
         <Suspense fallback={<Loading />}>
           <Routes>
             <Route path="*" element={<NotFound />} />
-            <Route
-              path="/profile/:username"
-              element={
-                <Profile currentUser={data ? data.data.username : null} />
-              }
-            />
+            <Route path="/profile/:username" element={<Profile />} />
             <Route path="/product/:id" element={<Product />} />
             <Route
               path="/verify-email/:email_verify_token"
@@ -56,13 +57,7 @@ function PageRoutes() {
             <Route path="/verify-email" element={<VerifyEmailAlert />} />
 
             {/* ///////////////////////// PUBLIC ROUTES ////////////////////////// */}
-            <Route
-              element={
-                <PublicRoutes
-                  currentUser={data ? data.data.username : undefined}
-                />
-              }
-            >
+            <Route element={<PublicRoutes />}>
               <Route path="/" element={<Login />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />

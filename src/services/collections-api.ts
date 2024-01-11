@@ -29,6 +29,7 @@ export const collectionAPI = async (args: string): Promise<AxiosResponse> => {
 };
 
 interface CollectionInfo {
+  collectionId?: string;
   collectionName: string;
   collectionDescription: string;
   products: string[];
@@ -39,6 +40,23 @@ export const createCollectionsAPI = async (
 ): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.post(`/collections`, {
+      collection_name: args.collectionName,
+      collection_description: args.collectionDescription,
+      products: args.products,
+    });
+
+    return response;
+  } catch (err: any) {
+    return err;
+  }
+};
+
+export const ManageCollectionsAPI = async (
+  args: CollectionInfo
+): Promise<AxiosResponse> => {
+  try {
+    const response = await axiosInstance.put(`/collections`, {
+      collection_id: args.collectionId,
       collection_name: args.collectionName,
       collection_description: args.collectionDescription,
       products: args.products,

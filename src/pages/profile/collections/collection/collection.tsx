@@ -5,6 +5,7 @@ import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import { Loading } from '@/components/ui/loading';
 import { Card, CardDescription } from '@/components/ui/card';
+import ManageCollection from './manage-collection/manage-collection';
 
 export default function Collection() {
   const { id } = useParams<string>();
@@ -20,20 +21,18 @@ export default function Collection() {
     <div className="container mx-auto py-8">
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-4">
-          <div className="flex flex-row gap-20">
-            <div className="flex flex-col gap-3">
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-20">
+            <div className="flex flex-col gap-3 items-center lg:items-start">
               <p className="text-4xl font-bold">{data!.data.collection_name}</p>
               <div className="flex gap-2">
                 <Avatar className="h-12 w-12">
                   <AvatarImage src="https://avatars.githubusercontent.com/u/73711390?v=4" />
                   <AvatarFallback />
                 </Avatar>
-                <div className="flex flex-col items-center lg:items-start">
-                  <p className="text-2xl lg:text-xl font-bold">
-                    {data!.data.display_name}
-                  </p>
-                  <p className="textsm lg:text-sm font-bold text- text-primary/80">
-                    @USERNAME
+                <div className="flex flex-col items-start">
+                  <p className="text-xl font-bold">{data!.data.display_name}</p>
+                  <p className="text-sm font-bold text- text-primary/80">
+                    @{data!.data.username}
                   </p>
                 </div>
               </div>
@@ -45,7 +44,14 @@ export default function Collection() {
             </Card>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row items-center justify-center md:justify-between"></div>
+        <div className="flex flex-col md:flex-row items-center justify-center md:justify-end">
+          <ManageCollection
+            collectionProducts={data!.data.products}
+            collectionId={id!}
+            collectionName={data!.data.collection_name}
+            collectionDescription={data!.data.collection_description}
+          />
+        </div>
         <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-10 justify-center items-center">
           {data!.data.products.map(
             (
@@ -65,6 +71,7 @@ export default function Collection() {
                 title={item.product_name}
                 description={item.product_description}
                 username={item.username}
+                meatballsMenu={false}
               />
             )
           )}
