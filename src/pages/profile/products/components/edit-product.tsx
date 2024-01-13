@@ -14,8 +14,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Textarea } from '@/components/ui/textarea';
 import { SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Select } from '@radix-ui/react-select';
-import { useMutation, useQuery } from 'react-query';
-import { addProductsAPI, productAPI } from '@/services/products-api';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { editProductsAPI, productAPI } from '@/services/products-api';
 import {
   SheetClose,
   SheetContent,
@@ -28,6 +28,11 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Required } from '@/components/ui/required';
 import Categories from './categories/categories';
 import { Loading } from '@/components/ui/loading';
+import { toast } from 'sonner';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store/store';
+import { useEffect, useState } from 'react';
+import { SubmitButton } from '@/components/ui/submit-button';
 
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -36,7 +41,31 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/webp',
 ];
 
-const formSchema = z.object({
+const productNoImage = z.object({
+  product_name: z.string().nonempty({
+    message: 'Please enter product name.',
+  }),
+  product_description: z.string().nonempty({
+    message: 'Please enter product name.',
+  }),
+  category: z.string().nonempty({
+    message: 'Please enter product name.',
+  }),
+  product_image: z.void(),
+  product_links: z.array(
+    z.object({
+      value: z
+        .string()
+        .nonempty({
+          message: 'Please enter product URL.',
+        })
+        .url({ message: 'Please enter a valid URL.' }),
+    })
+  ),
+  changeImage: z.literal(false),
+});
+
+const productWithImage = z.object({
   product_name: z.string().nonempty({
     message: 'Please enter product name.',
   }),
@@ -62,21 +91,80 @@ const formSchema = z.object({
         .url({ message: 'Please enter a valid URL.' }),
     })
   ),
+  changeImage: z.literal(true),
 });
+
+const formSchema = z.discriminatedUnion('changeImage', [
+  productNoImage,
+  productWithImage,
+]);
 
 interface ChildProps {
   productId: string;
+  closeSheet: () => void;
 }
 
-export default function EditProduct({ productId }: ChildProps) {
-  const { data, isLoading } = useQuery(['product_data', productId], () =>
-    productAPI(productId!)
+export default function EditProduct({ productId, closeSheet }: ChildProps) {
+  const username = useSelector((state: RootState) => state.user.currentUser);
+
+  const [linkValue, setlinkValue] = useState<{ value: string }[]>([]);
+  const [categoryValue, setCategoryValue] = useState<string>('');
+
+  const { data, isLoading } = useQuery(
+    ['product_data', productId],
+    () => productAPI(productId!),
+    {
+      onSuccess: (response) => {
+        const links: { value: string }[] = [];
+        for (let i = 0; i < response?.data[0].links.length; i++) {
+          links.push({ value: response?.data[0].links[i] });
+        }
+
+        // form.reset({
+        //   category: response?.data[0].category_id.toString(),
+        //   changeImage: false,
+        // });
+
+        setCategoryValue(response?.data[0].category_id.toString());
+        setlinkValue(links);
+        form.setValue('changeImage', false);
+      },
+    }
   );
 
-  const { mutate } = useMutation(addProductsAPI, {
+  const queryClient = useQueryClient();
+
+  const { mutate, isLoading: isSending } = useMutation(editProductsAPI, {
     onSuccess: (response) => {
-      if (response.status === 200) {
-        console.log('hello');
+      if (response.status === 201) {
+        queryClient.invalidateQueries({
+          queryKey: ['product_data', username],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['product_data', productId],
+        });
+        toast(
+          <>
+            {' '}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              data-slot="icon"
+              className="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            <p>Report successfully submitted.</p>
+          </>
+        );
+        closeSheet();
       }
     },
   });
@@ -85,11 +173,11 @@ export default function EditProduct({ productId }: ChildProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      category: '',
-      product_image: '',
-      product_links: [{ value: 'dsadasdd' }],
+      changeImage: false,
+      product_links: linkValue,
     },
     mode: 'onChange',
+    shouldUnregister: true,
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -97,13 +185,21 @@ export default function EditProduct({ productId }: ChildProps) {
     control: form.control,
   });
 
+  useEffect(() => {
+    form.reset({
+      category: categoryValue,
+      product_links: linkValue,
+    });
+    form.setValue('changeImage', false);
+    form.setValue('category', categoryValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [linkValue, categoryValue]);
+
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
 
-    const product_id = productId;
-    console.log(product_id);
     const productName = values.product_name;
     const productDescription = values.product_description;
     const category = values.category;
@@ -111,12 +207,12 @@ export default function EditProduct({ productId }: ChildProps) {
     const productLinks = values.product_links;
 
     mutate({
+      productId,
       productName,
       productDescription,
       category,
       productImage,
       productLinks,
-      productId: '',
     });
     console.log(values);
 
@@ -130,7 +226,7 @@ export default function EditProduct({ productId }: ChildProps) {
   return (
     <>
       <SheetContent className="flex">
-        <ScrollArea className="h-[95vh] self-center">
+        <ScrollArea className="h-[95vh] self-center w-full">
           <div className="m-6 mt-0 pb-5">
             <SheetHeader>
               <SheetTitle>Edit Product</SheetTitle>
@@ -203,31 +299,56 @@ export default function EditProduct({ productId }: ChildProps) {
                       )}
                     />
 
-                    <FormField
-                      control={form.control}
-                      name="product_image"
-                      render={({ field: { onChange } }) => (
-                        <FormItem>
-                          <FormLabel>
-                            Product Image ( 1:1 ratio )
-                            <Required />
-                          </FormLabel>
-                          <Input
-                            id="picture"
-                            type="file"
-                            onChange={(event) => {
-                              if (
-                                event.target.files &&
-                                event.target.files.length > 0
-                              ) {
-                                onChange(event.target.files[0]);
-                              }
-                            }}
+                    <div className="flex flex-col gap-3">
+                      <FormLabel>
+                        Product Image ( 1:1 ratio )
+                        <Required />
+                      </FormLabel>
+                      {form.watch('changeImage') ? (
+                        <div className="flex flex-row gap-2">
+                          <FormField
+                            control={form.control}
+                            name="product_image"
+                            render={({ field: { onChange } }) => (
+                              <FormItem>
+                                <Input
+                                  id="picture"
+                                  type="file"
+                                  onChange={(event) => {
+                                    if (
+                                      event.target.files &&
+                                      event.target.files.length > 0
+                                    ) {
+                                      onChange(event.target.files[0]);
+                                    }
+                                  }}
+                                />
+                                <FormMessage />
+                              </FormItem>
+                            )}
                           />
-                          <FormMessage />
-                        </FormItem>
+                          <Button
+                            type="button"
+                            onClick={() => form.setValue('changeImage', false)}
+                          >
+                            X
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="flex flex-row items-center gap-4">
+                          <img
+                            className="w-24 h-24 aspect-square object-cover rounded-lg border"
+                            src={data!.data[0].product_image}
+                          />
+                          <Button
+                            type="button"
+                            onClick={() => form.setValue('changeImage', true)}
+                          >
+                            Change Image
+                          </Button>
+                        </div>
                       )}
-                    />
+                    </div>
 
                     <div className="flex flex-col gap-3">
                       <FormLabel>
@@ -314,7 +435,9 @@ export default function EditProduct({ productId }: ChildProps) {
                           Close
                         </Button>
                       </SheetClose>
-                      <Button type="submit">Add Product</Button>
+                      <SubmitButton type="submit" isLoading={isSending}>
+                        Edit Product
+                      </SubmitButton>
                     </SheetFooter>
                   </form>
                 </Form>

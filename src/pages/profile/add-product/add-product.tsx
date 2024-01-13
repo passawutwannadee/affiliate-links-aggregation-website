@@ -39,6 +39,7 @@ import { Required } from '@/components/ui/required';
 import { toast } from 'sonner';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';
+import { SubmitButton } from '@/components/ui/submit-button';
 
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -86,7 +87,7 @@ export default function AddProduct() {
 
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(addProductsAPI, {
+  const { mutate, isLoading: isSending } = useMutation(addProductsAPI, {
     onSuccess: (response) => {
       if (response.status === 201) {
         queryClient.invalidateQueries({
@@ -175,7 +176,7 @@ export default function AddProduct() {
         </Button>
       </SheetTrigger>
       <SheetContent className="flex">
-        <ScrollArea className="h-[95vh] self-center">
+        <ScrollArea className="h-[95vh] self-center w-full">
           <div className="m-6 mt-0 pb-5">
             <SheetHeader>
               <SheetTitle>Add Product</SheetTitle>
@@ -382,7 +383,9 @@ export default function AddProduct() {
                       >
                         Cancel
                       </Button>
-                      <Button type="submit">Add Product</Button>
+                      <SubmitButton type="submit" isLoading={isSending}>
+                        Add product
+                      </SubmitButton>
                     </SheetFooter>
                   </form>
                 </Form>

@@ -39,6 +39,10 @@ export function ProductPreviewCard({
   const [editOpen, setEditOpen] = useState<boolean>(false);
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
 
+  const handleEditClose = () => {
+    setEditOpen(false);
+  };
+
   return (
     <>
       <Card className="w-96 sm:w-full">
@@ -82,7 +86,7 @@ export function ProductPreviewCard({
         </CardHeader>
       </Card>
       <Sheet open={editOpen} onOpenChange={setEditOpen}>
-        <EditProduct productId={productId} />
+        <EditProduct productId={productId} closeSheet={handleEditClose} />
       </Sheet>
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DeleteProduct productId={productId} username={username} />

@@ -38,6 +38,8 @@ import { toast } from 'sonner';
 import { ErrorAlert } from '@/components/ui/error-alert';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';
+import { Loading } from '@/components/ui/loading';
+import { SubmitButton } from '@/components/ui/submit-button';
 
 const formSchema = z.object({
   collection_name: z.string().nonempty({
@@ -64,11 +66,11 @@ export default function AddCollection() {
   const [inputValue, setInputValue] = useState('');
   const username = useSelector((state: RootState) => state.user.currentUser);
 
-  const { data } = useQuery(['product_data', username], () =>
+  const { data, isLoading } = useQuery(['product_data', username], () =>
     productsAPI(username!)
   );
 
-  const { mutate } = useMutation(createCollectionsAPI, {
+  const { mutate, isLoading: isSending } = useMutation(createCollectionsAPI, {
     onSuccess: (response) => {
       if (response.status === 201) {
         toast(
@@ -164,6 +166,10 @@ export default function AddCollection() {
   const selectables = data?.data?.filter(
     (Products: Products) => !selected.includes(Products)
   );
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -295,7 +301,7 @@ export default function AddCollection() {
                                               className={'cursor-pointer gap-2'}
                                             >
                                               <img
-                                                className="w-10 h-10 aspect-square"
+                                                className="w-12 h-12 aspect-square object-cover"
                                                 src={item.product_image}
                                               />
                                               {item.product_name}
@@ -347,7 +353,9 @@ export default function AddCollection() {
                       >
                         Cancel
                       </Button>
-                      <Button type="submit">Add Product</Button>
+                      <SubmitButton type="submit" isLoading={isSending}>
+                        Add collection
+                      </SubmitButton>
                     </SheetFooter>
                   </form>
                 </Form>

@@ -40,6 +40,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { SubmitButton } from '@/components/ui/submit-button';
+import { Loading } from '@/components/ui/loading';
 
 const formSchema = z.object({
   collection_name: z.string().nonempty({
@@ -76,13 +78,13 @@ export default function ManageCollection({
   const [inputValue, setInputValue] = useState('');
   const username = useSelector((state: RootState) => state.user.currentUser);
 
-  const { data } = useQuery(['product_data', username], () =>
+  const { data, isLoading } = useQuery(['product_data', username], () =>
     productsAPI(username!)
   );
 
   const queryClient = useQueryClient();
 
-  const { mutate } = useMutation(ManageCollectionsAPI, {
+  const { mutate, isLoading: isSending } = useMutation(ManageCollectionsAPI, {
     onSuccess: (response) => {
       if (response.status === 201) {
         queryClient.invalidateQueries({
@@ -219,6 +221,9 @@ export default function ManageCollection({
   // const selectables = data?.data?.filter(
   //   (products: Products) => !selected.indexOf(products)
   // );
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -401,7 +406,9 @@ export default function ManageCollection({
                       >
                         Cancel
                       </Button>
-                      <Button type="submit">Apply</Button>
+                      <SubmitButton type="submit" isLoading={isSending}>
+                        Apply
+                      </SubmitButton>
                     </SheetFooter>
                   </form>
                 </Form>
