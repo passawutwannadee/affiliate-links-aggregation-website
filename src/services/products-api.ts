@@ -67,6 +67,35 @@ export const addProductsAPI = async (
   }
 };
 
+export const editProductsAPI = async (
+  info: ProductType
+): Promise<AxiosResponse> => {
+  // Create a FormData object
+  const formData = new FormData();
+
+  // Append data to the FormData object
+  formData.append('product_id', info.productId);
+  formData.append('product_name', info.productName);
+  formData.append('product_description', info.productDescription);
+  formData.append('category_id', info.category);
+  formData.append('product_image', info.productImage);
+  info.productLinks.forEach((element, index) => {
+    formData.append(`product_links[${index}]`, element.value);
+  });
+
+  try {
+    const response = await axiosInstance.put(`/products`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data', // Important for sending FormData
+      },
+    });
+
+    return response;
+  } catch (err: any) {
+    return err;
+  }
+};
+
 export const removeProductsAPI = async (
   args: string
 ): Promise<AxiosResponse> => {

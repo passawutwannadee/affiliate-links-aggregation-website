@@ -1,11 +1,10 @@
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider } from 'react-query';
 import { ThemeProvider } from './components/theme-provider';
 import PageRoutes from './routes/page-routes';
 import { Toaster } from './components/ui/sonner';
 import { Provider } from 'react-redux';
 import store from './redux/store/store';
-
-const queryClient = new QueryClient();
+import { queryClient } from './configs/query-client';
 
 function App() {
   return (
