@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-
-import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -18,15 +16,8 @@ import { changePasswordAPI } from '@/services/password-api';
 import { useMutation } from 'react-query';
 import { ErrorAlert } from '@/components/ui/error-alert';
 import { toast } from 'sonner';
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select"
-// import { Textarea } from "@/components/ui/textarea"
-// import { toast } from "@/components/ui/use-toast"
+import { SubmitButton } from '@/components/ui/submit-button';
+import { AxiosError } from 'axios';
 
 const passwordFormSchema = z
   .object({
@@ -50,15 +41,6 @@ const passwordFormSchema = z
 
 type ProfileFormValues = z.infer<typeof passwordFormSchema>;
 
-// // This can come from your database or API.
-// const defaultValues: Partial<ProfileFormValues> = {
-//   bio: 'I own a computer.',
-//   urls: [
-//     { value: 'https://shadcn.com' },
-//     { value: 'http://twitter.com/shadcn' },
-//   ],
-// };
-
 export function PasswordForm() {
   const [wrongPassword, setWrongPassword] = useState(false);
 
@@ -67,38 +49,36 @@ export function PasswordForm() {
     mode: 'onChange',
   });
 
-  const { mutate, isLoading } = useMutation(changePasswordAPI, {
+  const { mutate, isLoading: isSending } = useMutation(changePasswordAPI, {
     onSuccess: (response) => {
-      if (response.data) {
-        if (response.data.status === 400) {
-          setWrongPassword(true);
-        }
+      if (response.status === 200) {
+        toast(
+          <>
+            {' '}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              data-slot="icon"
+              className="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            <p>Password changed successfully.</p>
+          </>
+        );
       }
-
-      if (response.data) {
-        if (response.data.status === 200) {
-          toast(
-            <>
-              {' '}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                data-slot="icon"
-                className="w-6 h-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                />
-              </svg>
-              <p>Password changed successfully.</p>
-            </>
-          );
-        }
+    },
+    onError: (error: AxiosError) => {
+      console.log(error);
+      if (error.status === 409) {
+        setWrongPassword(true);
       }
     },
   });
@@ -132,7 +112,6 @@ export function PasswordForm() {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="new_password"
@@ -151,7 +130,6 @@ export function PasswordForm() {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="confirm_password"
@@ -165,20 +143,9 @@ export function PasswordForm() {
             </FormItem>
           )}
         />
-        {isLoading ? (
-          <Button disabled type="submit">
-            <l-ring-2
-              size="15"
-              stroke="2"
-              stroke-length="0.25"
-              bg-opacity="0.1"
-              speed="0.8"
-              color="black"
-            />
-          </Button>
-        ) : (
-          <Button type="submit">Update profile</Button>
-        )}
+        <SubmitButton type="submit" isLoading={isSending}>
+          Change Password
+        </SubmitButton>
       </form>
     </Form>
   );

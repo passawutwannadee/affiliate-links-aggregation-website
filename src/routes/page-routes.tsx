@@ -22,7 +22,12 @@ import { useQuery } from 'react-query';
 import { accountAPI } from '@/services/account-api';
 import { session } from '@/lib/session';
 import { useDispatch } from 'react-redux';
-import { setCurrentUser, setEmailVerified } from '@/redux/features/userSlice';
+import {
+  setCurrentUser,
+  setCurrentUserDN,
+  setCurrentUserPFP,
+  setEmailVerified,
+} from '@/redux/features/userSlice';
 
 function PageRoutes() {
   const dispatch = useDispatch();
@@ -32,6 +37,8 @@ function PageRoutes() {
       if (response.status === 200) {
         dispatch(setCurrentUser(response.data.username));
         dispatch(setEmailVerified(response.data.email_verify));
+        dispatch(setCurrentUserDN(response.data.display_name));
+        dispatch(setCurrentUserPFP(response.data.profile_picture));
       }
     },
   });
@@ -44,7 +51,7 @@ function PageRoutes() {
   return (
     <>
       <BrowserRouter>
-        <MainNav profilePicture={data ? data.data.profile_picture : null} />
+        <MainNav />
         <Suspense fallback={<Loading />}>
           <Routes>
             <Route path="*" element={<NotFound />} />

@@ -52,7 +52,7 @@ const formSchema = z.object({
   product_name: z.string().nonempty({
     message: 'Please enter product name.',
   }),
-  product_description: z.string().min(2).max(512).nonempty({
+  product_description: z.string().min(2).max(1024).nonempty({
     message: 'Please enter product name.',
   }),
   category: z.string().nonempty({

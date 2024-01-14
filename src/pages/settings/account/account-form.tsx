@@ -14,6 +14,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store/store';
+// import { useState } from 'react';
 
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -23,12 +26,12 @@ const ACCEPTED_IMAGE_TYPES = [
 ];
 
 const profileFormSchema = z.object({
-  username: z
-    .string()
-    .min(2, {
-      message: 'Username must be at least 2 characters.',
-    })
-    .optional(),
+  display_name: z.string().min(2, {
+    message: 'Display name must be at least 2 characters.',
+  }),
+  username: z.string().min(2, {
+    message: 'Username must be at least 2 characters.',
+  }),
   profile_picture: z
     .any()
     .refine(
@@ -40,13 +43,24 @@ const profileFormSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
-// This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-  username: 'Hello World.',
-  profile_picture: 'https://avatars.githubusercontent.com/u/73711390?v=4',
-};
-
 export function AccountForm() {
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  const currentUserDN = useSelector(
+    (state: RootState) => state.user.currentUserDN
+  );
+  const currentUserPFP = useSelector(
+    (state: RootState) => state.user.currentUserPFP
+  );
+
+  // const [usernameTaken, setUsernameTaken] = useState<boolean>(false);
+
+  // This can come from your database or API.
+  const defaultValues: Partial<ProfileFormValues> = {
+    display_name: currentUser!,
+    username: currentUserDN!,
+    profile_picture: currentUserPFP!,
+  };
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
@@ -96,6 +110,23 @@ export function AccountForm() {
         />
         <FormField
           control={form.control}
+          name="display_name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Display Name</FormLabel>
+              <FormControl>
+                <Input placeholder="shadcn" {...field} />
+              </FormControl>
+              <FormDescription>
+                This is the name that will be displayed on your profile.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="username"
           render={({ field }) => (
             <FormItem>
@@ -104,7 +135,8 @@ export function AccountForm() {
                 <Input placeholder="shadcn" {...field} />
               </FormControl>
               <FormDescription>
-                This is the name that will be displayed on your profile.
+                This is the name that will also be used for your URL. (Username
+                must be unique.)
               </FormDescription>
               <FormMessage />
             </FormItem>

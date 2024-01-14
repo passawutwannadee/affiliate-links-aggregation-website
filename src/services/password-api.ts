@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '@/middlewares/axios-interceptors';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 interface PasswordCredentials {
   old_password: string;
@@ -17,7 +17,11 @@ export const changePasswordAPI = async (
     });
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (e) {
+    if (axios.isAxiosError(e)) {
+      throw e.response;
+    } else {
+      throw e;
+    }
   }
 };
