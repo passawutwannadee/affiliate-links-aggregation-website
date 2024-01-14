@@ -17,8 +17,11 @@ import { User } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';
 
-export function MainNav({ profilePicture }: { profilePicture: string }) {
+export function MainNav() {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  const currentUserPFP = useSelector(
+    (state: RootState) => state.user.currentUserPFP
+  );
 
   const { mutate } = useMutation(logoutAPI, {
     onSuccess: (response) => {
@@ -50,7 +53,7 @@ export function MainNav({ profilePicture }: { profilePicture: string }) {
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Avatar className="h-12 w-12">
-                    <AvatarImage src={profilePicture} />
+                    <AvatarImage src={currentUserPFP!} />
                     <AvatarFallback>
                       <User />
                     </AvatarFallback>

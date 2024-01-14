@@ -73,9 +73,15 @@ export default function Product() {
                 </DropdownMenu>
               </div>
             </div>
-            <p className="text-1xl font-medium break-words">
-              {data!.data[0].product_description}
-            </p>
+            <div>
+              {data!.data[0].product_description
+                .split('\n')
+                .map((line: string, index: number) => (
+                  <p className="m-0" key={index}>
+                    {line}
+                  </p>
+                ))}
+            </div>
 
             <div className="grid grid-cols-2 gap-6 w-full">
               {data!.data[0].links.map((_items: null, index: number) => (

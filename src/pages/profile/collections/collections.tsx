@@ -29,6 +29,7 @@ export default function Collections() {
               collection_id: string;
               collection_name: string;
               collection_description: string;
+              product_images: string[];
             },
             index: number
           ) => (
@@ -37,6 +38,7 @@ export default function Collections() {
               collectionId={item.collection_id}
               title={item.collection_name}
               description={item.collection_description}
+              productImages={item.product_images}
               username={username!}
             />
           )

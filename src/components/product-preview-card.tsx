@@ -45,7 +45,7 @@ export function ProductPreviewCard({
 
   return (
     <>
-      <Card className="w-96 sm:w-full">
+      <Card className="w-96 sm:w-full h-full">
         <Link to={`/product/${productId}`}>
           <img
             src={image}

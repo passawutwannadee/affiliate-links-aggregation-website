@@ -49,7 +49,7 @@ export default function Profile() {
             <p className="text-2xl lg:text-3xl font-bold">
               {data!.data.display_name}
             </p>
-            <p className="textsm lg:text-sm font-bold text- text-primary/80">
+            <p className="text-md lg:text-lg font-bold text-primary/80">
               @{data!.data.username}
             </p>
           </div>
