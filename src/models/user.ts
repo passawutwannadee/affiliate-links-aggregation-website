@@ -1,5 +1,6 @@
 interface User {
   username: string;
+  displayName: string;
 }
 
 export type { User as UserType };

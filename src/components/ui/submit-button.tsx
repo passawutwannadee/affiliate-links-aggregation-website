@@ -7,11 +7,20 @@ export interface SubmitButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   isLoading?: boolean;
+  className?: string;
 }
 
-export function SubmitButton({ isLoading, children }: SubmitButtonProps) {
+export function SubmitButton({
+  isLoading,
+  children,
+  className,
+}: SubmitButtonProps) {
   return (
-    <Button className="w-full" type="submit" disabled={isLoading}>
+    <Button
+      className={'w-full ' + className}
+      type="submit"
+      disabled={isLoading}
+    >
       {isLoading && (
         <Loader2 className="animate-spin stroke-primary-foreground w-5 h-5 mr-1 stroke-[2.5px]" />
       )}

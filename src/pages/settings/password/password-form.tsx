@@ -36,7 +36,11 @@ const passwordFormSchema = z
   })
   .refine((data) => data.new_password === data.confirm_password, {
     message: 'Passwords does not match.',
-    path: ['confirmpassword'],
+    path: ['confirm_password'],
+  })
+  .refine((data) => data.new_password !== data.old_password, {
+    message: 'New password must not be the same as previous password.',
+    path: ['new_password'],
   });
 
 type ProfileFormValues = z.infer<typeof passwordFormSchema>;
@@ -143,7 +147,7 @@ export function PasswordForm() {
             </FormItem>
           )}
         />
-        <SubmitButton type="submit" isLoading={isSending}>
+        <SubmitButton type="submit" isLoading={isSending} className="w-auto">
           Change Password
         </SubmitButton>
       </form>
