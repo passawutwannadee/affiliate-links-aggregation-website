@@ -2,7 +2,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -16,6 +15,11 @@ import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';
+import { editProfileAPI, editProfilePictureAPI } from '@/services/account-api';
+import { useMutation } from 'react-query';
+import { toast } from 'sonner';
+import { queryClient } from '@/configs/query-client';
+import { SubmitButton } from '@/components/ui/submit-button';
 // import { useState } from 'react';
 
 const ACCEPTED_IMAGE_TYPES = [
@@ -52,13 +56,56 @@ export function AccountForm() {
     (state: RootState) => state.user.currentUserPFP
   );
 
+  const { mutate, isLoading: isSending } = useMutation(editProfileAPI, {
+    onSuccess: (response) => {
+      if (response.status === 200) {
+        queryClient.invalidateQueries({
+          queryKey: ['account_data'],
+        });
+        toast(
+          <>
+            {' '}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              data-slot="icon"
+              className="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            <p>Successfully update profile.</p>
+          </>
+        );
+      }
+    },
+  });
+
+  const { mutate: mutatePicture, isLoading: isSendingPicture } = useMutation(
+    editProfilePictureAPI,
+    {
+      onSuccess: (response) => {
+        if (response.status === 200) {
+          queryClient.invalidateQueries({
+            queryKey: ['account_data'],
+          });
+        }
+      },
+    }
+  );
+
   // const [usernameTaken, setUsernameTaken] = useState<boolean>(false);
 
   // This can come from your database or API.
   const defaultValues: Partial<ProfileFormValues> = {
     display_name: currentUser!,
     username: currentUserDN!,
-    profile_picture: currentUserPFP!,
   };
 
   const form = useForm<ProfileFormValues>({
@@ -68,15 +115,10 @@ export function AccountForm() {
   });
 
   function onSubmit(data: ProfileFormValues) {
-    console.log(data);
-    // toast({
-    //   title: 'You submitted the following values:',
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
+    if (data.profile_picture) {
+      mutatePicture(data.profile_picture);
+    }
+    mutate({ displayName: data.display_name, username: data.username });
   }
 
   return (
@@ -89,7 +131,7 @@ export function AccountForm() {
             <FormItem>
               <div className="flex flex-col md:flex-row gap-10">
                 <Avatar className="h-36 w-36">
-                  <AvatarImage src={defaultValues.profile_picture} />
+                  <AvatarImage src={currentUserPFP!} />
                   <AvatarFallback />
                 </Avatar>
                 <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -142,7 +184,13 @@ export function AccountForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Update profile</Button>
+        <SubmitButton
+          type="submit"
+          isLoading={isSending && isSendingPicture}
+          className="w-auto"
+        >
+          Update profile
+        </SubmitButton>
       </form>
     </Form>
   );
