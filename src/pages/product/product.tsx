@@ -4,20 +4,32 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { productAPI } from '@/services/products-api';
 import { useQuery } from 'react-query';
 import { Loading } from '@/components/ui/loading';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Report from '@/components/report';
+import { useState } from 'react';
+import { Sheet } from '@/components/ui/sheet';
+import { session } from '@/lib/session';
+import { toast } from 'sonner';
 
 export default function Product() {
   const { id } = useParams<string>();
+  const [reportOpen, setReportOpen] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const { data, isLoading } = useQuery(['product_data', id], () =>
     productAPI(id!)
   );
+
+  const handleReportClose = () => {
+    setReportOpen(false);
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -64,10 +76,21 @@ export default function Product() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56">
                     <DropdownMenuGroup>
-                      <Report
-                        link={window.location.href}
-                        username={data!.data[0].username}
-                      />
+                      <DropdownMenuItem
+                        onSelect={
+                          session()
+                            ? () => setReportOpen(true)
+                            : () =>
+                                toast('Do you want to report this product?', {
+                                  action: {
+                                    label: 'Sign in',
+                                    onClick: () => navigate('/login'),
+                                  },
+                                })
+                        }
+                      >
+                        Report
+                      </DropdownMenuItem>
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -103,6 +126,12 @@ export default function Product() {
           </div>
         </div>
       </div>
+      <Sheet open={reportOpen} onOpenChange={setReportOpen}>
+        <Report
+          username={data!.data[0].username}
+          closeSheet={handleReportClose}
+        />
+      </Sheet>
     </>
   );
 }

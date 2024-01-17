@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -19,20 +18,20 @@ import {
 } from '@/components/ui/select';
 import { Select } from '@radix-ui/react-select';
 import {
-  Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from './ui/sheet';
-import { useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import { reportCategoriesAPI, submitReportsAPI } from '@/services/report-api';
 import { Required } from './ui/required';
 import { Loading } from './ui/loading';
 import { toast } from 'sonner';
+import { SubmitButton } from './ui/submit-button';
+import { Button } from './ui/button';
 
 const formSchema = z.object({
   description: z
@@ -48,15 +47,12 @@ const formSchema = z.object({
   }),
 });
 
-export default function Report({
-  link,
-  username,
-}: {
-  link: string;
+interface ChildProps {
   username: string;
-}) {
-  const [open, setOpen] = useState<boolean>(false);
+  closeSheet: () => void;
+}
 
+export default function Report({ username, closeSheet }: ChildProps) {
   // get categories
   const { data, isLoading } = useQuery(['report_categories'], () =>
     reportCategoriesAPI()
@@ -67,7 +63,6 @@ export default function Report({
       if (response.status === 201) {
         toast(
           <>
-            {' '}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -86,8 +81,8 @@ export default function Report({
             <p>Report successfully submitted.</p>
           </>
         );
-        setOpen(false);
       }
+      closeSheet();
     },
   });
 
@@ -110,7 +105,7 @@ export default function Report({
     mutate({
       reportCategoryId: reportCategoryId,
       reportInformation: reportInformation,
-      reportLink: link,
+      reportLink: window.location.href,
       username: username,
     });
   }
@@ -120,75 +115,69 @@ export default function Report({
   }
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger className="w-full">
-        <Button variant="ghost" className="w-full justify-start">
-          Report
-        </Button>
-      </SheetTrigger>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>Report</SheetTitle>
-        </SheetHeader>
-        <SheetDescription>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Report Category
-                      <Required />
-                    </FormLabel>
-                    <Select onValueChange={field.onChange}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select Category" />
-                      </SelectTrigger>
-                      <SelectContent className="">
-                        {data!.data.map(
-                          (value: {
-                            report_catogory_name: string;
-                            report_category_id: string;
-                          }) => {
-                            return (
-                              <SelectItem
-                                key={value.report_category_id}
-                                value={value.report_category_id.toString()}
-                                className="hover:bg-primary/10"
-                              >
-                                {value.report_catogory_name}
-                              </SelectItem>
-                            );
-                          }
-                        )}
-                      </SelectContent>
-                      <FormMessage />
-                    </Select>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Report Detail</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        id="description"
-                        // placeholder="Please include all information relevant to your issue."
-                        {...field}
-                      />
-                    </FormControl>
+    <SheetContent>
+      <SheetHeader>
+        <SheetTitle>Report</SheetTitle>
+      </SheetHeader>
+      <SheetDescription>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Report Category
+                    <Required />
+                  </FormLabel>
+                  <Select onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select Category" />
+                    </SelectTrigger>
+                    <SelectContent className="">
+                      {data!.data.map(
+                        (value: {
+                          report_catogory_name: string;
+                          report_category_id: string;
+                        }) => {
+                          return (
+                            <SelectItem
+                              key={value.report_category_id}
+                              value={value.report_category_id.toString()}
+                              className="hover:bg-primary/10"
+                            >
+                              {value.report_catogory_name}
+                            </SelectItem>
+                          );
+                        }
+                      )}
+                    </SelectContent>
                     <FormMessage />
-                  </FormItem>
-                )}
-              />
+                  </Select>
+                </FormItem>
+              )}
+            />
 
-              {/* <FormField
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Report Detail</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      id="description"
+                      // placeholder="Please include all information relevant to your issue."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* <FormField
                   control={form.control}
                   name="confirmpassword"
                   render={({ field }) => (
@@ -207,28 +196,21 @@ export default function Report({
                   )}
                 /> */}
 
-              <SheetFooter>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => {
-                    setOpen(false);
-                  }}
-                >
-                  Cancel
+            <SheetFooter>
+              <SheetClose>
+                <Button variant="secondary" type="button">
+                  Close
                 </Button>
-                <Button className="w-full" type="submit">
-                  Report
-                </Button>
-              </SheetFooter>
-            </form>
-          </Form>
-        </SheetDescription>
-        {/* <AlertDialogFooter>
+              </SheetClose>
+              <SubmitButton type="submit">Submit</SubmitButton>
+            </SheetFooter>
+          </form>
+        </Form>
+      </SheetDescription>
+      {/* <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction type="submit">Continue</AlertDialogAction>
         </AlertDialogFooter> */}
-      </SheetContent>
-    </Sheet>
+    </SheetContent>
   );
 }
