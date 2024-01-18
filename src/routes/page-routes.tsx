@@ -28,10 +28,11 @@ import {
   setCurrentUserPFP,
   setEmailVerified,
 } from '@/redux/features/userSlice';
+import VerifyEmailRoute from './verify-email-route';
 
 function PageRoutes() {
   const dispatch = useDispatch();
-  const { data, isLoading } = useQuery(['account_data'], () => accountAPI(), {
+  const { isLoading } = useQuery(['account_data'], () => accountAPI(), {
     enabled: session(),
     onSuccess: (response) => {
       if (response.status === 200) {
@@ -61,7 +62,9 @@ function PageRoutes() {
               path="/verify-email/:email_verify_token"
               element={<VerifyEmail />}
             />
-            <Route path="/verify-email" element={<VerifyEmailAlert />} />
+            <Route element={<VerifyEmailRoute />}>
+              <Route path="/verify-email" element={<VerifyEmailAlert />} />
+            </Route>
 
             {/* ///////////////////////// PUBLIC ROUTES ////////////////////////// */}
             <Route element={<PublicRoutes />}>
@@ -72,13 +75,7 @@ function PageRoutes() {
             </Route>
 
             {/* ///////////////////////// PRIVATE ROUTES ////////////////////////// */}
-            <Route
-              element={
-                <PrivateRoutes
-                  emailVerified={data ? data.data.email_verify : null}
-                />
-              }
-            >
+            <Route element={<PrivateRoutes />}>
               <Route path="/collection/:id" element={<Collection />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route

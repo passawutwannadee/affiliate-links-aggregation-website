@@ -16,10 +16,17 @@ import { useState } from 'react';
 import { Sheet } from '@/components/ui/sheet';
 import { session } from '@/lib/session';
 import { toast } from 'sonner';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store/store';
+import { User } from 'lucide-react';
 
 export default function Product() {
   const { id } = useParams<string>();
   const [reportOpen, setReportOpen] = useState<boolean>(false);
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  const emailVerified = useSelector(
+    (state: RootState) => state.user.emailVerified
+  );
 
   const navigate = useNavigate();
 
@@ -63,37 +70,43 @@ export default function Product() {
               <div className="flex items-center gap-2">
                 <Avatar className="h-12 w-12">
                   <AvatarImage src={data!.data[0].profile_picture} />
-                  <AvatarFallback />
+                  <AvatarFallback>
+                    <User className="w-2/4 h-2/4" />
+                  </AvatarFallback>
                 </Avatar>
                 <p className="text-1xl font-semibold text-primary/80">
                   {data!.data[0].display_name}
                 </p>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="text-xl">
-                      ⋯
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem
-                        onSelect={
-                          session()
-                            ? () => setReportOpen(true)
-                            : () =>
-                                toast('Do you want to report this product?', {
-                                  action: {
-                                    label: 'Sign in',
-                                    onClick: () => navigate('/login'),
-                                  },
-                                })
-                        }
-                      >
-                        Report
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                {currentUser !== data!.data[0].username ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="text-xl">
+                        ⋯
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem
+                          onSelect={
+                            session() && emailVerified === 1
+                              ? () => setReportOpen(true)
+                              : session() && emailVerified === 0
+                              ? () => navigate('/verify-email')
+                              : () =>
+                                  toast('Do you want to report this product?', {
+                                    action: {
+                                      label: 'Sign in',
+                                      onClick: () => navigate('/login'),
+                                    },
+                                  })
+                          }
+                        >
+                          Report
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : null}
               </div>
             </div>
             <div>

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ModeToggle } from './mode-toggle';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import {
@@ -14,15 +14,18 @@ import { session } from '@/lib/session';
 import { useMutation } from 'react-query';
 import { logoutAPI } from '@/services/auth-api';
 import { User } from 'lucide-react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';
+import { reset } from '@/redux/features/userSlice';
 
 export function MainNav() {
+  const dispatch = useDispatch();
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
   const currentUserPFP = useSelector(
     (state: RootState) => state.user.currentUserPFP
   );
 
+  const navigate = useNavigate();
   const { mutate } = useMutation(logoutAPI, {
     onSuccess: (response) => {
       // login is successful
@@ -31,6 +34,11 @@ export function MainNav() {
       }
     },
   });
+
+  const handleLogout = () => {
+    navigate('/login');
+    dispatch(reset());
+  };
 
   const deleteCookie = () => {
     document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
@@ -77,7 +85,7 @@ export function MainNav() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button>Login</Button>
+              <Button onClick={handleLogout}>Login</Button>
             )}
 
             <ModeToggle />

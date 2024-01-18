@@ -21,12 +21,12 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { loginAPI } from '@/services/auth-api';
 import { useMutation } from 'react-query';
 import { ring2 } from 'ldrs';
 import { SubmitButton } from '@/components/ui/submit-button';
+import { toast } from 'sonner';
+import { ErrorAlert } from '@/components/ui/error-alert';
 
 ring2.register();
 
@@ -40,8 +40,6 @@ const formSchema = z.object({
 });
 
 export default function Login() {
-  const [loginFalse, setLoginFalse] = useState(false);
-
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,7 +61,11 @@ export default function Login() {
 
       // login is not successful wrong password or email
       if (response.status === 200 && response.data.login === false) {
-        setLoginFalse(true);
+        toast(
+          <>
+            <ErrorAlert>Incorrect email or password.</ErrorAlert>
+          </>
+        );
       }
     },
   });
@@ -72,8 +74,6 @@ export default function Login() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-
-    setLoginFalse(false);
 
     const email = values.email;
     const password = values.password;
@@ -120,15 +120,6 @@ export default function Login() {
                     </FormItem>
                   )}
                 />
-
-                {loginFalse ? (
-                  <Alert variant="destructive">
-                    {/* <ExclamationTriangleIcon className="h-4 w-4" /> */}
-                    <AlertDescription>
-                      Incorrect email or password
-                    </AlertDescription>
-                  </Alert>
-                ) : null}
 
                 <SubmitButton isLoading={isLoading}>Login</SubmitButton>
               </form>

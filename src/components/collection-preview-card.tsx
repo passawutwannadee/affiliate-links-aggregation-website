@@ -67,11 +67,13 @@ export function CollectionPreviewCard({
           </Link>
         ) : productImages.length > 1 ? (
           <Link to={`/collection/${collectionId}`}>
-            <div className="flex flex-row border rounded-t-lg">
-              <img
-                src={productImages[0]}
-                className="w-full aspect-[1/1] object-cover hover:cursor-pointer"
-              />
+            <div className="flex flex-row border rounded-t-lg w-full">
+              <div className="flex w-full">
+                <img
+                  src={productImages[0]}
+                  className="w-full aspect-[1/1] object-cover hover:cursor-pointer"
+                />
+              </div>
               <div className="w-36 flex justify-center items-center">
                 <p className="text-5xl text-primary/50">
                   +{productImages.length - 1}
