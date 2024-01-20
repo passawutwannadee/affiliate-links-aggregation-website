@@ -33,21 +33,25 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { useMutation } from 'react-query';
+import { getUserReports } from '@/services/admin-api';
+import { Loading } from '@/components/ui/loading';
+import { useEffect } from 'react';
 
-const data: Report[] = [
-  {
-    reported_user: 'John Doe',
-    report_category: 'Illegal Item',
-    report_status: 'processing',
-    report_detail:
-      'This guy pretends to sell fry chicken, but he actually is selling crystal meth.',
-  },
+let data: Report[] = [
+  // {
+  //   reported_user: 'John Doe',
+  //   report_category: 'Illegal Item',
+  //   report_status: 'processing',
+  //   report_detail:
+  //     'This guy pretends to sell fry chicken, but he actually is selling crystal meth.',
+  // },
 ];
 
 export type Report = {
   reported_user: string;
   report_category: string;
-  report_status: 'processing' | 'closed';
+  // report_status: 'processing' | 'closed';
   report_detail: string;
 };
 
@@ -160,6 +164,24 @@ export function AdminDashboard() {
       rowSelection,
     },
   });
+
+  const { mutate, isLoading } = useMutation(getUserReports, {
+    onSuccess: (response) => {
+      data = response.data;
+    },
+  });
+
+  useEffect(() => {
+    onSubmit();
+  }, []);
+
+  const onSubmit = () => {
+    mutate({});
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="container mx-auto">
