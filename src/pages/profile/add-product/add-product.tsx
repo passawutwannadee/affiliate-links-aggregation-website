@@ -49,12 +49,22 @@ const ACCEPTED_IMAGE_TYPES = [
 ];
 
 const formSchema = z.object({
-  product_name: z.string().nonempty({
-    message: 'Please enter product name.',
-  }),
-  product_description: z.string().min(2).max(1024).nonempty({
-    message: 'Please enter product name.',
-  }),
+  product_name: z
+    .string()
+    .nonempty({
+      message: 'Please enter product name.',
+    })
+    .min(1)
+    .max(30, { message: 'Product name cannot be longer than 30 characters.' }),
+  product_description: z
+    .string()
+    .nonempty({
+      message: 'Please enter product name.',
+    })
+    .min(1)
+    .max(1024, {
+      message: 'Product description cannot be longer than 1024 characters.',
+    }),
   category: z.string().nonempty({
     message: 'Please enter product name.',
   }),
@@ -72,7 +82,11 @@ const formSchema = z.object({
         .nonempty({
           message: 'Please enter product URL.',
         })
-        .url({ message: 'Please enter a valid URL.' }),
+        .url({ message: 'Please enter a valid URL.' })
+        .min(1)
+        .max(255, {
+          message: 'Links cannot be longer than 1024 characters.',
+        }),
     })
   ),
 });

@@ -24,14 +24,14 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from './ui/sheet';
+} from '@/components/ui/sheet';
 import { useMutation, useQuery } from 'react-query';
 import { reportCategoriesAPI, submitReportsAPI } from '@/services/report-api';
-import { Required } from './ui/required';
-import { Loading } from './ui/loading';
+import { Required } from '@/components/ui/required';
+import { Loading } from '@/components/ui/loading';
 import { toast } from 'sonner';
-import { SubmitButton } from './ui/submit-button';
-import { Button } from './ui/button';
+import { SubmitButton } from '@/components/ui/submit-button';
+import { Button } from '@/components/ui/button';
 
 const formSchema = z.object({
   description: z
@@ -50,13 +50,12 @@ const formSchema = z.object({
 interface ChildProps {
   username: string;
   closeSheet: () => void;
-  parentId: number;
 }
 
-export default function Report({ username, closeSheet, parentId }: ChildProps) {
+export default function TicketDetails({ username, closeSheet }: ChildProps) {
   // get categories
-  const { data, isLoading } = useQuery(['report_categories', parentId], () =>
-    reportCategoriesAPI(parentId)
+  const { data, isLoading } = useQuery(['report_categories'], () =>
+    reportCategoriesAPI(2)
   );
 
   const { mutate } = useMutation(submitReportsAPI, {
@@ -121,6 +120,19 @@ export default function Report({ username, closeSheet, parentId }: ChildProps) {
         <SheetTitle>Report</SheetTitle>
       </SheetHeader>
       <SheetDescription>
+        <div>
+          <p className="font-bold">Reporter's Email</p>
+          <p>Reporter's Email</p>
+        </div>
+        <div>
+          <p className="font-bold">Reporter's Email</p>
+          <p>Reporter's Email</p>
+        </div>
+        <div>
+          <p className="font-bold">Reporter's Email</p>
+          <p>Reporter's Email</p>
+        </div>
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             <FormField
@@ -139,7 +151,7 @@ export default function Report({ username, closeSheet, parentId }: ChildProps) {
                     <SelectContent className="">
                       {data!.data.map(
                         (value: {
-                          report_category_name: string;
+                          report_catogory_name: string;
                           report_category_id: string;
                         }) => {
                           return (
@@ -148,7 +160,7 @@ export default function Report({ username, closeSheet, parentId }: ChildProps) {
                               value={value.report_category_id.toString()}
                               className="hover:bg-primary/10"
                             >
-                              {value.report_category_name}
+                              {value.report_catogory_name}
                             </SelectItem>
                           );
                         }
@@ -179,23 +191,23 @@ export default function Report({ username, closeSheet, parentId }: ChildProps) {
             />
 
             {/* <FormField
-                  control={form.control}
-                  name="confirmpassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Product Picture</FormLabel>
-                      <Input
-                        className="w-full"
-                        id="picture"
-                        type="file" 
-                        onChange={(event) => {
-                          onChange(event.target.files);
-                        }}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                /> */}
+                    control={form.control}
+                    name="confirmpassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Product Picture</FormLabel>
+                        <Input
+                          className="w-full"
+                          id="picture"
+                          type="file" 
+                          onChange={(event) => {
+                            onChange(event.target.files);
+                          }}
+                        />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  /> */}
 
             <SheetFooter>
               <SheetClose>
@@ -208,10 +220,6 @@ export default function Report({ username, closeSheet, parentId }: ChildProps) {
           </form>
         </Form>
       </SheetDescription>
-      {/* <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction type="submit">Continue</AlertDialogAction>
-        </AlertDialogFooter> */}
     </SheetContent>
   );
 }

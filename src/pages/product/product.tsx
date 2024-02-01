@@ -10,7 +10,7 @@ import {
 import { productAPI } from '@/services/products-api';
 import { useQuery } from 'react-query';
 import { Loading } from '@/components/ui/loading';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Report from '@/components/report';
 import { useState } from 'react';
 import { Sheet } from '@/components/ui/sheet';
@@ -67,16 +67,26 @@ export default function Product() {
               <p className="text-4xl font-bold text-center lg:text-left">
                 {data!.data[0].product_name}
               </p>
-              <div className="flex items-center gap-2">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src={data!.data[0].profile_picture} />
-                  <AvatarFallback>
-                    <User className="w-2/4 h-2/4" />
-                  </AvatarFallback>
-                </Avatar>
-                <p className="text-1xl font-semibold text-primary/80">
-                  {data!.data[0].display_name}
-                </p>
+              <div className="flex items-center gap-2 pt-2">
+                <Link
+                  to={`/profile/${data!.data[0].display_name}`}
+                  className="flex gap-2"
+                >
+                  <Avatar className="h-12 w-12">
+                    <AvatarImage src="https://avatars.githubusercontent.com/u/73711390?v=4" />
+                    <AvatarFallback>
+                      <User className="w-2/4 h-2/4" />
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col items-start">
+                    <p className="text-xl font-bold">
+                      {data!.data[0].display_name}
+                    </p>
+                    <p className="text-sm font-bold text- text-primary/80">
+                      @{data!.data[0].username}
+                    </p>
+                  </div>
+                </Link>
                 {currentUser !== data!.data[0].username ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -143,6 +153,7 @@ export default function Product() {
         <Report
           username={data!.data[0].username}
           closeSheet={handleReportClose}
+          parentId={2}
         />
       </Sheet>
     </>

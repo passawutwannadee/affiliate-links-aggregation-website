@@ -5,6 +5,8 @@ const initialState = {
   emailVerified: null,
   currentUserDN: null,
   currentUserPFP: null,
+  currentRole: null,
+  currentUserBanStatus: null,
 };
 
 const userSlice = createSlice({
@@ -24,6 +26,12 @@ const userSlice = createSlice({
     setCurrentUserPFP: (state, action) => {
       state.currentUserPFP = action.payload;
     },
+    setCurrentRole: (state, action) => {
+      state.currentRole = action.payload;
+    },
+    setCurrentUserBanStatus: (state, action) => {
+      state.currentUserBanStatus = action.payload;
+    },
     // add other user-related reducers here
     reset: () => {
       // Reset the state to its initial values
@@ -37,6 +45,8 @@ export const {
   setEmailVerified,
   setCurrentUserDN,
   setCurrentUserPFP,
+  setCurrentRole,
+  setCurrentUserBanStatus,
   reset,
 } = userSlice.actions;
 
