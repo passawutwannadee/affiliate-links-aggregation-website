@@ -126,7 +126,11 @@ export function ProductPreviewCard({
         </CardHeader>
       </Card>
       <Sheet open={reportOpen} onOpenChange={setReportOpen}>
-        <Report closeSheet={handleReportClose} username={username}></Report>
+        <Report
+          closeSheet={handleReportClose}
+          username={username}
+          parentId={2}
+        ></Report>
       </Sheet>
       <Sheet open={editOpen} onOpenChange={setEditOpen}>
         <EditProduct productId={productId} closeSheet={handleEditClose} />

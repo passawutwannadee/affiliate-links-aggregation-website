@@ -31,7 +31,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { productsAPI } from '@/services/products-api';
 import { createCollectionsAPI } from '@/services/collections-api';
 import { toast } from 'sonner';
@@ -42,12 +42,24 @@ import { Loading } from '@/components/ui/loading';
 import { SubmitButton } from '@/components/ui/submit-button';
 
 const formSchema = z.object({
-  collection_name: z.string().nonempty({
-    message: 'Please enter collection name.',
-  }),
-  collection_description: z.string().nonempty({
-    message: 'Please enter collection description.',
-  }),
+  collection_name: z
+    .string()
+    .nonempty({
+      message: 'Please enter collection name.',
+    })
+    .min(1)
+    .max(50, {
+      message: 'Collection Name cannot be longer than 50 characters.',
+    }),
+  collection_description: z
+    .string()
+    .nonempty({
+      message: 'Please enter collection description.',
+    })
+    .min(1)
+    .max(255, {
+      message: 'Collection description cannot be longer than 255 characters.',
+    }),
   products: z.any().array().min(2, {
     message: 'Please select at least two products.',
   }),
@@ -70,9 +82,14 @@ export default function AddCollection() {
     productsAPI(username!)
   );
 
+  const queryClient = useQueryClient();
+
   const { mutate, isLoading: isSending } = useMutation(createCollectionsAPI, {
     onSuccess: (response) => {
       if (response.status === 201) {
+        queryClient.invalidateQueries({
+          queryKey: ['collection_data', username],
+        });
         toast(
           <>
             {' '}

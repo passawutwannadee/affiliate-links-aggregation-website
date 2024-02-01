@@ -12,7 +12,7 @@ const VerifyEmailRoute = () => {
     return <Outlet />;
   }
   if (!session()) {
-    return <Navigate to="/" />;
+    return <Navigate to="/404" />;
   }
 };
 

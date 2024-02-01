@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 import { MainNav } from '@/components/main-nav';
 
@@ -23,12 +23,19 @@ import { accountAPI } from '@/services/account-api';
 import { session } from '@/lib/session';
 import { useDispatch } from 'react-redux';
 import {
+  setCurrentRole,
   setCurrentUser,
+  setCurrentUserBanStatus,
   setCurrentUserDN,
   setCurrentUserPFP,
   setEmailVerified,
 } from '@/redux/features/userSlice';
 import VerifyEmailRoute from './verify-email-route';
+import SuspendedAlert from '@/pages/suspended/suspended-alert';
+import AuthRoutes from './auth-routes';
+import SuspendedRoutes from './suspended-routes';
+import AppealForm from '@/pages/suspended/appeal-form/appeal-form';
+import AdminRoutes from './admin-routes';
 
 function PageRoutes() {
   const dispatch = useDispatch();
@@ -40,6 +47,8 @@ function PageRoutes() {
         dispatch(setEmailVerified(response.data.email_verify));
         dispatch(setCurrentUserDN(response.data.display_name));
         dispatch(setCurrentUserPFP(response.data.profile_picture));
+        dispatch(setCurrentRole(response.data.role_id));
+        dispatch(setCurrentUserBanStatus(response.data.ban_status));
       }
     },
   });
@@ -55,29 +64,30 @@ function PageRoutes() {
         <MainNav />
         <Suspense fallback={<Loading />}>
           <Routes>
-            <Route path="*" element={<NotFound />} />
-            <Route path="/profile/:username" element={<Profile />} />
-            <Route path="/product/:id" element={<Product />} />
-            <Route
-              path="/verify-email/:email_verify_token"
-              element={<VerifyEmail />}
-            />
+            <Route element={<PublicRoutes />}>
+              <Route path="*" element={<Navigate to="/404" />} />
+              <Route path="/404" element={<NotFound />} />
+              <Route path="/profile/:username" element={<Profile />} />
+              <Route path="/product/:id" element={<Product />} />
+              <Route
+                path="/verify-email/:email_verify_token"
+                element={<VerifyEmail />}
+              />
+              <Route path="/collection/:id" element={<Collection />} />
+            </Route>
             <Route element={<VerifyEmailRoute />}>
               <Route path="/verify-email" element={<VerifyEmailAlert />} />
             </Route>
 
             {/* ///////////////////////// PUBLIC ROUTES ////////////////////////// */}
-            <Route element={<PublicRoutes />}>
+            <Route element={<AuthRoutes />}>
               <Route path="/" element={<Login />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/collection" element={<Collection />} />
             </Route>
 
             {/* ///////////////////////// PRIVATE ROUTES ////////////////////////// */}
             <Route element={<PrivateRoutes />}>
-              <Route path="/collection/:id" element={<Collection />} />
-              <Route path="/admin" element={<AdminDashboard />} />
               <Route
                 path="/settings"
                 element={<Settings children={<AccountForm />} />}
@@ -90,6 +100,16 @@ function PageRoutes() {
                 path="/settings/password"
                 element={<Settings children={<PasswordForm />} />}
               />
+            </Route>
+
+            {/* ///////////////////////// PRIVATE ROUTES ////////////////////////// */}
+            <Route element={<AdminRoutes />}>
+              <Route path="/admin" element={<AdminDashboard />} />
+            </Route>
+
+            <Route element={<SuspendedRoutes />}>
+              <Route path="/suspended" element={<SuspendedAlert />} />
+              <Route path="/appeal-form" element={<AppealForm />} />
             </Route>
           </Routes>
         </Suspense>

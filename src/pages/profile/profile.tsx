@@ -29,6 +29,7 @@ export default function Profile() {
   const { username } = useParams<string>();
   const [reportOpen, setReportOpen] = useState<boolean>(false);
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  const currentRole = useSelector((state: RootState) => state.user.currentRole);
   const emailVerified = useSelector(
     (state: RootState) => state.user.emailVerified
   );
@@ -74,23 +75,44 @@ export default function Profile() {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
                 <DropdownMenuGroup>
-                  <DropdownMenuItem
-                    onSelect={
-                      session() && emailVerified === 1
-                        ? () => setReportOpen(true)
-                        : session() && emailVerified === 0
-                        ? () => navigate('/verify-email')
-                        : () =>
-                            toast('Do you want to report this product?', {
-                              action: {
-                                label: 'Sign in',
-                                onClick: () => navigate('/login'),
-                              },
-                            })
-                    }
-                  >
-                    Report
-                  </DropdownMenuItem>
+                  {currentRole === '2' ? (
+                    <DropdownMenuItem
+                      className="font text-destructive"
+                      onSelect={
+                        session() && emailVerified === 1
+                          ? () => setReportOpen(true)
+                          : session() && emailVerified === 0
+                          ? () => navigate('/verify-email')
+                          : () =>
+                              toast('Do you want to report this product?', {
+                                action: {
+                                  label: 'Sign in',
+                                  onClick: () => navigate('/login'),
+                                },
+                              })
+                      }
+                    >
+                      Ban
+                    </DropdownMenuItem>
+                  ) : (
+                    <DropdownMenuItem
+                      onSelect={
+                        session() && emailVerified === 1
+                          ? () => setReportOpen(true)
+                          : session() && emailVerified === 0
+                          ? () => navigate('/verify-email')
+                          : () =>
+                              toast('Do you want to report this product?', {
+                                action: {
+                                  label: 'Sign in',
+                                  onClick: () => navigate('/login'),
+                                },
+                              })
+                      }
+                    >
+                      Report
+                    </DropdownMenuItem>
+                  )}
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -124,7 +146,11 @@ export default function Profile() {
         </Tabs>
       </div>
       <Sheet open={reportOpen} onOpenChange={setReportOpen}>
-        <Report closeSheet={handleReportClose} username={username!}></Report>
+        <Report
+          closeSheet={handleReportClose}
+          username={username!}
+          parentId={1}
+        ></Report>
       </Sheet>
     </>
   );

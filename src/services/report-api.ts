@@ -26,9 +26,14 @@ export const submitReportsAPI = async (
   }
 };
 
-export const reportCategoriesAPI = async (): Promise<AxiosResponse> => {
+export const reportCategoriesAPI = async (
+  args: number
+): Promise<AxiosResponse> => {
   try {
-    const response = await axiosInstance.get(`/reports/categories`, {});
+    const response = await axiosInstance.get(
+      `/reports/categories?parentId=${args ? args : ''}`,
+      {}
+    );
 
     return response;
   } catch (err: any) {
