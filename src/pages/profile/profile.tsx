@@ -65,8 +65,7 @@ export default function Profile() {
               @{data!.data.username}
             </p>
           </div>
-          {currentUser !==
-          data!.data.username.toString().toLocaleLowerCase() ? (
+          {currentUser !== data!.data.username ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="text-xl">
@@ -77,8 +76,10 @@ export default function Profile() {
                 <DropdownMenuGroup>
                   <DropdownMenuItem
                     onSelect={
-                      session()
+                      session() && emailVerified === 1
                         ? () => setReportOpen(true)
+                        : session() && emailVerified === 0
+                        ? () => navigate('/verify-email')
                         : () =>
                             toast('Do you want to report this product?', {
                               action: {
@@ -106,9 +107,7 @@ export default function Profile() {
               </TabsTrigger>
             </TabsList>
             <div className="">
-              {currentUser ===
-                data!.data.username.toString().toLocaleLowerCase() &&
-              emailVerified === 1 ? (
+              {currentUser === data!.data.username && emailVerified === 1 ? (
                 <>
                   <TabsContent value="products">
                     <AddProduct />

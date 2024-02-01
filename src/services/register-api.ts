@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '@/middlewares/axios-interceptors';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 interface RegisterForm {
   email: string;
@@ -21,7 +21,11 @@ export const registerAPI = async (
     });
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };

@@ -45,6 +45,9 @@ export function ProductPreviewCard({
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [reportOpen, setReportOpen] = useState<boolean>(false);
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
+  const emailVerified = useSelector(
+    (state: RootState) => state.user.emailVerified
+  );
 
   const navigate = useNavigate();
 
@@ -94,8 +97,10 @@ export function ProductPreviewCard({
                     <>
                       <DropdownMenuItem
                         onSelect={
-                          session()
+                          session() && emailVerified === 1
                             ? () => setReportOpen(true)
+                            : session() && emailVerified === 0
+                            ? () => navigate('/verify-email')
                             : () =>
                                 toast('Do you want to report this product?', {
                                   action: {

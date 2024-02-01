@@ -20,6 +20,9 @@ import { useMutation } from 'react-query';
 import { toast } from 'sonner';
 import { queryClient } from '@/configs/query-client';
 import { SubmitButton } from '@/components/ui/submit-button';
+import { AxiosError } from 'axios';
+import { ErrorAlert } from '@/components/ui/error-alert';
+import { User } from 'lucide-react';
 // import { useState } from 'react';
 
 const ACCEPTED_IMAGE_TYPES = [
@@ -38,6 +41,10 @@ const profileFormSchema = z.object({
   }),
   profile_picture: z
     .any()
+    .refine(
+      (file) => file?.size <= 1024 * 1024 * 20,
+      `Max picture size is 20MB.`
+    )
     .refine(
       (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
       'Only .jpg, .jpeg, .png and .webp formats are supported.'
@@ -81,6 +88,15 @@ export function AccountForm() {
               />
             </svg>
             <p>Successfully update profile.</p>
+          </>
+        );
+      }
+    },
+    onError: (response: AxiosError) => {
+      if (response.status === 409) {
+        toast(
+          <>
+            <ErrorAlert>Username already taken.</ErrorAlert>
           </>
         );
       }
@@ -132,7 +148,9 @@ export function AccountForm() {
               <div className="flex flex-col md:flex-row gap-10">
                 <Avatar className="h-36 w-36">
                   <AvatarImage src={currentUserPFP!} />
-                  <AvatarFallback />
+                  <AvatarFallback>
+                    <User className="w-2/4 h-2/4" />
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid w-full max-w-sm items-center gap-1.5">
                   <Input

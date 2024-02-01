@@ -21,11 +21,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Required } from '@/components/ui/required';
 import { useMutation } from 'react-query';
 import { registerAPI } from '@/services/register-api';
 import { SubmitButton } from '@/components/ui/submit-button';
+import { toast } from 'sonner';
+import { ErrorAlert } from '@/components/ui/error-alert';
 
 const formSchema = z
   .object({
@@ -52,6 +54,8 @@ const formSchema = z
   });
 
 export default function Register() {
+  const navigate = useNavigate();
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -64,10 +68,54 @@ export default function Register() {
     },
   });
 
-  const { mutate, isLoading } = useMutation(
-    registerAPI
-    // , {onSuccess: (response) => {}, }
-  );
+  const { mutate, isLoading } = useMutation(registerAPI, {
+    onSuccess: (response) => {
+      if (response.status === 201) {
+        toast(
+          <>
+            {' '}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              data-slot="icon"
+              className="w-6 h-6 self-start justify-self-start"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            <p>
+              Account successfully created. Please check your email for
+              verification link.
+            </p>
+          </>
+        );
+        navigate('/');
+      }
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError: (response: any) => {
+      if (response.status === 409 && response.data?.status === 40911) {
+        toast(
+          <>
+            <ErrorAlert>Email already in use.</ErrorAlert>
+          </>
+        );
+      }
+      if (response.status === 409 && response.data?.status === 40912) {
+        toast(
+          <>
+            <ErrorAlert>Username already taken.</ErrorAlert>
+          </>
+        );
+      }
+    },
+  });
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {

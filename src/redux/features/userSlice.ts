@@ -1,14 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+  currentUser: null,
+  emailVerified: null,
+  currentUserDN: null,
+  currentUserPFP: null,
+};
+
 const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    currentUser: null,
-    emailVerified: 0,
-    currentUserDN: null,
-    currentUserPFP: null,
-    // other user-related state properties can be added here
-  },
+  initialState,
   reducers: {
     //username
     setCurrentUser: (state, action) => {
@@ -23,8 +24,11 @@ const userSlice = createSlice({
     setCurrentUserPFP: (state, action) => {
       state.currentUserPFP = action.payload;
     },
-
     // add other user-related reducers here
+    reset: () => {
+      // Reset the state to its initial values
+      return initialState;
+    },
   },
 });
 
@@ -33,6 +37,7 @@ export const {
   setEmailVerified,
   setCurrentUserDN,
   setCurrentUserPFP,
+  reset,
 } = userSlice.actions;
 
 export default userSlice.reducer;

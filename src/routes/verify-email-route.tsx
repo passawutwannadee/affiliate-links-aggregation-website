@@ -3,22 +3,17 @@ import { RootState } from '@/redux/store/store';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 
-const PrivateRoutes = () => {
+const VerifyEmailRoute = () => {
   const emailVerified = useSelector(
     (state: RootState) => state.user.emailVerified
   );
 
-  // if user has not login redirect to their login
-  if (session() === false) {
-    return <Navigate to="/" />;
-  }
-
-  if (session() === true && emailVerified === 1) {
+  if (emailVerified === 0) {
     return <Outlet />;
   }
-  if (emailVerified === 0) {
-    return <Navigate to="/verify-email" />;
+  if (!session()) {
+    return <Navigate to="/" />;
   }
 };
 
-export default PrivateRoutes;
+export default VerifyEmailRoute;
