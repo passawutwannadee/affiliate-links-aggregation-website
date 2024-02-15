@@ -171,6 +171,8 @@ export default function ManageCollection({
       products.push(values['products'][i].product_id);
     }
 
+    console.log(products);
+
     mutate({
       collectionId: collectionId,
       collectionName: values.collection_name,

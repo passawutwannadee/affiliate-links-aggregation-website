@@ -6,7 +6,7 @@ interface User {
 export type { User as UserType };
 
 interface Product {
-  productId: string;
+  productId?: number;
   productName: string;
   productDescription: string;
   category: string;

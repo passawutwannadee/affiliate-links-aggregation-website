@@ -49,11 +49,19 @@ const formSchema = z.object({
 
 interface ChildProps {
   username: string;
+  productId?: number;
+  collectionId?: number;
   closeSheet: () => void;
   parentId: number;
 }
 
-export default function Report({ username, closeSheet, parentId }: ChildProps) {
+export default function Report({
+  username,
+  productId,
+  collectionId,
+  closeSheet,
+  parentId,
+}: ChildProps) {
   // get categories
   const { data, isLoading } = useQuery(['report_categories', parentId], () =>
     reportCategoriesAPI(parentId)
@@ -106,7 +114,8 @@ export default function Report({ username, closeSheet, parentId }: ChildProps) {
     mutate({
       reportCategoryId: reportCategoryId,
       reportInformation: reportInformation,
-      reportLink: window.location.href,
+      productId: productId,
+      collectionId: collectionId,
       username: username,
     });
   }

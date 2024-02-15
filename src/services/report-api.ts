@@ -5,7 +5,8 @@ import { AxiosResponse } from 'axios';
 interface ReportInfo {
   reportCategoryId: string;
   reportInformation: string;
-  reportLink: string;
+  productId?: number;
+  collectionId?: number;
   username: string;
 }
 
@@ -16,7 +17,8 @@ export const submitReportsAPI = async (
     const response = await axiosInstance.post(`/reports`, {
       report_category_id: args.reportCategoryId,
       report_information: args.reportInformation,
-      report_link: args.reportLink,
+      product_id: args.productId,
+      collection_id: args.collectionId,
       username: args.username,
     });
 

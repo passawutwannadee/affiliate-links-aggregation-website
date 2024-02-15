@@ -150,6 +150,7 @@ export default function Profile() {
           closeSheet={handleReportClose}
           username={username!}
           parentId={1}
+          reportLink={window.location.href}
         ></Report>
       </Sheet>
     </>

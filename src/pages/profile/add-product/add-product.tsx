@@ -169,7 +169,6 @@ export default function AddProduct() {
       category,
       productImage,
       productLinks,
-      productId: '',
     });
   }
 

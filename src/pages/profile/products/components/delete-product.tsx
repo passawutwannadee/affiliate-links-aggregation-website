@@ -14,7 +14,7 @@ export default function DeleteProduct({
   productId,
   username,
 }: {
-  productId: string;
+  productId: number;
   username: string;
 }) {
   const queryClient = useQueryClient();

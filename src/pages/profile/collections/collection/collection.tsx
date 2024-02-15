@@ -21,6 +21,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';
 import Report from '@/components/report';
 import { Sheet } from '@/components/ui/sheet';
+import { User } from 'lucide-react';
 
 export default function Collection() {
   const { id } = useParams<string>();
@@ -60,8 +61,10 @@ export default function Collection() {
                     className="flex gap-2"
                   >
                     <Avatar className="h-12 w-12">
-                      <AvatarImage src="https://avatars.githubusercontent.com/u/73711390?v=4" />
-                      <AvatarFallback />
+                      <AvatarImage src={data!.data.profile_picture} />
+                      <AvatarFallback>
+                        <User className="w-2/4 h-2/4" />
+                      </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col items-start">
                       <p className="text-xl font-bold">
@@ -126,7 +129,7 @@ export default function Collection() {
             {data!.data.products.map(
               (
                 item: {
-                  product_id: string;
+                  product_id: number;
                   product_image: string;
                   product_name: string;
                   product_description: string;
@@ -151,8 +154,9 @@ export default function Collection() {
       <Sheet open={reportOpen} onOpenChange={setReportOpen}>
         <Report
           username={data!.data.username}
+          collectionId={data!.data.collection_id}
           closeSheet={handleReportClose}
-          parentId={2}
+          parentId={3}
         />
       </Sheet>
     </>

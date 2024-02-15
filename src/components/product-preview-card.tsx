@@ -25,7 +25,7 @@ import Report from './report';
 // import Report from './report';
 
 interface Item {
-  productId: string;
+  productId: number;
   image: string;
   title: string;
   description: string;
@@ -129,6 +129,7 @@ export function ProductPreviewCard({
         <Report
           closeSheet={handleReportClose}
           username={username}
+          productId={productId}
           parentId={2}
         ></Report>
       </Sheet>

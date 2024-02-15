@@ -16,7 +16,7 @@ export const productsAPI = async (args: string): Promise<AxiosResponse> => {
   }
 };
 
-export const productAPI = async (args: string): Promise<AxiosResponse> => {
+export const productAPI = async (args: number): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.get(
       `/products?product_id=${args ? args : ''}`,
@@ -74,7 +74,7 @@ export const editProductsAPI = async (
   const formData = new FormData();
 
   // Append data to the FormData object
-  formData.append('product_id', info.productId);
+  formData.append('product_id', info.productId!.toString());
   formData.append('product_name', info.productName);
   formData.append('product_description', info.productDescription);
   formData.append('category_id', info.category);
@@ -97,7 +97,7 @@ export const editProductsAPI = async (
 };
 
 export const removeProductsAPI = async (
-  args: string
+  args: number
 ): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.delete(

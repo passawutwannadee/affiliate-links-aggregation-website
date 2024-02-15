@@ -32,7 +32,7 @@ export default function Products() {
           ) => (
             <ProductPreviewCard
               key={index}
-              productId={item.product_id}
+              productId={parseInt(item.product_id)}
               image={item.product_image}
               title={item.product_name}
               description={item.product_description}

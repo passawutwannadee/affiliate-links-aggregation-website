@@ -100,7 +100,7 @@ const formSchema = z.discriminatedUnion('changeImage', [
 ]);
 
 interface ChildProps {
-  productId: string;
+  productId: number;
   closeSheet: () => void;
 }
 
