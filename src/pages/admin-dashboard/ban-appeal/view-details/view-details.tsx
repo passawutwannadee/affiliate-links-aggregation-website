@@ -104,7 +104,7 @@ export default function TicketDetails({
     onSuccess: (response) => {
       if (response.status === 200) {
         queryClient.invalidateQueries({
-          queryKey: ['collection_reports'],
+          queryKey: ['ban_appeals'],
         });
         toast(
           <>
@@ -139,9 +139,9 @@ export default function TicketDetails({
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('hello');
     if (values.unban === 'unban') {
       sendUnban({
+        appealId: appealId,
         banId: banId,
         userId: userId,
       });

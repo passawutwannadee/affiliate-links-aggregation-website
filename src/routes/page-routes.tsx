@@ -9,7 +9,7 @@ import Profile from '@/pages/profile/profile';
 import Settings from '@/pages/settings/settings';
 import { AccountForm } from '@/pages/settings/account/account-form';
 import { PasswordForm } from '@/pages/settings/password/password-form';
-import Product from '@/pages/product/product';
+import Product from '@/pages/profile/products/product/product';
 import Collection from '@/pages/profile/collections/collection/collection';
 import { AdminDashboard } from '@/pages/admin-dashboard/admin-dashboard';
 import { Loading } from '@/components/ui/loading';

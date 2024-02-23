@@ -96,6 +96,7 @@ export const warnAPI = async (arg: WarnInfo): Promise<AxiosResponse> => {
 };
 
 interface UnbanInfo {
+  appealId: number;
   userId: number;
   banId: number;
 }
@@ -103,6 +104,7 @@ interface UnbanInfo {
 export const unbanAPI = async (arg: UnbanInfo): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.put(`/admin/user/unban`, {
+      appeal_id: arg.appealId,
       user_id: arg.userId,
       ban_id: arg.banId,
     });

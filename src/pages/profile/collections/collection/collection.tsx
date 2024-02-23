@@ -22,6 +22,7 @@ import { RootState } from '@/redux/store/store';
 import Report from '@/components/report';
 import { Sheet } from '@/components/ui/sheet';
 import { User } from 'lucide-react';
+import { AxiosError } from 'axios';
 
 export default function Collection() {
   const { id } = useParams<string>();
@@ -33,8 +34,17 @@ export default function Collection() {
 
   const navigate = useNavigate();
 
-  const { data, isLoading } = useQuery(['collection_data', id], () =>
-    collectionAPI(id!)
+  const { data, isLoading } = useQuery(
+    ['collection_data', id],
+    () => collectionAPI(id!),
+    {
+      retry: 0,
+      onError: (response: AxiosError) => {
+        if (response.status === 404) {
+          navigate('/404');
+        }
+      },
+    }
   );
 
   const handleReportClose = () => {

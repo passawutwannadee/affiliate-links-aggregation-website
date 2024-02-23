@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '@/middlewares/axios-interceptors';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 export const collectionsAPI = async (args: string): Promise<AxiosResponse> => {
   try {
@@ -10,8 +10,12 @@ export const collectionsAPI = async (args: string): Promise<AxiosResponse> => {
     );
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -23,8 +27,12 @@ export const collectionAPI = async (args: string): Promise<AxiosResponse> => {
     );
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -63,8 +71,12 @@ export const ManageCollectionsAPI = async (
     });
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -78,7 +90,11 @@ export const removeCollectionsAPI = async (
     );
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };

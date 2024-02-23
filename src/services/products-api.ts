@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '@/middlewares/axios-interceptors';
 import { ProductType } from '@/models/user';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 export const productsAPI = async (args: string): Promise<AxiosResponse> => {
   try {
@@ -11,8 +11,12 @@ export const productsAPI = async (args: string): Promise<AxiosResponse> => {
     );
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -24,8 +28,12 @@ export const productAPI = async (args: number): Promise<AxiosResponse> => {
     );
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -34,8 +42,12 @@ export const productCategoriesAPI = async (): Promise<AxiosResponse> => {
     const response = await axiosInstance.get(`/products/categories`, {});
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -62,8 +74,12 @@ export const addProductsAPI = async (
     });
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -91,8 +107,12 @@ export const editProductsAPI = async (
     });
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -106,7 +126,11 @@ export const removeProductsAPI = async (
     );
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };

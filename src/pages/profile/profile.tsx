@@ -24,6 +24,7 @@ import { Sheet } from '@/components/ui/sheet';
 import { session } from '@/lib/session';
 import { toast } from 'sonner';
 import { useState } from 'react';
+import { AxiosError } from 'axios';
 
 export default function Profile() {
   const { username } = useParams<string>();
@@ -40,8 +41,17 @@ export default function Profile() {
     setReportOpen(false);
   };
 
-  const { data, isLoading } = useQuery(['profile_data', username], () =>
-    usersAPI(username!)
+  const { data, isLoading } = useQuery(
+    ['profile_data', username],
+    () => usersAPI(username!),
+    {
+      retry: 0,
+      onError: (response: AxiosError) => {
+        if (response.status === 404) {
+          navigate('/404');
+        }
+      },
+    }
   );
 
   if (isLoading) {
@@ -150,7 +160,6 @@ export default function Profile() {
           closeSheet={handleReportClose}
           username={username!}
           parentId={1}
-          reportLink={window.location.href}
         ></Report>
       </Sheet>
     </>

@@ -19,6 +19,7 @@ import { toast } from 'sonner';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';
 import { User } from 'lucide-react';
+import { AxiosError } from 'axios';
 
 export default function Product() {
   const { id } = useParams<string>();
@@ -32,8 +33,17 @@ export default function Product() {
 
   const navigate = useNavigate();
 
-  const { data, isLoading } = useQuery(['product_data', id], () =>
-    productAPI(productId!)
+  const { data, isLoading } = useQuery(
+    ['product_data', id],
+    () => productAPI(productId!),
+    {
+      retry: 0,
+      onError: (response: AxiosError) => {
+        if (response.status === 404) {
+          navigate('/404');
+        }
+      },
+    }
   );
 
   const handleReportClose = () => {

@@ -10,8 +10,12 @@ export const usersAPI = async (args: string): Promise<AxiosResponse> => {
     );
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
