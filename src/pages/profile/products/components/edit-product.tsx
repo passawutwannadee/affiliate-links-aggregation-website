@@ -143,6 +143,9 @@ export default function EditProduct({ productId, closeSheet }: ChildProps) {
         queryClient.invalidateQueries({
           queryKey: ['product_data', productId],
         });
+        queryClient.invalidateQueries({
+          queryKey: ['collection_to_product', username],
+        });
         toast(
           <>
             {' '}

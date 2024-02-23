@@ -26,6 +26,12 @@ export default function DeleteProduct({
         queryClient.invalidateQueries({
           queryKey: ['product_data', username],
         });
+        queryClient.invalidateQueries({
+          queryKey: ['product_data', productId],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['collection_to_product', username],
+        });
         toast(
           <>
             {' '}

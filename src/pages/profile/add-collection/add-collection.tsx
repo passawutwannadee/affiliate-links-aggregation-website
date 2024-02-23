@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { productsAPI } from '@/services/products-api';
+import { productToCollectionAPI, productsAPI } from '@/services/products-api';
 import { createCollectionsAPI } from '@/services/collections-api';
 import { toast } from 'sonner';
 import { ErrorAlert } from '@/components/ui/error-alert';
@@ -78,8 +78,9 @@ export default function AddCollection() {
   const [inputValue, setInputValue] = useState('');
   const username = useSelector((state: RootState) => state.user.currentUser);
 
-  const { data, isLoading } = useQuery(['product_data', username], () =>
-    productsAPI(username!)
+  const { data, isLoading } = useQuery(
+    ['collection_to_product', username],
+    () => productToCollectionAPI(username!)
   );
 
   const queryClient = useQueryClient();
@@ -321,7 +322,9 @@ export default function AddCollection() {
                                                 className="w-12 h-12 aspect-square object-cover"
                                                 src={item.product_image}
                                               />
-                                              {item.product_name}
+                                              <p className="break-all">
+                                                {item.product_name}
+                                              </p>
                                             </CommandItem>
                                           );
                                         })}

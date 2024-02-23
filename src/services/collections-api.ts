@@ -2,10 +2,16 @@
 import axiosInstance from '@/middlewares/axios-interceptors';
 import axios, { AxiosResponse } from 'axios';
 
-export const collectionsAPI = async (args: string): Promise<AxiosResponse> => {
+export const collectionsAPI = async (
+  args: string,
+  limit?: number,
+  page?: number
+): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.get(
-      `/collections?username=${args ? args : ''}`,
+      `/collections?username=${args ? args : ''}&_limit=${
+        limit ? limit : ''
+      }&_page=${page ? page : ''}`,
       {}
     );
 

@@ -3,10 +3,8 @@ export const session = () => {
   for (const cookie of cookies) {
     const [cookieName] = cookie.split('=');
     if (cookieName === 'session') {
-      console.log(cookieName);
       return true;
     }
   }
-  console.log('no cookie');
   return false;
 };

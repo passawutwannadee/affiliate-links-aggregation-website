@@ -3,13 +3,40 @@ import axiosInstance from '@/middlewares/axios-interceptors';
 import { ProductType } from '@/models/user';
 import axios, { AxiosResponse } from 'axios';
 
-export const productsAPI = async (args: string): Promise<AxiosResponse> => {
+export const productsAPI = async (
+  args: string,
+  limit?: number,
+  page?: number
+): Promise<AxiosResponse> => {
+  try {
+    const response = await axiosInstance.get(
+      `/products?username=${args ? args : ''}&_limit=${
+        limit ? limit : ''
+      }&_page=${page ? page : ''}`,
+      {}
+    );
+
+    console.log('heyyyyyyyyyyyyyyyyyyyy', response);
+    return response;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
+  }
+};
+
+export const productToCollectionAPI = async (
+  args: string
+): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.get(
       `/products?username=${args ? args : ''}`,
       {}
     );
 
+    console.log('heyyyyyyyyyyyyyyyyyyyy2', response);
     return response;
   } catch (err) {
     if (axios.isAxiosError(err)) {
