@@ -20,7 +20,6 @@ export const productsAPI = async (
       {}
     );
 
-    console.log('heyyyyyyyyyyyyyyyyyyyy', response);
     return response;
   } catch (err) {
     if (axios.isAxiosError(err)) {

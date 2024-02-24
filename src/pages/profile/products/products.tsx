@@ -2,9 +2,10 @@ import { ProductPreviewCard } from '@/components/product-preview-card';
 import { Button } from '@/components/ui/button';
 import { Loading } from '@/components/ui/loading';
 import { TabsContent } from '@/components/ui/tabs';
+import { queryClient } from '@/configs/query-client';
 import { productsAPI } from '@/services/products-api';
 import { Fragment, useEffect } from 'react';
-import { useInfiniteQuery, useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 
 export default function Products({
@@ -27,8 +28,6 @@ export default function Products({
     isFetching,
     isFetchingNextPage,
     refetch,
-    isError,
-    error,
   } = useInfiniteQuery(
     ['product_data', username],
     ({ pageParam = 1 }) =>
@@ -42,6 +41,10 @@ export default function Products({
 
   useEffect(() => {
     refetch();
+    queryClient.resetQueries({
+      queryKey: ['product_data', username],
+      exact: true,
+    });
   }, [category, productName]);
 
   if (isFetching && !isFetchingNextPage) {

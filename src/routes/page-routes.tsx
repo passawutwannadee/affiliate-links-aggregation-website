@@ -13,7 +13,7 @@ import Product from '@/pages/profile/products/product/product';
 import Collection from '@/pages/profile/collections/collection/collection';
 import { AdminDashboard } from '@/pages/admin-dashboard/admin-dashboard';
 import { Loading } from '@/components/ui/loading';
-import NotFound from '@/pages/not-found/not-found';
+import NotFound from '@/pages/errors/not-found';
 import PublicRoutes from './public-routes';
 import PrivateRoutes from './private-routes';
 import VerifyEmail from '@/pages/verify-email/verify-email';
@@ -36,6 +36,7 @@ import AuthRoutes from './auth-routes';
 import SuspendedRoutes from './suspended-routes';
 import AppealForm from '@/pages/suspended/appeal-form/appeal-form';
 import AdminRoutes from './admin-routes';
+import InternalServerError from '@/pages/errors/internal-server-error';
 
 function PageRoutes() {
   const dispatch = useDispatch();
@@ -67,6 +68,7 @@ function PageRoutes() {
             <Route element={<PublicRoutes />}>
               <Route path="*" element={<Navigate to="/404" />} />
               <Route path="/404" element={<NotFound />} />
+              <Route path="/500" element={<InternalServerError />} />
               <Route path="/profile/:username" element={<Profile />} />
               <Route path="/product/:id" element={<Product />} />
               <Route

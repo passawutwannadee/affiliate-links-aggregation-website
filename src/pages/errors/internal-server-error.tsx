@@ -1,11 +1,11 @@
-const NotFound = () => {
+const InternalServerError = () => {
   return (
     <div>
       <main className="grid min-h-full place-items-center px-6 py-24 sm:py-32 lg:px-8">
         <div className="text-center">
-          <h2 className="text-9xl font-semibold text-primary">404</h2>
+          <h2 className="text-6xl font-semibold text-primary">500</h2>
           <h3 className="mt-4 text-3xl font-bold tracking-tight sm:text-2xl">
-            Not Found
+            Something is wrong with our server. Please try again later.
           </h3>
         </div>
       </main>
@@ -13,4 +13,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default InternalServerError;

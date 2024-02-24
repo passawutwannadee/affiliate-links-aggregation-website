@@ -24,8 +24,6 @@ import { Sheet } from '@/components/ui/sheet';
 import { session } from '@/lib/session';
 import { toast } from 'sonner';
 import { useState } from 'react';
-import { AxiosError } from 'axios';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
@@ -66,11 +64,11 @@ export default function Profile() {
     () => usersAPI(username!),
     {
       retry: 0,
-      onError: (response: AxiosError) => {
-        if (response.status === 404) {
-          navigate('/404');
-        }
-      },
+      // onError: (response: AxiosError) => {
+      //   if (response.status === 404) {
+      //     navigate('/404');
+      //   }
+      // },
     }
   );
 

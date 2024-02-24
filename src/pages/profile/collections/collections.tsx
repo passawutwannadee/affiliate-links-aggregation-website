@@ -2,6 +2,7 @@ import { CollectionPreviewCard } from '@/components/collection-preview-card';
 import { Button } from '@/components/ui/button';
 import { Loading } from '@/components/ui/loading';
 import { TabsContent } from '@/components/ui/tabs';
+import { queryClient } from '@/configs/query-client';
 import { collectionsAPI } from '@/services/collections-api';
 import { Fragment, useEffect } from 'react';
 import { useInfiniteQuery } from 'react-query';
@@ -21,8 +22,6 @@ export default function Collections({
     isFetching,
     isFetchingNextPage,
     refetch,
-    isError,
-    error,
   } = useInfiniteQuery(
     ['collection_data', username],
     ({ pageParam = 1 }) =>
@@ -36,6 +35,10 @@ export default function Collections({
 
   useEffect(() => {
     refetch();
+    queryClient.resetQueries({
+      queryKey: ['collection_data', username],
+      exact: true,
+    });
   }, [collectionName]);
 
   if (isFetching && !isFetchingNextPage) {
