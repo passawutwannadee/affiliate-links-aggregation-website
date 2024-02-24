@@ -25,7 +25,7 @@ import Report from './report';
 // import Report from './report';
 
 interface Item {
-  productId: string;
+  productId: number;
   image: string;
   title: string;
   description: string;
@@ -71,7 +71,7 @@ export function ProductPreviewCard({
         <CardHeader>
           <div className="flex flex-row justify-between items-center">
             <Link to={`/product/${productId}`}>
-              <CardTitle>{title}</CardTitle>
+              <CardTitle className="break-all text-sm">{title}</CardTitle>
             </Link>
             {meatballsMenu ? (
               <DropdownMenu>
@@ -119,7 +119,7 @@ export function ProductPreviewCard({
             ) : null}
           </div>
           <Link to={`/product/${productId}`}>
-            <CardDescription className="line-clamp-3">
+            <CardDescription className="line-clamp-3 text-xs">
               {description}
             </CardDescription>
           </Link>
@@ -129,6 +129,7 @@ export function ProductPreviewCard({
         <Report
           closeSheet={handleReportClose}
           username={username}
+          productId={productId}
           parentId={2}
         ></Report>
       </Sheet>

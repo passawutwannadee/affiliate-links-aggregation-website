@@ -14,7 +14,7 @@ export default function DeleteProduct({
   productId,
   username,
 }: {
-  productId: string;
+  productId: number;
   username: string;
 }) {
   const queryClient = useQueryClient();
@@ -25,6 +25,12 @@ export default function DeleteProduct({
       if (response.status === 200) {
         queryClient.invalidateQueries({
           queryKey: ['product_data', username],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['product_data', productId],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['collection_to_product', username],
         });
         toast(
           <>

@@ -1,22 +1,56 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '@/middlewares/axios-interceptors';
 import { ProductType } from '@/models/user';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-export const productsAPI = async (args: string): Promise<AxiosResponse> => {
+export const productsAPI = async (
+  args: string,
+  category: string,
+  product_name: string,
+  limit?: number,
+  page?: number
+): Promise<AxiosResponse> => {
+  try {
+    const response = await axiosInstance.get(
+      `/products?username=${args ? args : ''}&category_id=${
+        category ? category : ''
+      }&product-name=${product_name ? product_name : ''}&_limit=${
+        limit ? limit : ''
+      }&_page=${page ? page : ''}`,
+      {}
+    );
+
+    return response;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
+  }
+};
+
+export const productToCollectionAPI = async (
+  args: string
+): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.get(
       `/products?username=${args ? args : ''}`,
       {}
     );
 
+    console.log('heyyyyyyyyyyyyyyyyyyyy2', response);
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
-export const productAPI = async (args: string): Promise<AxiosResponse> => {
+export const productAPI = async (args: number): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.get(
       `/products?product_id=${args ? args : ''}`,
@@ -24,8 +58,12 @@ export const productAPI = async (args: string): Promise<AxiosResponse> => {
     );
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -34,8 +72,12 @@ export const productCategoriesAPI = async (): Promise<AxiosResponse> => {
     const response = await axiosInstance.get(`/products/categories`, {});
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -62,8 +104,12 @@ export const addProductsAPI = async (
     });
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -74,7 +120,7 @@ export const editProductsAPI = async (
   const formData = new FormData();
 
   // Append data to the FormData object
-  formData.append('product_id', info.productId);
+  formData.append('product_id', info.productId!.toString());
   formData.append('product_name', info.productName);
   formData.append('product_description', info.productDescription);
   formData.append('category_id', info.category);
@@ -91,13 +137,17 @@ export const editProductsAPI = async (
     });
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
 export const removeProductsAPI = async (
-  args: string
+  args: number
 ): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.delete(
@@ -106,7 +156,11 @@ export const removeProductsAPI = async (
     );
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };

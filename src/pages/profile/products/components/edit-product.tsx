@@ -100,7 +100,7 @@ const formSchema = z.discriminatedUnion('changeImage', [
 ]);
 
 interface ChildProps {
-  productId: string;
+  productId: number;
   closeSheet: () => void;
 }
 
@@ -142,6 +142,9 @@ export default function EditProduct({ productId, closeSheet }: ChildProps) {
         });
         queryClient.invalidateQueries({
           queryKey: ['product_data', productId],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['collection_to_product', username],
         });
         toast(
           <>

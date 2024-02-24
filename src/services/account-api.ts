@@ -10,8 +10,12 @@ export const accountAPI = async (): Promise<AxiosResponse> => {
     console.log(response);
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 

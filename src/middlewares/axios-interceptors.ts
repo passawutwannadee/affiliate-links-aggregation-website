@@ -6,13 +6,16 @@ axiosInstance.interceptors.response.use(
   },
   (error: { response: { request: { status: number } } }) => {
     if (error.response.request.status === 401) {
+      // make session expire and clear token
       document.cookie = `session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
       sessionStorage.clear();
-      //   window.location = '/NotAuthorized';
+      window.location.href = '/';
     }
     if (error.response.request.status === 404) {
-      console.log('Hellofrommiddleware');
-      // window.location.href = '/404';
+      window.location.href = '/404';
+    }
+    if (error.response.request.status === 500) {
+      window.location.href = '/500';
     }
     return Promise.reject(error);
   }

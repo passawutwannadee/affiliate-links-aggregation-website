@@ -108,6 +108,9 @@ export default function AddProduct() {
         queryClient.invalidateQueries({
           queryKey: ['product_data', username],
         });
+        queryClient.invalidateQueries({
+          queryKey: ['collection_to_product', username],
+        });
         toast(
           <>
             {' '}
@@ -169,7 +172,6 @@ export default function AddProduct() {
       category,
       productImage,
       productLinks,
-      productId: '',
     });
   }
 

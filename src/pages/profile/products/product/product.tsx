@@ -28,10 +28,21 @@ export default function Product() {
     (state: RootState) => state.user.emailVerified
   );
 
+  const productId = parseInt(id!);
+
   const navigate = useNavigate();
 
-  const { data, isLoading } = useQuery(['product_data', id], () =>
-    productAPI(id!)
+  const { data, isLoading } = useQuery(
+    ['product_data', id],
+    () => productAPI(productId!),
+    {
+      retry: 0,
+      // onError: (response: AxiosError) => {
+      //   if (response.status === 404) {
+      //     navigate('/404');
+      //   }
+      // },
+    }
   );
 
   const handleReportClose = () => {
@@ -73,7 +84,7 @@ export default function Product() {
                   className="flex gap-2"
                 >
                   <Avatar className="h-12 w-12">
-                    <AvatarImage src="https://avatars.githubusercontent.com/u/73711390?v=4" />
+                    <AvatarImage src={data!.data[0].profile_picture} />
                     <AvatarFallback>
                       <User className="w-2/4 h-2/4" />
                     </AvatarFallback>
@@ -152,6 +163,7 @@ export default function Product() {
       <Sheet open={reportOpen} onOpenChange={setReportOpen}>
         <Report
           username={data!.data[0].username}
+          productId={data!.data[0].product_id}
           closeSheet={handleReportClose}
           parentId={2}
         />

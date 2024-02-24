@@ -1,17 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '@/middlewares/axios-interceptors';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-export const collectionsAPI = async (args: string): Promise<AxiosResponse> => {
+export const collectionsAPI = async (
+  args: string,
+  collection_name: string,
+  limit?: number,
+  page?: number
+): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.get(
-      `/collections?username=${args ? args : ''}`,
+      `/collections?username=${args ? args : ''}&collection-name=${
+        collection_name ? collection_name : ''
+      }&_limit=${limit ? limit : ''}&_page=${page ? page : ''}`,
       {}
     );
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -23,8 +34,12 @@ export const collectionAPI = async (args: string): Promise<AxiosResponse> => {
     );
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -63,8 +78,12 @@ export const ManageCollectionsAPI = async (
     });
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -78,7 +97,11 @@ export const removeCollectionsAPI = async (
     );
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
