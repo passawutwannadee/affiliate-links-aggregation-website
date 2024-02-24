@@ -142,12 +142,15 @@ export function CollectionPreviewCard({
                             : session() && emailVerified === 0
                             ? () => navigate('/verify-email')
                             : () =>
-                                toast('Do you want to report this product?', {
-                                  action: {
-                                    label: 'Sign in',
-                                    onClick: () => navigate('/login'),
-                                  },
-                                })
+                                toast(
+                                  'Do you want to report this collection?',
+                                  {
+                                    action: {
+                                      label: 'Sign in',
+                                      onClick: () => navigate('/login'),
+                                    },
+                                  }
+                                )
                         }
                       >
                         Report

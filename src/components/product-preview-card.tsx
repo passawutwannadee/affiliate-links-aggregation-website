@@ -71,7 +71,7 @@ export function ProductPreviewCard({
         <CardHeader>
           <div className="flex flex-row justify-between items-center">
             <Link to={`/product/${productId}`}>
-              <CardTitle>{title}</CardTitle>
+              <CardTitle className="break-all text-sm">{title}</CardTitle>
             </Link>
             {meatballsMenu ? (
               <DropdownMenu>
@@ -119,7 +119,7 @@ export function ProductPreviewCard({
             ) : null}
           </div>
           <Link to={`/product/${productId}`}>
-            <CardDescription className="line-clamp-3">
+            <CardDescription className="line-clamp-3 text-xs">
               {description}
             </CardDescription>
           </Link>

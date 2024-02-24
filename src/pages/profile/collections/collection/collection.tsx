@@ -102,7 +102,7 @@ export default function Collection() {
                                 ? () => navigate('/verify-email')
                                 : () =>
                                     toast(
-                                      'Do you want to report this product?',
+                                      'Do you want to report this collection?',
                                       {
                                         action: {
                                           label: 'Sign in',
@@ -127,14 +127,18 @@ export default function Collection() {
               </Card>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row items-center justify-center md:justify-end">
-            <ManageCollection
-              collectionProducts={data!.data.products}
-              collectionId={id!}
-              collectionName={data!.data.collection_name}
-              collectionDescription={data!.data.collection_description}
-            />
-          </div>
+          {currentUser === data!.data.username && emailVerified === 1 ? (
+            <>
+              <div className="flex flex-col md:flex-row items-center justify-center md:justify-end">
+                <ManageCollection
+                  collectionProducts={data!.data.products}
+                  collectionId={id!}
+                  collectionName={data!.data.collection_name}
+                  collectionDescription={data!.data.collection_description}
+                />
+              </div>
+            </>
+          ) : null}
           <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-10 justify-center items-center">
             {data!.data.products.map(
               (

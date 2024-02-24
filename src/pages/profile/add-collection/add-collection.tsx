@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { productToCollectionAPI, productsAPI } from '@/services/products-api';
+import { productToCollectionAPI } from '@/services/products-api';
 import { createCollectionsAPI } from '@/services/collections-api';
 import { toast } from 'sonner';
 import { ErrorAlert } from '@/components/ui/error-alert';
@@ -185,9 +185,9 @@ export default function AddCollection() {
     (Products: Products) => !selected.includes(Products)
   );
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -241,109 +241,116 @@ export default function AddCollection() {
                       )}
                     />
 
-                    <FormField
-                      control={form.control}
-                      name="products"
-                      render={() => (
-                        <FormItem>
-                          <FormLabel>Products</FormLabel>
-                          <Command
-                            onKeyDown={handleKeyDown}
-                            className="overflow-visible bg-transparent"
-                          >
-                            {data!.data[0] ? (
-                              <>
-                                <div className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
-                                  <div className="flex gap-1 flex-wrap">
-                                    {selected.map((item: Products) => {
-                                      return (
-                                        <Badge
-                                          key={item.product_id}
-                                          variant="secondary"
-                                        >
-                                          {item.product_name}
-                                          <button
-                                            type="button"
-                                            className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                                            onKeyDown={(e) => {
-                                              if (e.key === 'Enter') {
-                                                handleUnselect(item);
-                                              }
-                                            }}
-                                            onMouseDown={(e) => {
-                                              e.preventDefault();
-                                              e.stopPropagation();
-                                            }}
-                                            onClick={() => handleUnselect(item)}
+                    {isLoading ? (
+                      <Loading />
+                    ) : (
+                      <FormField
+                        control={form.control}
+                        name="products"
+                        render={() => (
+                          <FormItem>
+                            <FormLabel>Products</FormLabel>
+                            <Command
+                              onKeyDown={handleKeyDown}
+                              className="overflow-visible bg-transparent"
+                            >
+                              {data!.data[0] ? (
+                                <>
+                                  <div className="group border border-input px-3 py-2 text-sm ring-offset-background rounded-md focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+                                    <div className="flex gap-1 flex-wrap">
+                                      {selected.map((item: Products) => {
+                                        return (
+                                          <Badge
+                                            key={item.product_id}
+                                            variant="secondary"
                                           >
-                                            <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
-                                          </button>
-                                        </Badge>
-                                      );
-                                    })}
-                                    {/* Avoid having the "Search" Icon */}
-                                    <CommandPrimitive.Input
-                                      ref={inputRef}
-                                      value={inputValue}
-                                      onValueChange={setInputValue}
-                                      onBlur={() => setDropdown(false)}
-                                      onFocus={() => setDropdown(true)}
-                                      placeholder="Select products..."
-                                      className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
-                                    />
-                                  </div>
-                                </div>
-                                <div className="relative mt-2">
-                                  {dropdown && selectables.length > 0 ? (
-                                    <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-                                      <CommandGroup className="h-full overflow-auto">
-                                        {selectables.map((item: Products) => {
-                                          return (
-                                            <CommandItem
-                                              key={item.product_id}
+                                            {item.product_name}
+                                            <button
+                                              type="button"
+                                              className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                                              onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                  handleUnselect(item);
+                                                }
+                                              }}
                                               onMouseDown={(e) => {
                                                 e.preventDefault();
                                                 e.stopPropagation();
                                               }}
-                                              onSelect={() => {
-                                                setInputValue('');
-                                                setSelected((prev) => [
-                                                  ...prev,
-                                                  item,
-                                                ]);
-                                                form.setValue(
-                                                  'products',
-                                                  selected
-                                                );
-                                              }}
-                                              className={'cursor-pointer gap-2'}
+                                              onClick={() =>
+                                                handleUnselect(item)
+                                              }
                                             >
-                                              <img
-                                                className="w-12 h-12 aspect-square object-cover"
-                                                src={item.product_image}
-                                              />
-                                              <p className="break-all">
-                                                {item.product_name}
-                                              </p>
-                                            </CommandItem>
-                                          );
-                                        })}
-                                      </CommandGroup>
+                                              <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
+                                            </button>
+                                          </Badge>
+                                        );
+                                      })}
+                                      {/* Avoid having the "Search" Icon */}
+                                      <CommandPrimitive.Input
+                                        ref={inputRef}
+                                        value={inputValue}
+                                        onValueChange={setInputValue}
+                                        onBlur={() => setDropdown(false)}
+                                        onFocus={() => setDropdown(true)}
+                                        placeholder="Select products..."
+                                        className="ml-2 bg-transparent outline-none placeholder:text-muted-foreground flex-1"
+                                      />
                                     </div>
-                                  ) : null}
-                                </div>
-                              </>
-                            ) : (
-                              <ErrorAlert>
-                                You currently do not have any product.
-                              </ErrorAlert>
-                            )}
-                            <FormMessage />
-                          </Command>
-                        </FormItem>
-                      )}
-                    />
-
+                                  </div>
+                                  <div className="relative mt-2">
+                                    {dropdown && selectables.length > 0 ? (
+                                      <div className="absolute w-full z-10 top-0 rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+                                        <CommandGroup className="h-full overflow-auto">
+                                          {selectables.map((item: Products) => {
+                                            return (
+                                              <CommandItem
+                                                key={item.product_id}
+                                                onMouseDown={(e) => {
+                                                  e.preventDefault();
+                                                  e.stopPropagation();
+                                                }}
+                                                onSelect={() => {
+                                                  setInputValue('');
+                                                  setSelected((prev) => [
+                                                    ...prev,
+                                                    item,
+                                                  ]);
+                                                  form.setValue(
+                                                    'products',
+                                                    selected
+                                                  );
+                                                }}
+                                                className={
+                                                  'cursor-pointer gap-2'
+                                                }
+                                              >
+                                                <img
+                                                  className="w-12 h-12 aspect-square object-cover"
+                                                  src={item.product_image}
+                                                />
+                                                <p className="break-all">
+                                                  {item.product_name}
+                                                </p>
+                                              </CommandItem>
+                                            );
+                                          })}
+                                        </CommandGroup>
+                                      </div>
+                                    ) : null}
+                                  </div>
+                                </>
+                              ) : (
+                                <ErrorAlert>
+                                  You currently do not have any product.
+                                </ErrorAlert>
+                              )}
+                              <FormMessage />
+                            </Command>
+                          </FormItem>
+                        )}
+                      />
+                    )}
                     {/* <FormField
                   control={form.control}
                   name="confirmpassword"

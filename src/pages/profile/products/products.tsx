@@ -3,11 +3,17 @@ import { Button } from '@/components/ui/button';
 import { Loading } from '@/components/ui/loading';
 import { TabsContent } from '@/components/ui/tabs';
 import { productsAPI } from '@/services/products-api';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useInfiniteQuery, useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 
-export default function Products() {
+export default function Products({
+  category,
+  productName,
+}: {
+  category: string;
+  productName: string;
+}) {
   const { username } = useParams<string>();
 
   // const { data, isLoading } = useQuery(['product_data', username], () =>
@@ -20,17 +26,23 @@ export default function Products() {
     hasNextPage,
     isFetching,
     isFetchingNextPage,
+    refetch,
     isError,
     error,
   } = useInfiniteQuery(
     ['product_data', username],
-    ({ pageParam = 1 }) => productsAPI(username!, 12, pageParam),
+    ({ pageParam = 1 }) =>
+      productsAPI(username!, category, productName, 12, pageParam),
     {
       getNextPageParam: (lastPage) => {
         return lastPage.data.next_page; // Assuming nextPage property is present in your API response
       },
     }
   );
+
+  useEffect(() => {
+    refetch();
+  }, [category, productName]);
 
   if (isFetching && !isFetchingNextPage) {
     return <Loading />;

@@ -5,12 +5,16 @@ import axios, { AxiosResponse } from 'axios';
 
 export const productsAPI = async (
   args: string,
+  category: string,
+  product_name: string,
   limit?: number,
   page?: number
 ): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.get(
-      `/products?username=${args ? args : ''}&_limit=${
+      `/products?username=${args ? args : ''}&category_id=${
+        category ? category : ''
+      }&product-name=${product_name ? product_name : ''}&_limit=${
         limit ? limit : ''
       }&_page=${page ? page : ''}`,
       {}

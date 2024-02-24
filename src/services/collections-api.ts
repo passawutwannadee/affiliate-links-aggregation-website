@@ -4,14 +4,15 @@ import axios, { AxiosResponse } from 'axios';
 
 export const collectionsAPI = async (
   args: string,
+  collection_name: string,
   limit?: number,
   page?: number
 ): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.get(
-      `/collections?username=${args ? args : ''}&_limit=${
-        limit ? limit : ''
-      }&_page=${page ? page : ''}`,
+      `/collections?username=${args ? args : ''}&collection-name=${
+        collection_name ? collection_name : ''
+      }&_limit=${limit ? limit : ''}&_page=${page ? page : ''}`,
       {}
     );
 

@@ -3,11 +3,15 @@ import { Button } from '@/components/ui/button';
 import { Loading } from '@/components/ui/loading';
 import { TabsContent } from '@/components/ui/tabs';
 import { collectionsAPI } from '@/services/collections-api';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 
-export default function Collections() {
+export default function Collections({
+  collectionName,
+}: {
+  collectionName: string;
+}) {
   const { username } = useParams<string>();
 
   const {
@@ -16,17 +20,23 @@ export default function Collections() {
     hasNextPage,
     isFetching,
     isFetchingNextPage,
+    refetch,
     isError,
     error,
   } = useInfiniteQuery(
     ['collection_data', username],
-    ({ pageParam = 1 }) => collectionsAPI(username!, 12, pageParam),
+    ({ pageParam = 1 }) =>
+      collectionsAPI(username!, collectionName, 12, pageParam),
     {
       getNextPageParam: (lastPage) => {
         return lastPage.data.next_page; // Assuming nextPage property is present in your API response
       },
     }
   );
+
+  useEffect(() => {
+    refetch();
+  }, [collectionName]);
 
   if (isFetching && !isFetchingNextPage) {
     return <Loading />;

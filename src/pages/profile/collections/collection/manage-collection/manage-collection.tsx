@@ -29,7 +29,7 @@ import {
 } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { productsAPI } from '@/services/products-api';
+import { productToCollectionAPI } from '@/services/products-api';
 import {
   ManageCollectionsAPI,
   createCollectionsAPI,
@@ -78,8 +78,9 @@ export default function ManageCollection({
   const [inputValue, setInputValue] = useState('');
   const username = useSelector((state: RootState) => state.user.currentUser);
 
-  const { data, isLoading } = useQuery(['product_data', username], () =>
-    productsAPI(username!)
+  const { data, isLoading } = useQuery(
+    ['collection_to_product', username],
+    () => productToCollectionAPI(username!)
   );
 
   const queryClient = useQueryClient();
