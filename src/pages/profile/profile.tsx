@@ -364,20 +364,20 @@ export default function Profile() {
         <div>
           <div className="flex flex-col lg:flex-row items-center gap-6">
             <Avatar className="h-36 w-36">
-              <AvatarImage src={data!.data.profile_picture} />
+              <AvatarImage src={data?.data.profile_picture} />
               <AvatarFallback>
                 <User className="w-2/4 h-2/4" />
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-center lg:items-start gap-2">
               <p className="text-2xl lg:text-3xl font-bold">
-                {data!.data.display_name}
+                {data?.data.display_name}
               </p>
               <p className="text-md lg:text-lg font-bold text-primary/80">
-                @{data!.data.username}
+                @{data?.data.username}
               </p>
             </div>
-            {currentUser !== data!.data.username ? (
+            {currentUser !== data?.data.username ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="text-xl">
@@ -440,7 +440,7 @@ export default function Profile() {
                 </TabsTrigger>
               </TabsList>
               <div className="">
-                {currentUser === data!.data.username && emailVerified === 1 ? (
+                {currentUser === data?.data.username && emailVerified === 1 ? (
                   <>
                     <TabsContent value="products">
                       <AddProduct />

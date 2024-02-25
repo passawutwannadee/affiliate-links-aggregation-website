@@ -118,6 +118,20 @@ export const unbanAPI = async (arg: UnbanInfo): Promise<AxiosResponse> => {
   }
 };
 
+export const ticketStausesAPI = async (): Promise<AxiosResponse> => {
+  try {
+    const response = await axiosInstance.get(`/admin/ticket`, {});
+
+    return response;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
+  }
+};
+
 interface TicketInfo {
   appealId?: number;
   reportId?: number;

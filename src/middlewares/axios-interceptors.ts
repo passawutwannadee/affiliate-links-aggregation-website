@@ -1,4 +1,5 @@
 import axiosInstance from '@/configs/axios-instance';
+import globalRouter from '@/lib/global-navigate';
 
 axiosInstance.interceptors.response.use(
   (response) => {
@@ -11,11 +12,11 @@ axiosInstance.interceptors.response.use(
       sessionStorage.clear();
       window.location.href = '/';
     }
-    if (error.response.request.status === 404) {
-      window.location.href = '/404';
+    if (error.response.request.status === 404 && globalRouter.navigate) {
+      globalRouter.navigate('/405');
     }
-    if (error.response.request.status === 500) {
-      window.location.href = '/500';
+    if (error.response.request.status === 500 && globalRouter.navigate) {
+      globalRouter.navigate('/500');
     }
     return Promise.reject(error);
   }
