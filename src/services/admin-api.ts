@@ -44,7 +44,7 @@ export const getBanAppeals = async (): Promise<AxiosResponse> => {
 };
 
 interface BanInfo {
-  userId: string;
+  userId: number;
   banReason?: string;
   reportCategoryId?: string;
 }
@@ -108,6 +108,20 @@ export const unbanAPI = async (arg: UnbanInfo): Promise<AxiosResponse> => {
       user_id: arg.userId,
       ban_id: arg.banId,
     });
+    return response;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
+  }
+};
+
+export const ticketStausesAPI = async (): Promise<AxiosResponse> => {
+  try {
+    const response = await axiosInstance.get(`/admin/ticket`, {});
+
     return response;
   } catch (err) {
     if (axios.isAxiosError(err)) {

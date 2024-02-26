@@ -17,6 +17,7 @@ import { User } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';
 import { reset } from '@/redux/features/userSlice';
+import globalRouter from '@/lib/global-navigate';
 
 export function MainNav() {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ export function MainNav() {
   );
 
   const navigate = useNavigate();
+  globalRouter.navigate = navigate;
   const { mutate } = useMutation(logoutAPI, {
     onSuccess: (response) => {
       // login is successful
@@ -68,7 +70,7 @@ export function MainNav() {
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuLabel>@{currentUser}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <Link to={`/profile/${currentUser}`}>Profile</Link>

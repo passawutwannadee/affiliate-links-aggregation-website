@@ -57,7 +57,7 @@ interface ChildProps {
   appealInformation: string;
 }
 
-export default function TicketDetails({
+export default function AppealActionDetails({
   closeSheet,
   appealId,
   userId,

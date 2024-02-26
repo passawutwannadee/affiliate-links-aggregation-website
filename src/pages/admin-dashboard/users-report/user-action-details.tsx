@@ -62,13 +62,13 @@ interface ChildProps {
   closeSheet: () => void;
   reportId: number;
   reporterEmail: string;
-  userId: string;
+  userId: number;
   reportedUser: string;
   reportReason: string;
   reportInformation: string;
 }
 
-export default function TicketDetails({
+export default function UserActionDetails({
   username,
   closeSheet,
   reportId,
@@ -79,7 +79,7 @@ export default function TicketDetails({
   reportInformation,
 }: ChildProps) {
   // get categories
-  const { data, isLoading } = useQuery(['report_categories'], () =>
+  const { data, isLoading } = useQuery(['user_report_categories'], () =>
     reportCategoriesAPI(1)
   );
 
@@ -187,6 +187,10 @@ export default function TicketDetails({
         <SheetTitle>Report</SheetTitle>
       </SheetHeader>
       <SheetDescription className="flex flex-col gap-2">
+        <div>
+          <p className="font-bold">Report ID</p>
+          <p>{reportId}</p>
+        </div>
         <div>
           <p className="font-bold">Reporter's Email</p>
           <p>{reporterEmail}</p>

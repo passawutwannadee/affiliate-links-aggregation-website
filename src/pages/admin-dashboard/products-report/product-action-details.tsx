@@ -68,7 +68,7 @@ interface ChildProps {
   reportInformation: string;
 }
 
-export default function TicketDetails({
+export default function ProductActionDetails({
   productId,
   closeSheet,
   reportId,
@@ -79,7 +79,7 @@ export default function TicketDetails({
   reportInformation,
 }: ChildProps) {
   // get categories
-  const { data, isLoading } = useQuery(['report_categories'], () =>
+  const { data, isLoading } = useQuery(['product_report_categories'], () =>
     reportCategoriesAPI(2)
   );
 

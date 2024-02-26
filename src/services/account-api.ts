@@ -7,8 +7,6 @@ export const accountAPI = async (): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.get(`auth/account`);
 
-    console.log(response);
-
     return response;
   } catch (err) {
     if (axios.isAxiosError(err)) {
