@@ -44,7 +44,7 @@ export const getBanAppeals = async (): Promise<AxiosResponse> => {
 };
 
 interface BanInfo {
-  userId: string;
+  userId: number;
   banReason?: string;
   reportCategoryId?: string;
 }
