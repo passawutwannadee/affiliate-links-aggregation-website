@@ -85,7 +85,7 @@ export default function CollectionActionDetails({
 
   const queryClient = useQueryClient();
 
-  const { mutate: sendBan } = useMutation(warnAPI, {
+  const { mutate: sendBan, isLoading: isSending } = useMutation(warnAPI, {
     onSuccess: (response) => {
       if (response.status === 201) {
         queryClient.invalidateQueries({
@@ -334,7 +334,9 @@ export default function CollectionActionDetails({
                   Close
                 </Button>
               </SheetClose>
-              <SubmitButton type="submit">Close Ticket</SubmitButton>
+              <SubmitButton isLoading={isSending} type="submit">
+                Close Ticket
+              </SubmitButton>
             </SheetFooter>
           </form>
         </Form>

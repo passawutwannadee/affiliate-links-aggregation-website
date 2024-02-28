@@ -53,18 +53,6 @@ export default function Product() {
     return <Loading />;
   }
 
-  // const anchor1 = document.createElement('a');
-  // const anchor2 = document.createElement('a');
-  // const anchor3 = document.createElement('a');
-  // const anchor4 = document.createElement('a');
-
-  // useEffect(() => {
-  //   for (let i = 0; i < data.data[0].links.length; i++) {}
-  //   anchor.href =
-  //     'https://www.lazada.co.th/products/sealect-165-i2622271972-s9403695117.html?c=&channelLpJumpArgs=&clickTrackInfo=query%253A%2525E0%2525B8%25258B%2525E0%2525B8%2525B5%2525E0%2525B9%252580%2525E0%2525B8%2525A5%2525E0%2525B9%252587%2525E0%2525B8%252584%253Bni';
-  //   console.log(anchor.hostname.replace(/^www\./, ''));
-  // }, [data]);
-
   return (
     <>
       <div className="container mx-auto py-8">
@@ -140,7 +128,7 @@ export default function Product() {
                 ))}
             </div>
 
-            <div className="grid grid-cols-2 gap-6 w-full">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full py-10">
               {data!.data[0].links.map((_items: null, index: number) => (
                 <a
                   key={index}
@@ -148,7 +136,7 @@ export default function Product() {
                   href={data!.data[0].links[index]}
                   target="_blank"
                 >
-                  <p className="px-6 text-2xl font-semibold text-center text-secondary truncate ...">
+                  <p className="px-6 text-2xl font-semibold text-center text-secondary truncate">
                     {new URL(data!.data[0].links[index]).hostname.replace(
                       /^www\./,
                       ''

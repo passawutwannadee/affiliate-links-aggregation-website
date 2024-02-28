@@ -99,6 +99,7 @@ interface UnbanInfo {
   appealId: number;
   userId: number;
   banId: number;
+  unbanReasonDetail: string;
 }
 
 export const unbanAPI = async (arg: UnbanInfo): Promise<AxiosResponse> => {
@@ -107,6 +108,7 @@ export const unbanAPI = async (arg: UnbanInfo): Promise<AxiosResponse> => {
       appeal_id: arg.appealId,
       user_id: arg.userId,
       ban_id: arg.banId,
+      unban_reason_detail: arg.unbanReasonDetail,
     });
     return response;
   } catch (err) {

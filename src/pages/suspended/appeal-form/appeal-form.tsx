@@ -56,6 +56,9 @@ export default function AppealForm() {
         if (response.data.ticket_status) {
           navigate('/');
         }
+        if (response.data.ban_reason_id === 14) {
+          navigate('/');
+        }
       },
     }
   );

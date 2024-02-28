@@ -37,20 +37,22 @@ export default function SuspendedAlert() {
           </CardHeader>
           <CardContent className="grid gap-4">
             <p>Reason: {data?.data.ban_reason}</p>
-            {data?.data.ticket_status === null ? (
+            {data?.data.ticket_status === null &&
+            data?.data.ban_reason_id !== 14 ? (
               <p>
                 If you believe we are mistaken, please fill and send us appeal
                 form or contact loremipsum@loremipsum.lorem.
               </p>
-            ) : (
+            ) : data?.data.ticket_status !== null ? (
               <p>
                 Appeal status:{' '}
                 <Badge className="capitalize">{data?.data.ticket_status}</Badge>
               </p>
-            )}
+            ) : null}
           </CardContent>
           <CardFooter className="self-center gap-1">
-            {data?.data.ticket_status === null ? (
+            {data?.data.ticket_status === null &&
+            data?.data.ban_reason_id !== 14 ? (
               <Button
                 className="w-full"
                 onClick={() => navigate('/appeal-form')}

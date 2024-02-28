@@ -24,20 +24,18 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ticketAPI, unbanAPI } from '@/services/admin-api';
+import { Textarea } from '@/components/ui/textarea';
 
 const unbanSchema = z.object({
   unban: z.literal('unban'),
-  // description: z
-  //   .string()
-  //   .min(10, {
-  //     message: 'Report detail must be at least 10 characters.',
-  //   })
-  //   .max(160, {
-  //     message: 'Report detail must not be longer than 30 characters.',
-  //   }),
-  // category: z.string().nonempty({
-  //   message: 'Please enter product name.',
-  // }),
+  description: z
+    .string()
+    .min(10, {
+      message: 'Report detail must be at least 10 characters.',
+    })
+    .max(255, {
+      message: 'Report detail must not be longer than 255 characters.',
+    }),
 });
 
 const rejectSchema = z.object({
@@ -100,36 +98,39 @@ export default function AppealActionDetails({
     },
   });
 
-  const { mutate: sendRejection } = useMutation(ticketAPI, {
-    onSuccess: (response) => {
-      if (response.status === 200) {
-        queryClient.invalidateQueries({
-          queryKey: ['ban_appeals'],
-        });
-        toast(
-          <>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              data-slot="icon"
-              className="w-6 h-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-              />
-            </svg>
-            <p>Successfully rejected ticket.</p>
-          </>
-        );
-      }
-      closeSheet();
-    },
-  });
+  const { mutate: sendRejection, isLoading: isSending } = useMutation(
+    ticketAPI,
+    {
+      onSuccess: (response) => {
+        if (response.status === 200) {
+          queryClient.invalidateQueries({
+            queryKey: ['ban_appeals'],
+          });
+          toast(
+            <>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                data-slot="icon"
+                className="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+              <p>Successfully rejected ticket.</p>
+            </>
+          );
+        }
+        closeSheet();
+      },
+    }
+  );
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -144,6 +145,7 @@ export default function AppealActionDetails({
         appealId: appealId,
         banId: banId,
         userId: userId,
+        unbanReasonDetail: values.description,
       });
     }
 
@@ -151,6 +153,8 @@ export default function AppealActionDetails({
       sendRejection({ appealId: appealId, ticketStatusId: 3 });
     }
   }
+
+  const unban = form.watch('unban');
 
   return (
     <SheetContent>
@@ -211,45 +215,8 @@ export default function AppealActionDetails({
               )}
             />
 
-            {/* {warn === 'warn' ? (
+            {unban === 'unban' ? (
               <>
-                <FormField
-                  control={form.control}
-                  name="category"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Reason
-                        <Required />
-                      </FormLabel>
-                      <Select onValueChange={field.onChange}>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select Category" />
-                        </SelectTrigger>
-                        <SelectContent className="">
-                          {data!.data.map(
-                            (value: {
-                              report_category_name: string;
-                              report_category_id: string;
-                            }) => {
-                              return (
-                                <SelectItem
-                                  key={value.report_category_id}
-                                  value={value.report_category_id.toString()}
-                                  className="hover:bg-primary/10"
-                                >
-                                  {value.report_category_name}
-                                </SelectItem>
-                              );
-                            }
-                          )}
-                        </SelectContent>
-                        <FormMessage />
-                      </Select>
-                    </FormItem>
-                  )}
-                />
-
                 <FormField
                   control={form.control}
                   name="description"
@@ -268,26 +235,7 @@ export default function AppealActionDetails({
                   )}
                 />
               </>
-            ) : null} */}
-
-            {/* <FormField
-                    control={form.control}
-                    name="confirmpassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Product Picture</FormLabel>
-                        <Input
-                          className="w-full"
-                          id="picture"
-                          type="file" 
-                          onChange={(event) => {
-                            onChange(event.target.files);
-                          }}
-                        />
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  /> */}
+            ) : null}
 
             <SheetFooter>
               <SheetClose>
@@ -295,7 +243,9 @@ export default function AppealActionDetails({
                   Close
                 </Button>
               </SheetClose>
-              <SubmitButton type="submit">Close Ticket</SubmitButton>
+              <SubmitButton isLoading={isSending} type="submit">
+                Close Ticket
+              </SubmitButton>
             </SheetFooter>
           </form>
         </Form>

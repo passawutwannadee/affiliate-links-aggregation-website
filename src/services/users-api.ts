@@ -23,6 +23,8 @@ export const banReasonAPI = async (): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.get(`/users/ban`);
 
+    console.log(response);
+
     return response;
   } catch (err) {
     if (axios.isAxiosError(err)) {

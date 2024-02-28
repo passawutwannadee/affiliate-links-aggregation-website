@@ -43,8 +43,8 @@ const banSchema = z.object({
     .min(10, {
       message: 'Report detail must be at least 10 characters.',
     })
-    .max(160, {
-      message: 'Report detail must not be longer than 30 characters.',
+    .max(255, {
+      message: 'Report detail must not be longer than 255 characters.',
     }),
   category: z.string().nonempty({
     message: 'Please enter product name.',
@@ -85,7 +85,7 @@ export default function UserActionDetails({
 
   const queryClient = useQueryClient();
 
-  const { mutate: sendBan } = useMutation(banAPI, {
+  const { mutate: sendBan, isLoading: isSending } = useMutation(banAPI, {
     onSuccess: (response) => {
       if (response.status === 201) {
         queryClient.invalidateQueries({
@@ -337,7 +337,9 @@ export default function UserActionDetails({
                   Close
                 </Button>
               </SheetClose>
-              <SubmitButton type="submit">Close Ticket</SubmitButton>
+              <SubmitButton isLoading={isSending} type="submit">
+                Close Ticket
+              </SubmitButton>
             </SheetFooter>
           </form>
         </Form>
