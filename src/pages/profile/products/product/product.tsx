@@ -33,15 +33,15 @@ export default function Product() {
   const navigate = useNavigate();
 
   const { data, isLoading } = useQuery(
-    ['product_data', id],
+    ['product_data', productId],
     () => productAPI(productId!),
     {
       retry: 0,
-      // onError: (response: AxiosError) => {
-      //   if (response.status === 404) {
-      //     navigate('/404');
-      //   }
-      // },
+      onSuccess: (response) => {
+        if (response.status === 204) {
+          navigate('/404');
+        }
+      },
     }
   );
 
