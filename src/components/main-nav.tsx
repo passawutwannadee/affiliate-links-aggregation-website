@@ -25,6 +25,7 @@ export function MainNav() {
   const currentUserPFP = useSelector(
     (state: RootState) => state.user.currentUserPFP
   );
+  const currentRole = useSelector((state: RootState) => state.user.currentRole);
 
   const navigate = useNavigate();
   globalRouter.navigate = navigate;
@@ -72,6 +73,11 @@ export function MainNav() {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>@{currentUser}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  {currentRole === 2 ? (
+                    <DropdownMenuItem>
+                      <Link to={`/admin`}>Dashboard</Link>
+                    </DropdownMenuItem>
+                  ) : null}
                   <DropdownMenuItem>
                     <Link to={`/profile/${currentUser}`}>Profile</Link>
                   </DropdownMenuItem>

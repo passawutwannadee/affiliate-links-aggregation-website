@@ -89,7 +89,7 @@ export default function UserActionDetails({
     onSuccess: (response) => {
       if (response.status === 201) {
         queryClient.invalidateQueries({
-          queryKey: ['user_report'],
+          queryKey: ['user_reports'],
         });
         toast(
           <>
@@ -163,11 +163,10 @@ export default function UserActionDetails({
     if (values.ban === 'ban') {
       sendBan({
         userId: userId,
+        reportId: reportId,
         reportCategoryId: values.category,
         banReason: values.description,
       });
-
-      sendRejection({ reportId: reportId, ticketStatusId: 2 });
     }
 
     if (values.ban === 'no') {

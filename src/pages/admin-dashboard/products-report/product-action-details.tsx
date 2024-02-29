@@ -162,7 +162,8 @@ export default function ProductActionDetails({
     console.log('hello');
     if (values.warn === 'warn') {
       sendWarn({
-        userId: userId!,
+        userId: userId,
+        reportId: reportId,
         reportCategoryId: parseInt(values.category),
         warnReasonDetail: values.description,
         productId: productId,

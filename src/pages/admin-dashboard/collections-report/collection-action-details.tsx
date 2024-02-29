@@ -163,6 +163,7 @@ export default function CollectionActionDetails({
     if (values.warn === 'warn') {
       sendBan({
         userId: userId,
+        reportId: reportId,
         collectionId: collectionId,
         reportCategoryId: parseInt(values.category),
         warnReasonDetail: values.description,
