@@ -139,9 +139,11 @@ export function ProductPreviewCard({
         ></Report>
       </Sheet>
       <Sheet open={editOpen} onOpenChange={setEditOpen}>
-        {editOpen ? (
-          <EditProduct productId={productId} closeSheet={handleEditClose} />
-        ) : null}
+        <EditProduct
+          productId={productId}
+          closeSheet={handleEditClose}
+          isOpen={editOpen}
+        />
       </Sheet>
       <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DeleteProduct productId={productId} username={username} />
