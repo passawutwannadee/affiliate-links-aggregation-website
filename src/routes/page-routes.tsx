@@ -20,6 +20,17 @@ const AdminDashboard = lazy(
   () => import('../pages/admin-dashboard/admin-dashboard')
 );
 const NotFound = lazy(() => import('../pages/errors/not-found'));
+const InternalServerError = lazy(
+  () => import('../pages/errors/internal-server-error')
+);
+const SuspendedAlert = lazy(() => import('../pages/suspended/suspended-alert'));
+const AppealForm = lazy(
+  () => import('../pages/suspended/appeal-form/appeal-form')
+);
+const VerifyEmail = lazy(() => import('../pages/verify-email/verify-email'));
+const VerifyEmailAlert = lazy(
+  () => import('../pages/verify-email/verify-email-alert')
+);
 
 // import Profile from '@/pages/profile/profile';
 // import Settings from '@/pages/settings/settings';
@@ -32,8 +43,6 @@ import { PasswordForm } from '@/pages/settings/password/password-form';
 
 import PublicRoutes from './public-routes';
 import PrivateRoutes from './private-routes';
-import VerifyEmail from '@/pages/verify-email/verify-email';
-import VerifyEmailAlert from '@/pages/verify-email/verify-email-alert';
 import { useQuery } from 'react-query';
 import { accountAPI } from '@/services/account-api';
 import { session } from '@/lib/session';
@@ -46,14 +55,11 @@ import {
   setCurrentUserPFP,
   setEmailVerified,
 } from '@/redux/features/userSlice';
+
 import VerifyEmailRoute from './verify-email-route';
-import SuspendedAlert from '@/pages/suspended/suspended-alert';
 import AuthRoutes from './auth-routes';
 import SuspendedRoutes from './suspended-routes';
-import AppealForm from '@/pages/suspended/appeal-form/appeal-form';
 import AdminRoutes from './admin-routes';
-import InternalServerError from '@/pages/errors/internal-server-error';
-
 import { Loading } from '@/components/ui/loading';
 
 function PageRoutes() {
