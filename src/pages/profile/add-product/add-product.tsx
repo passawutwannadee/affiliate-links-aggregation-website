@@ -24,7 +24,6 @@ import { Select } from '@radix-ui/react-select';
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { addProductsAPI, productCategoriesAPI } from '@/services/products-api';
-import { Loading } from '@/components/ui/loading';
 import {
   Sheet,
   SheetContent,

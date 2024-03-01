@@ -27,7 +27,6 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Required } from '@/components/ui/required';
 import Categories from './categories/categories';
-import { Loading } from '@/components/ui/loading';
 import { toast } from 'sonner';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';

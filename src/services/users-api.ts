@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosInstance from '@/middlewares/axios-interceptors';
 import axios, { AxiosResponse } from 'axios';
 

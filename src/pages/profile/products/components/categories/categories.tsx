@@ -1,4 +1,3 @@
-import { Loading } from '@/components/ui/loading';
 import { LoadingSmall } from '@/components/ui/loading-small';
 import { SelectContent, SelectItem } from '@/components/ui/select';
 import { productCategoriesAPI } from '@/services/products-api';
