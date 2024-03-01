@@ -4,16 +4,32 @@ import { MainNav } from '@/components/main-nav';
 
 const Register = lazy(() => import('../pages/register/register'));
 const Login = lazy(() => import('../pages/login/login'));
+const Profile = lazy(() => import('../pages/profile/profile'));
+const Settings = lazy(() => import('../pages/settings/settings'));
+// const AccountForm = lazy(
+//   () => import('../pages/settings/account/account-form')
+// );
+// const PasswordForm = lazy(
+//   () => import('../pages/settings/password/password-form')
+// );
+const Product = lazy(() => import('../pages/profile/products/product/product'));
+const Collection = lazy(
+  () => import('../pages/profile/collections/collection/collection')
+);
+const AdminDashboard = lazy(
+  () => import('../pages/admin-dashboard/admin-dashboard')
+);
+const NotFound = lazy(() => import('../pages/errors/not-found'));
 
-import Profile from '@/pages/profile/profile';
-import Settings from '@/pages/settings/settings';
+// import Profile from '@/pages/profile/profile';
+// import Settings from '@/pages/settings/settings';
 import { AccountForm } from '@/pages/settings/account/account-form';
 import { PasswordForm } from '@/pages/settings/password/password-form';
-import Product from '@/pages/profile/products/product/product';
-import Collection from '@/pages/profile/collections/collection/collection';
-import { AdminDashboard } from '@/pages/admin-dashboard/admin-dashboard';
-import { Loading } from '@/components/ui/loading';
-import NotFound from '@/pages/errors/not-found';
+// import Product from '@/pages/profile/products/product/product';
+// import Collection from '@/pages/profile/collections/collection/collection';
+// import { AdminDashboard } from '@/pages/admin-dashboard/admin-dashboard';
+// import NotFound from '@/pages/errors/not-found';
+
 import PublicRoutes from './public-routes';
 import PrivateRoutes from './private-routes';
 import VerifyEmail from '@/pages/verify-email/verify-email';
@@ -37,6 +53,8 @@ import SuspendedRoutes from './suspended-routes';
 import AppealForm from '@/pages/suspended/appeal-form/appeal-form';
 import AdminRoutes from './admin-routes';
 import InternalServerError from '@/pages/errors/internal-server-error';
+
+import { Loading } from '@/components/ui/loading';
 
 function PageRoutes() {
   const dispatch = useDispatch();
