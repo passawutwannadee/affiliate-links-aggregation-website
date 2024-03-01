@@ -43,8 +43,8 @@ const warnSchema = z.object({
     .min(10, {
       message: 'Report detail must be at least 10 characters.',
     })
-    .max(160, {
-      message: 'Report detail must not be longer than 30 characters.',
+    .max(255, {
+      message: 'Report detail must not be longer than 255 characters.',
     }),
   category: z.string().nonempty({
     message: 'Please enter product name.',
@@ -85,7 +85,7 @@ export default function ProductActionDetails({
 
   const queryClient = useQueryClient();
 
-  const { mutate: sendWarn } = useMutation(warnAPI, {
+  const { mutate: sendWarn, isLoading: isSending } = useMutation(warnAPI, {
     onSuccess: (response) => {
       if (response.status === 201) {
         queryClient.invalidateQueries({
@@ -162,7 +162,8 @@ export default function ProductActionDetails({
     console.log('hello');
     if (values.warn === 'warn') {
       sendWarn({
-        userId: userId!,
+        userId: userId,
+        reportId: reportId,
         reportCategoryId: parseInt(values.category),
         warnReasonDetail: values.description,
         productId: productId,
@@ -336,7 +337,9 @@ export default function ProductActionDetails({
                   Close
                 </Button>
               </SheetClose>
-              <SubmitButton type="submit">Close Ticket</SubmitButton>
+              <SubmitButton isLoading={isSending} type="submit">
+                Close Ticket
+              </SubmitButton>
             </SheetFooter>
           </form>
         </Form>

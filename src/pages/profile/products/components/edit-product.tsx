@@ -33,6 +33,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';
 import { useEffect, useState } from 'react';
 import { SubmitButton } from '@/components/ui/submit-button';
+import { LoadingSmall } from '@/components/ui/loading-small';
 
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -223,7 +224,7 @@ export default function EditProduct({ productId, closeSheet }: ChildProps) {
   }
 
   if (isLoading) {
-    return <Loading />;
+    return <LoadingSmall />;
   }
 
   return (
@@ -242,7 +243,7 @@ export default function EditProduct({ productId, closeSheet }: ChildProps) {
                     <FormField
                       control={form.control}
                       name="product_name"
-                      defaultValue={data!.data[0].product_name}
+                      defaultValue={data?.data[0].product_name}
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
@@ -260,7 +261,7 @@ export default function EditProduct({ productId, closeSheet }: ChildProps) {
                     <FormField
                       control={form.control}
                       name="product_description"
-                      defaultValue={data!.data[0].product_description}
+                      defaultValue={data?.data[0].product_description}
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
@@ -289,7 +290,7 @@ export default function EditProduct({ productId, closeSheet }: ChildProps) {
                             <Required />
                           </FormLabel>
                           <Select
-                            defaultValue={data!.data[0].category_id.toString()}
+                            defaultValue={data?.data[0].category_id.toString()}
                             onValueChange={field.onChange}
                           >
                             <SelectTrigger className="w-full">
@@ -341,7 +342,7 @@ export default function EditProduct({ productId, closeSheet }: ChildProps) {
                         <div className="flex flex-row items-center gap-4">
                           <img
                             className="w-24 h-24 aspect-square object-cover rounded-lg border"
-                            src={data!.data[0].product_image}
+                            src={data?.data[0].product_image}
                           />
                           <Button
                             type="button"

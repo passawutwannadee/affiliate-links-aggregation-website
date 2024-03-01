@@ -45,6 +45,7 @@ import { z } from 'zod';
 import { Form, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { HamburgerMenuIcon } from '@radix-ui/react-icons';
+import { LoadingSmall } from '@/components/ui/loading-small';
 
 const formSchema = z.object({
   product_name: z.string(),
@@ -96,7 +97,7 @@ export default function Profile() {
     mode: 'onChange',
   });
 
-  if (isLoading && categoriesIsLoading) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -108,258 +109,271 @@ export default function Profile() {
     <>
       <Tabs
         defaultValue="products"
-        className="container flex-1 items-start md:grid md:grid-cols-[240px_minmax(0,1fr)] md:gap-2 lg:grid-cols-[22  8px_minmax(0,1fr)] lg:gap-10 mt-6"
+        className="container flex-1 items-start md:grid md:grid-cols-[240px_minmax(0,1fr)] md:gap-2 lg:grid-cols-[228px_minmax(0,1fr)] lg:gap-10 mt-6"
       >
         <aside className="fixed top-14 z-30 -ml-2 hidden h-[calc(100vh-7.5rem)] w-full shrink-0 md:sticky md:flex">
-          <TabsContent value="products">
-            <Form {...form}>
-              <div className="space-y-4 py-4">
-                <div className="px-3 py-2">
-                  <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-                    Categories
-                  </h2>
-                  <div className="space-y-1">
-                    <FormField
-                      control={form.control}
-                      name="category"
-                      render={({ field }) => (
-                        <FormItem>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue="0"
-                          >
-                            <SelectTrigger className="w-full">
-                              <SelectValue placeholder="View All" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem key={0} value={'0'} defaultChecked>
-                                View All
-                              </SelectItem>
-                              {categoriesData?.data.map(
-                                (value: {
-                                  category_name: string;
-                                  category_id: string;
-                                }) => {
-                                  return (
-                                    <SelectItem
-                                      key={value.category_id}
-                                      value={value.category_id.toString()}
-                                      className="hover:bg-primary/10"
-                                    >
-                                      {value.category_name}
-                                    </SelectItem>
-                                  );
-                                }
+          {categoriesIsLoading ? (
+            <LoadingSmall />
+          ) : (
+            <>
+              {' '}
+              <TabsContent value="products">
+                <Form {...form}>
+                  <div className="space-y-4 py-4">
+                    <div className="px-3 py-2">
+                      <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+                        Categories
+                      </h2>
+                      <div className="space-y-1">
+                        <FormField
+                          control={form.control}
+                          name="category"
+                          render={({ field }) => (
+                            <FormItem>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue="0"
+                              >
+                                <SelectTrigger className="w-full">
+                                  <SelectValue placeholder="View All" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem
+                                    key={0}
+                                    value={'0'}
+                                    defaultChecked
+                                  >
+                                    View All
+                                  </SelectItem>
+                                  {categoriesData?.data.map(
+                                    (value: {
+                                      category_name: string;
+                                      category_id: string;
+                                    }) => {
+                                      return (
+                                        <SelectItem
+                                          key={value.category_id}
+                                          value={value.category_id.toString()}
+                                          className="hover:bg-primary/10"
+                                        >
+                                          {value.category_name}
+                                        </SelectItem>
+                                      );
+                                    }
+                                  )}
+                                </SelectContent>
+                              </Select>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
+                    <div className="px-3 py-2">
+                      <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+                        Product Name
+                      </h2>
+                      <div className="space-y-1">
+                        <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                          <div className="relative w-full">
+                            <FormField
+                              control={form.control}
+                              name="product_name"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                                  <Input
+                                    placeholder="Search"
+                                    className="pl-8"
+                                    onChange={field.onChange}
+                                  />
+                                </FormItem>
                               )}
-                            </SelectContent>
-                          </Select>
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-                <div className="px-3 py-2">
-                  <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-                    Product Name
-                  </h2>
-                  <div className="space-y-1">
-                    <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                      <div className="relative w-full">
-                        <FormField
-                          control={form.control}
-                          name="product_name"
-                          render={({ field }) => (
-                            <FormItem>
-                              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                              <Input
-                                placeholder="Search"
-                                className="pl-8"
-                                onChange={field.onChange}
-                              />
-                            </FormItem>
-                          )}
-                        />
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </Form>
-          </TabsContent>
-          <TabsContent value="collections">
-            <Form {...form}>
-              <div className="space-y-4 py-4">
-                <div className="px-3 py-2">
-                  <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-                    Collection Name
-                  </h2>
-                  <div className="space-y-1">
-                    <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                      <div className="relative w-full">
-                        <FormField
-                          control={form.control}
-                          name="collection_name"
-                          render={({ field }) => (
-                            <FormItem>
-                              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                              <Input
-                                placeholder="Search"
-                                className="pl-8"
-                                onChange={field.onChange}
-                              />
-                            </FormItem>
-                          )}
-                        />
+                </Form>
+              </TabsContent>
+              <TabsContent value="collections">
+                <Form {...form}>
+                  <div className="space-y-4 py-4">
+                    <div className="px-3 py-2">
+                      <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+                        Collection Name
+                      </h2>
+                      <div className="space-y-1">
+                        <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                          <div className="relative w-full">
+                            <FormField
+                              control={form.control}
+                              name="collection_name"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                                  <Input
+                                    placeholder="Search"
+                                    className="pl-8"
+                                    onChange={field.onChange}
+                                  />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </Form>
-          </TabsContent>
+                </Form>
+              </TabsContent>
+            </>
+          )}
         </aside>
         <aside className="fixed md:hidden">
-          <Button onClick={() => setFilterOpen(true)}>
-            <HamburgerMenuIcon />
-          </Button>
-          <TabsContent value="products">
-            <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
-              <SheetContent side="left">
-                <SheetHeader>
-                  <SheetTitle>Filters</SheetTitle>
-                </SheetHeader>
-                <SheetTrigger></SheetTrigger>
-                <SheetDescription>
-                  <Form {...form}>
-                    <div className="space-y-4 py-4">
-                      <div className="px-3 py-2">
-                        <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-                          Categories
-                        </h2>
-                        <div className="space-y-1">
-                          <FormField
-                            control={form.control}
-                            name="category"
-                            render={({ field }) => (
-                              <FormItem>
-                                <Select
-                                  onValueChange={field.onChange}
-                                  defaultValue="0"
-                                >
-                                  <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="View All" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem
-                                      key={0}
-                                      value={'0'}
-                                      defaultChecked
+          {categoriesIsLoading ? (
+            <LoadingSmall />
+          ) : (
+            <>
+              <Button onClick={() => setFilterOpen(true)}>
+                <HamburgerMenuIcon />
+              </Button>
+              <TabsContent value="products">
+                <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
+                  <SheetContent side="left">
+                    <SheetHeader>
+                      <SheetTitle>Filters</SheetTitle>
+                    </SheetHeader>
+                    <SheetTrigger></SheetTrigger>
+                    <SheetDescription>
+                      <Form {...form}>
+                        <div className="space-y-4 py-4">
+                          <div className="px-3 py-2">
+                            <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+                              Categories
+                            </h2>
+                            <div className="space-y-1">
+                              <FormField
+                                control={form.control}
+                                name="category"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <Select
+                                      onValueChange={field.onChange}
+                                      defaultValue="0"
                                     >
-                                      View All
-                                    </SelectItem>
-                                    {categoriesData?.data.map(
-                                      (value: {
-                                        category_name: string;
-                                        category_id: string;
-                                      }) => {
-                                        return (
-                                          <SelectItem
-                                            key={value.category_id}
-                                            value={value.category_id.toString()}
-                                            className="hover:bg-primary/10"
-                                          >
-                                            {value.category_name}
-                                          </SelectItem>
-                                        );
-                                      }
+                                      <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="View All" />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        <SelectItem
+                                          key={0}
+                                          value={'0'}
+                                          defaultChecked
+                                        >
+                                          View All
+                                        </SelectItem>
+                                        {categoriesData?.data.map(
+                                          (value: {
+                                            category_name: string;
+                                            category_id: string;
+                                          }) => {
+                                            return (
+                                              <SelectItem
+                                                key={value.category_id}
+                                                value={value.category_id.toString()}
+                                                className="hover:bg-primary/10"
+                                              >
+                                                {value.category_name}
+                                              </SelectItem>
+                                            );
+                                          }
+                                        )}
+                                      </SelectContent>
+                                    </Select>
+                                  </FormItem>
+                                )}
+                              />
+                            </div>
+                          </div>
+                          <div className="px-3 py-2">
+                            <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+                              Product Name
+                            </h2>
+                            <div className="space-y-1">
+                              <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                                <div className="relative w-full">
+                                  <FormField
+                                    control={form.control}
+                                    name="product_name"
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                                        <Input
+                                          placeholder="Search"
+                                          className="pl-8"
+                                          onChange={field.onChange}
+                                        />
+                                      </FormItem>
                                     )}
-                                  </SelectContent>
-                                </Select>
-                              </FormItem>
-                            )}
-                          />
-                        </div>
-                      </div>
-                      <div className="px-3 py-2">
-                        <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-                          Product Name
-                        </h2>
-                        <div className="space-y-1">
-                          <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                            <div className="relative w-full">
-                              <FormField
-                                control={form.control}
-                                name="product_name"
-                                render={({ field }) => (
-                                  <FormItem>
-                                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                                    <Input
-                                      placeholder="Search"
-                                      className="pl-8"
-                                      onChange={field.onChange}
-                                    />
-                                  </FormItem>
-                                )}
-                              />
+                                  />
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </Form>
-                </SheetDescription>
-                {/* <AlertDialogFooter>
+                      </Form>
+                    </SheetDescription>
+                    {/* <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction type="submit">Continue</AlertDialogAction>
         </AlertDialogFooter> */}
-              </SheetContent>
-            </Sheet>
-          </TabsContent>
-          <TabsContent value="collections">
-            <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
-              <SheetContent side="left">
-                <SheetHeader>
-                  <SheetTitle>Filters</SheetTitle>
-                </SheetHeader>
-                <SheetTrigger></SheetTrigger>
-                <SheetDescription>
-                  <Form {...form}>
-                    <div className="space-y-4 py-4">
-                      <div className="px-3 py-2">
-                        <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-                          Collection Name
-                        </h2>
-                        <div className="space-y-1">
-                          <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                            <div className="relative w-full">
-                              <FormField
-                                control={form.control}
-                                name="collection_name"
-                                render={({ field }) => (
-                                  <FormItem>
-                                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                                    <Input
-                                      placeholder="Search"
-                                      className="pl-8"
-                                      onChange={field.onChange}
-                                    />
-                                  </FormItem>
-                                )}
-                              />
+                  </SheetContent>
+                </Sheet>
+              </TabsContent>
+              <TabsContent value="collections">
+                <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
+                  <SheetContent side="left">
+                    <SheetHeader>
+                      <SheetTitle>Filters</SheetTitle>
+                    </SheetHeader>
+                    <SheetTrigger></SheetTrigger>
+                    <SheetDescription>
+                      <Form {...form}>
+                        <div className="space-y-4 py-4">
+                          <div className="px-3 py-2">
+                            <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+                              Collection Name
+                            </h2>
+                            <div className="space-y-1">
+                              <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                                <div className="relative w-full">
+                                  <FormField
+                                    control={form.control}
+                                    name="collection_name"
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                                        <Input
+                                          placeholder="Search"
+                                          className="pl-8"
+                                          onChange={field.onChange}
+                                        />
+                                      </FormItem>
+                                    )}
+                                  />
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </Form>
-                </SheetDescription>
-                {/* <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction type="submit">Continue</AlertDialogAction>
-        </AlertDialogFooter> */}
-              </SheetContent>
-            </Sheet>
-          </TabsContent>
+                      </Form>
+                    </SheetDescription>
+                  </SheetContent>
+                </Sheet>
+              </TabsContent>
+            </>
+          )}
         </aside>
         <div>
           <div className="flex flex-col lg:flex-row items-center gap-6">

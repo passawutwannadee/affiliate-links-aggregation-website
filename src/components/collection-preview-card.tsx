@@ -111,8 +111,13 @@ export function CollectionPreviewCard({
         <CardHeader>
           <CardTitle>
             <div className="flex flex-row justify-between items-center">
-              <Link to={`/collection/${collectionId}`}>
-                <CardTitle>{title}</CardTitle>
+              <Link
+                to={`/collection/${collectionId}`}
+                className=" text-ellipsis overflow-hidden ..."
+              >
+                <CardTitle className="break-word line-clamp-2 text-ellipsis text-sm overflow-hidden ...">
+                  {title}
+                </CardTitle>
               </Link>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

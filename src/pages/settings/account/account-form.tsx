@@ -120,8 +120,8 @@ export function AccountForm() {
 
   // This can come from your database or API.
   const defaultValues: Partial<ProfileFormValues> = {
-    display_name: currentUser!,
-    username: currentUserDN!,
+    display_name: currentUserDN!,
+    username: currentUser!,
   };
 
   const form = useForm<ProfileFormValues>({

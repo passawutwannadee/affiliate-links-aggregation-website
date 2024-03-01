@@ -175,10 +175,6 @@ export default function AddProduct() {
     });
   }
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger>
@@ -254,24 +250,27 @@ export default function AddProduct() {
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="Select Category" />
                             </SelectTrigger>
-                            <SelectContent className="">
-                              {data!.data.map(
-                                (value: {
-                                  category_name: string;
-                                  category_id: string;
-                                }) => {
-                                  return (
-                                    <SelectItem
-                                      key={value.category_id}
-                                      value={value.category_id.toString()}
-                                      className="hover:bg-primary/10"
-                                    >
-                                      {value.category_name}
-                                    </SelectItem>
-                                  );
-                                }
-                              )}
-                            </SelectContent>
+                            {isLoading ? null : (
+                              <SelectContent className="">
+                                {data!.data.map(
+                                  (value: {
+                                    category_name: string;
+                                    category_id: string;
+                                  }) => {
+                                    return (
+                                      <SelectItem
+                                        key={value.category_id}
+                                        value={value.category_id.toString()}
+                                        className="hover:bg-primary/10"
+                                      >
+                                        {value.category_name}
+                                      </SelectItem>
+                                    );
+                                  }
+                                )}
+                              </SelectContent>
+                            )}
+
                             <FormMessage />
                           </Select>
                         </FormItem>

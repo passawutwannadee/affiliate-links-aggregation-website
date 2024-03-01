@@ -61,7 +61,7 @@ export function ProductPreviewCard({
 
   return (
     <>
-      <Card className="w-96 sm:w-full h-full">
+      <Card className="w-full h-full">
         <Link to={`/product/${productId}`}>
           <img
             src={image}
@@ -70,8 +70,13 @@ export function ProductPreviewCard({
         </Link>
         <CardHeader>
           <div className="flex flex-row justify-between items-center">
-            <Link to={`/product/${productId}`}>
-              <CardTitle className="break-all text-sm">{title}</CardTitle>
+            <Link
+              to={`/product/${productId}`}
+              className=" text-ellipsis overflow-hidden ..."
+            >
+              <CardTitle className="break-word line-clamp-2 text-ellipsis text-sm overflow-hidden ...">
+                {title}
+              </CardTitle>
             </Link>
             {meatballsMenu ? (
               <DropdownMenu>

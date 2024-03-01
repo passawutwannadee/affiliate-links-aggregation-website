@@ -9,7 +9,6 @@ import { DataTableFacetedFilter } from './data-table-faceted-filter';
 import { ticketStausesAPI } from '@/services/admin-api';
 import { useQuery } from 'react-query';
 import { Loading } from '@/components/ui/loading';
-import { DataTableViewOptions } from './data-table-view-options';
 import { reportCategoriesAPI } from '@/services/report-api';
 
 // import { priorities, statuses } from "../data/data"
@@ -118,7 +117,7 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <DataTableViewOptions table={table} />
+      {/* <DataTableViewOptions table={table} /> */}
     </div>
   );
 }

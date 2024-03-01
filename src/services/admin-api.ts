@@ -45,6 +45,7 @@ export const getBanAppeals = async (): Promise<AxiosResponse> => {
 
 interface BanInfo {
   userId: number;
+  reportId: number;
   banReason?: string;
   reportCategoryId?: string;
 }
@@ -53,6 +54,7 @@ export const banAPI = async (arg: BanInfo): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.post(`/admin/user`, {
       user_id: arg.userId,
+      report_id: arg.reportId,
       report_category_id: arg.reportCategoryId,
       ban_reason_detail: arg.banReason,
     });
@@ -69,6 +71,7 @@ export const banAPI = async (arg: BanInfo): Promise<AxiosResponse> => {
 
 interface WarnInfo {
   userId: number;
+  reportId: number;
   reportCategoryId: number;
   warnReasonDetail: string;
   productId?: number;
@@ -79,6 +82,7 @@ export const warnAPI = async (arg: WarnInfo): Promise<AxiosResponse> => {
   try {
     const response = await axiosInstance.post(`/admin/user/warn`, {
       user_id: arg.userId,
+      report_id: arg.reportId,
       report_category_id: arg.reportCategoryId,
       warn_reason_detail: arg.warnReasonDetail,
       product_id: arg.productId,
@@ -99,6 +103,7 @@ interface UnbanInfo {
   appealId: number;
   userId: number;
   banId: number;
+  unbanReasonDetail: string;
 }
 
 export const unbanAPI = async (arg: UnbanInfo): Promise<AxiosResponse> => {
@@ -107,6 +112,7 @@ export const unbanAPI = async (arg: UnbanInfo): Promise<AxiosResponse> => {
       appeal_id: arg.appealId,
       user_id: arg.userId,
       ban_id: arg.banId,
+      unban_reason_detail: arg.unbanReasonDetail,
     });
     return response;
   } catch (err) {
