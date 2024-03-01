@@ -101,10 +101,15 @@ const formSchema = z.discriminatedUnion('changeImage', [
 
 interface ChildProps {
   productId: number;
+  isOpen: boolean;
   closeSheet: () => void;
 }
 
-export default function EditProduct({ productId, closeSheet }: ChildProps) {
+export default function EditProduct({
+  productId,
+  isOpen,
+  closeSheet,
+}: ChildProps) {
   const username = useSelector((state: RootState) => state.user.currentUser);
 
   const [linkValue, setlinkValue] = useState<{ value: string }[]>([]);
@@ -114,6 +119,7 @@ export default function EditProduct({ productId, closeSheet }: ChildProps) {
     ['product_data', productId],
     () => productAPI(productId!),
     {
+      enabled: isOpen,
       onSuccess: (response) => {
         const links: { value: string }[] = [];
         for (let i = 0; i < response?.data[0].links.length; i++) {
@@ -223,7 +229,11 @@ export default function EditProduct({ productId, closeSheet }: ChildProps) {
   }
 
   if (isLoading) {
-    return <LoadingSmall />;
+    return (
+      <SheetContent className="flex">
+        <LoadingSmall />
+      </SheetContent>
+    );
   }
 
   return (
