@@ -1,6 +1,5 @@
 import { CollectionPreviewCard } from '@/components/collection-preview-card';
 import { Button } from '@/components/ui/button';
-import { Loading } from '@/components/ui/loading';
 import { TabsContent } from '@/components/ui/tabs';
 import { queryClient } from '@/configs/query-client';
 import { collectionsAPI } from '@/services/collections-api';
