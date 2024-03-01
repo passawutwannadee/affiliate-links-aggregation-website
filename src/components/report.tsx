@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Select } from '@radix-ui/react-select';
+import { Select } from '@/components/ui/select';
 import {
   SheetClose,
   SheetContent,

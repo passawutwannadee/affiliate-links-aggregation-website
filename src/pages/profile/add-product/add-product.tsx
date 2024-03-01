@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Select } from '@radix-ui/react-select';
+import { Select } from '@/components/ui/select';
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { addProductsAPI, productCategoriesAPI } from '@/services/products-api';

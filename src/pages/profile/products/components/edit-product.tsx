@@ -13,7 +13,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Textarea } from '@/components/ui/textarea';
 import { SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Select } from '@radix-ui/react-select';
+import { Select } from '@/components/ui/select';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { editProductsAPI, productAPI } from '@/services/products-api';
 import {
