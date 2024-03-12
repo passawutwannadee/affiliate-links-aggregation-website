@@ -231,14 +231,14 @@ export default function EditProduct({
   return (
     <>
       <SheetContent className="flex">
-        {isLoading ? (
-          <LoadingSmall />
-        ) : (
-          <ScrollArea className="h-[95vh] self-center w-full">
-            <div className="m-6 mt-0 pb-5">
-              <SheetHeader>
-                <SheetTitle>Edit Product</SheetTitle>
-                <SheetDescription>
+        <ScrollArea className="h-[95vh] self-center w-full">
+          <div className="m-6 mt-0 pb-5">
+            <SheetHeader>
+              <SheetTitle>Edit Product</SheetTitle>
+              <SheetDescription>
+                {isLoading ? (
+                  <LoadingSmall />
+                ) : (
                   <Form {...form}>
                     <form
                       onSubmit={form.handleSubmit(onSubmit)}
@@ -453,11 +453,11 @@ export default function EditProduct({
                       </SheetFooter>
                     </form>
                   </Form>
-                </SheetDescription>
-              </SheetHeader>
-            </div>
-          </ScrollArea>
-        )}
+                )}
+              </SheetDescription>
+            </SheetHeader>
+          </div>
+        </ScrollArea>
       </SheetContent>
     </>
   );
