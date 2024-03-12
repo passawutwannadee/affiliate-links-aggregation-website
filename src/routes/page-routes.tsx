@@ -4,20 +4,45 @@ import { MainNav } from '@/components/main-nav';
 
 const Register = lazy(() => import('../pages/register/register'));
 const Login = lazy(() => import('../pages/login/login'));
+const Profile = lazy(() => import('../pages/profile/profile'));
+const Settings = lazy(() => import('../pages/settings/settings'));
+// const AccountForm = lazy(
+//   () => import('../pages/settings/account/account-form')
+// );
+// const PasswordForm = lazy(
+//   () => import('../pages/settings/password/password-form')
+// );
+const Product = lazy(() => import('../pages/profile/products/product/product'));
+const Collection = lazy(
+  () => import('../pages/profile/collections/collection/collection')
+);
+const AdminDashboard = lazy(
+  () => import('../pages/admin-dashboard/admin-dashboard')
+);
+const NotFound = lazy(() => import('../pages/errors/not-found'));
+const InternalServerError = lazy(
+  () => import('../pages/errors/internal-server-error')
+);
+const SuspendedAlert = lazy(() => import('../pages/suspended/suspended-alert'));
+const AppealForm = lazy(
+  () => import('../pages/suspended/appeal-form/appeal-form')
+);
+const VerifyEmail = lazy(() => import('../pages/verify-email/verify-email'));
+const VerifyEmailAlert = lazy(
+  () => import('../pages/verify-email/verify-email-alert')
+);
 
-import Profile from '@/pages/profile/profile';
-import Settings from '@/pages/settings/settings';
+// import Profile from '@/pages/profile/profile';
+// import Settings from '@/pages/settings/settings';
 import { AccountForm } from '@/pages/settings/account/account-form';
 import { PasswordForm } from '@/pages/settings/password/password-form';
-import Product from '@/pages/profile/products/product/product';
-import Collection from '@/pages/profile/collections/collection/collection';
-import { AdminDashboard } from '@/pages/admin-dashboard/admin-dashboard';
-import { Loading } from '@/components/ui/loading';
-import NotFound from '@/pages/errors/not-found';
+// import Product from '@/pages/profile/products/product/product';
+// import Collection from '@/pages/profile/collections/collection/collection';
+// import { AdminDashboard } from '@/pages/admin-dashboard/admin-dashboard';
+// import NotFound from '@/pages/errors/not-found';
+
 import PublicRoutes from './public-routes';
 import PrivateRoutes from './private-routes';
-import VerifyEmail from '@/pages/verify-email/verify-email';
-import VerifyEmailAlert from '@/pages/verify-email/verify-email-alert';
 import { useQuery } from 'react-query';
 import { accountAPI } from '@/services/account-api';
 import { session } from '@/lib/session';
@@ -30,13 +55,12 @@ import {
   setCurrentUserPFP,
   setEmailVerified,
 } from '@/redux/features/userSlice';
+
 import VerifyEmailRoute from './verify-email-route';
-import SuspendedAlert from '@/pages/suspended/suspended-alert';
 import AuthRoutes from './auth-routes';
 import SuspendedRoutes from './suspended-routes';
-import AppealForm from '@/pages/suspended/appeal-form/appeal-form';
 import AdminRoutes from './admin-routes';
-import InternalServerError from '@/pages/errors/internal-server-error';
+import { Loading } from '@/components/ui/loading';
 
 function PageRoutes() {
   const dispatch = useDispatch();

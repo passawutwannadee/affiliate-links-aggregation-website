@@ -7,7 +7,7 @@ import { productColumns } from './products-report/product-columns';
 import { collectionColumns } from './collections-report/collection-columns';
 import { appealColumns } from './ban-appeal/appeal-columns';
 
-export function AdminDashboard() {
+export default function AdminDashboard() {
   const { data: userData, isLoading: loadingUser } = useQuery(
     ['user_reports'],
     () => getUserReports({}),

@@ -79,7 +79,7 @@ export function ProductPreviewCard({
               </CardTitle>
             </Link>
             {meatballsMenu ? (
-              <DropdownMenu>
+              <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="text-xl">
                     ⋯
