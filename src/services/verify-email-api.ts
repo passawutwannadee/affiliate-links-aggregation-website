@@ -4,7 +4,7 @@
 // }
 
 import axiosInstance from '@/middlewares/axios-interceptors';
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 export const verifyEmailAPI = async (args: string): Promise<AxiosResponse> => {
   try {
@@ -13,8 +13,12 @@ export const verifyEmailAPI = async (args: string): Promise<AxiosResponse> => {
     });
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
 
@@ -23,7 +27,11 @@ export const sendEmailVerificationlAPI = async (): Promise<AxiosResponse> => {
     const response = await axiosInstance.post(`auth/verify-email`, {});
 
     return response;
-  } catch (err: any) {
-    return err;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      throw err.response;
+    } else {
+      throw err;
+    }
   }
 };
