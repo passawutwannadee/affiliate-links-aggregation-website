@@ -66,6 +66,9 @@ interface ChildProps {
   reportedUser: string;
   reportReason: string;
   reportInformation: string;
+  ticketStatusId: number;
+  warnReason?: string;
+  warnReasonDetail?: string;
 }
 
 export default function ProductActionDetails({
@@ -77,6 +80,9 @@ export default function ProductActionDetails({
   reportedUser,
   reportReason,
   reportInformation,
+  ticketStatusId,
+  warnReason,
+  warnReasonDetail,
 }: ChildProps) {
   // get categories
   const { data, isLoading } = useQuery(['product_report_categories'], () =>
@@ -118,7 +124,7 @@ export default function ProductActionDetails({
 
   const { mutate: sendRejection } = useMutation(ticketAPI, {
     onSuccess: (response) => {
-      if (response.status === 201) {
+      if (response.status === 200) {
         queryClient.invalidateQueries({
           queryKey: ['product_reports'],
         });
@@ -220,99 +226,117 @@ export default function ProductActionDetails({
 
         <Separator className="mt-6 mb-6" />
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <FormField
-              control={form.control}
-              name="warn"
-              render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel>Remove this product and issue warning?</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex flex-col space-y-1"
-                    >
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="warn" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Yes</FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="no" />
-                        </FormControl>
-                        <FormLabel className="font-normal">No</FormLabel>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        {ticketStatusId === 2 ? (
+          <>
+            <div>
+              <p className="font-bold">Warn Reason</p>
+              <p>{warnReason}</p>
+            </div>
+            <div>
+              <p className="font-bold">Warn Detail</p>
+              <p>{warnReasonDetail}</p>
+            </div>
+          </>
+        ) : null}
 
-            {warn === 'warn' ? (
-              <>
-                <FormField
-                  control={form.control}
-                  name="category"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Reason
-                        <Required />
-                      </FormLabel>
-                      <Select onValueChange={field.onChange}>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select Category" />
-                        </SelectTrigger>
-                        <SelectContent className="">
-                          {data!.data.map(
-                            (value: {
-                              report_category_name: string;
-                              report_category_id: string;
-                            }) => {
-                              return (
-                                <SelectItem
-                                  key={value.report_category_id}
-                                  value={value.report_category_id.toString()}
-                                  className="hover:bg-primary/10"
-                                >
-                                  {value.report_category_name}
-                                </SelectItem>
-                              );
-                            }
-                          )}
-                        </SelectContent>
+        {ticketStatusId === 1 ? (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+              <FormField
+                control={form.control}
+                name="warn"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>
+                      Remove this product and issue warning? <Required />
+                    </FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="warn" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Yes</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="no" />
+                          </FormControl>
+                          <FormLabel className="font-normal">No</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {warn === 'warn' ? (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="category"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Reason
+                          <Required />
+                        </FormLabel>
+                        <Select onValueChange={field.onChange}>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select Category" />
+                          </SelectTrigger>
+                          <SelectContent className="">
+                            {data!.data.map(
+                              (value: {
+                                report_category_name: string;
+                                report_category_id: string;
+                              }) => {
+                                return (
+                                  <SelectItem
+                                    key={value.report_category_id}
+                                    value={value.report_category_id.toString()}
+                                    className="hover:bg-primary/10"
+                                  >
+                                    {value.report_category_name}
+                                  </SelectItem>
+                                );
+                              }
+                            )}
+                          </SelectContent>
+                          <FormMessage />
+                        </Select>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Detail <Required />
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            id="description"
+                            // placeholder="Please include all information relevant to your issue."
+                            {...field}
+                          />
+                        </FormControl>
                         <FormMessage />
-                      </Select>
-                    </FormItem>
-                  )}
-                />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              ) : null}
 
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Detail</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          id="description"
-                          // placeholder="Please include all information relevant to your issue."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </>
-            ) : null}
-
-            {/* <FormField
+              {/* <FormField
                     control={form.control}
                     name="confirmpassword"
                     render={({ field }) => (
@@ -331,18 +355,27 @@ export default function ProductActionDetails({
                     )}
                   /> */}
 
-            <SheetFooter>
-              <SheetClose>
-                <Button variant="secondary" type="button">
-                  Close
-                </Button>
-              </SheetClose>
-              <SubmitButton isLoading={isSending} type="submit">
-                Close Ticket
-              </SubmitButton>
-            </SheetFooter>
-          </form>
-        </Form>
+              <SheetFooter>
+                <SheetClose>
+                  <Button variant="secondary" type="button">
+                    Close
+                  </Button>
+                </SheetClose>
+                <SubmitButton isLoading={isSending} type="submit">
+                  Close Ticket
+                </SubmitButton>
+              </SheetFooter>
+            </form>
+          </Form>
+        ) : (
+          <SheetFooter>
+            <SheetClose className="w-full">
+              <Button variant="secondary" type="button" className="w-full">
+                Cancel
+              </Button>
+            </SheetClose>
+          </SheetFooter>
+        )}
       </SheetDescription>
     </SheetContent>
   );

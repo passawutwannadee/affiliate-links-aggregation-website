@@ -39,8 +39,8 @@ const formSchema = z.object({
     .min(10, {
       message: 'Report detail must be at least 10 characters.',
     })
-    .max(160, {
-      message: 'Report detail must not be longer than 30 characters.',
+    .max(255, {
+      message: 'Report detail must not be longer than 255 characters.',
     }),
   category: z.string().nonempty({
     message: 'Please enter product name.',
@@ -174,7 +174,9 @@ export default function Report({
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Report Detail</FormLabel>
+                  <FormLabel>
+                    Report Detail <Required />
+                  </FormLabel>
                   <FormControl>
                     <Textarea
                       id="description"

@@ -31,9 +31,17 @@ import { banAppealAPI, banReasonAPI } from '@/services/users-api';
 import { Loading } from '@/components/ui/loading';
 
 const formSchema = z.object({
-  appeal_information: z.string().min(2).max(255).nonempty({
-    message: 'Please enter appeal information.',
-  }),
+  appeal_information: z
+    .string()
+    .min(10, {
+      message: 'Reason for appeal must be at least 10 characters.',
+    })
+    .max(255, {
+      message: 'Reason for appeal cannot be longer than 255 characters.',
+    })
+    .nonempty({
+      message: 'Please enter appeal information.',
+    }),
 });
 
 export default function AppealForm() {

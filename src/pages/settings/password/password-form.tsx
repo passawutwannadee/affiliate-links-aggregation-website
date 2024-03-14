@@ -18,6 +18,7 @@ import { ErrorAlert } from '@/components/ui/error-alert';
 import { toast } from 'sonner';
 import { SubmitButton } from '@/components/ui/submit-button';
 import { AxiosError } from 'axios';
+import { Required } from '@/components/ui/required';
 
 const passwordFormSchema = z
   .object({
@@ -108,7 +109,9 @@ export function PasswordForm() {
           name="old_password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Current Password</FormLabel>
+              <FormLabel>
+                Current Password <Required />
+              </FormLabel>
               <FormControl>
                 <Input {...field} type="password" />
               </FormControl>
@@ -121,7 +124,9 @@ export function PasswordForm() {
           name="new_password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>
+                Password <Required />
+              </FormLabel>
               <FormDescription>
                 Password must be at least 8 characters long and contain at least
                 one number, one lowercase letter, one uppercase letter, and one
@@ -139,7 +144,9 @@ export function PasswordForm() {
           name="confirm_password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Confirm Password</FormLabel>
+              <FormLabel>
+                Confirm Password <Required />
+              </FormLabel>
               <FormControl>
                 <Input {...field} type="password" />
               </FormControl>

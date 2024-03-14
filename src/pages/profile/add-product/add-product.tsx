@@ -84,7 +84,7 @@ const formSchema = z.object({
         .url({ message: 'Please enter a valid URL.' })
         .min(1)
         .max(255, {
-          message: 'Links cannot be longer than 1024 characters.',
+          message: 'Links cannot be longer than 255 characters.',
         }),
     })
   ),

@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CaretSortIcon } from '@radix-ui/react-icons';
 import { TableAction } from '../components/data-table-action';
+import { Check, Clock, X } from 'lucide-react';
 
 export type Report = {
   report_id: number;
@@ -62,17 +63,24 @@ export const collectionColumns: ColumnDef<Report>[] = [
     cell: ({ row }) => {
       return (
         <>
-          <Badge
-            variant={
-              row.original.ticket_status_id === 1
-                ? 'secondary'
-                : row.original.ticket_status_id === 2
-                ? 'default'
-                : 'default'
-            }
-          >
-            {row.getValue('ticket_status')}
-          </Badge>
+          {row.original.ticket_status_id === 1 ? (
+            <Badge variant={'secondary'}>
+              <Clock className="w-4 h-4 mr-1" />
+              {row.getValue('ticket_status')}
+            </Badge>
+          ) : null}
+          {row.original.ticket_status_id === 2 ? (
+            <Badge variant={'default'}>
+              <Check className="w-4 h-4 mr-1" />
+              {row.getValue('ticket_status')}
+            </Badge>
+          ) : null}
+          {row.original.ticket_status_id === 3 ? (
+            <Badge variant={'destructive'}>
+              <X className="w-4 h-4 mr-1" />
+              {row.getValue('ticket_status')}
+            </Badge>
+          ) : null}
         </>
       );
     },

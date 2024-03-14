@@ -23,6 +23,7 @@ import { SubmitButton } from '@/components/ui/submit-button';
 import { AxiosError } from 'axios';
 import { ErrorAlert } from '@/components/ui/error-alert';
 import { User } from 'lucide-react';
+import { Required } from '@/components/ui/required';
 // import { useState } from 'react';
 
 const ACCEPTED_IMAGE_TYPES = [
@@ -173,7 +174,9 @@ export function AccountForm() {
           name="display_name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Display Name</FormLabel>
+              <FormLabel>
+                Display Name <Required />
+              </FormLabel>
               <FormControl>
                 <Input placeholder="shadcn" {...field} />
               </FormControl>
@@ -190,7 +193,9 @@ export function AccountForm() {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>
+                Username <Required />
+              </FormLabel>
               <FormControl>
                 <Input placeholder="shadcn" {...field} />
               </FormControl>
