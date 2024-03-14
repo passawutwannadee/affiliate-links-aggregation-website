@@ -68,7 +68,7 @@ export default function Product() {
               </p>
               <div className="flex items-center gap-2 pt-2">
                 <Link
-                  to={`/profile/${data!.data[0].display_name}`}
+                  to={`/profile/${data!.data[0].username}`}
                   className="flex gap-2"
                 >
                   <Avatar className="h-12 w-12">
