@@ -66,7 +66,7 @@ export default function Collection() {
                 </p>
                 <div className="flex flex-row items-center gap-2">
                   <Link
-                    to={`/profile/${data!.data.display_name}`}
+                    to={`/profile/${data!.data.username}`}
                     className="flex gap-2"
                   >
                     <Avatar className="h-12 w-12">
