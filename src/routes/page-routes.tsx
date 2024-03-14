@@ -95,10 +95,7 @@ function PageRoutes() {
               <Route path="/500" element={<InternalServerError />} />
               <Route path="/profile/:username" element={<Profile />} />
               <Route path="/product/:id" element={<Product />} />
-              <Route
-                path="/verify-email/:email_verify_token"
-                element={<VerifyEmail />}
-              />
+              <Route path="/verify-email/verify" element={<VerifyEmail />} />
               <Route path="/collection/:id" element={<Collection />} />
             </Route>
             <Route element={<VerifyEmailRoute />}>
