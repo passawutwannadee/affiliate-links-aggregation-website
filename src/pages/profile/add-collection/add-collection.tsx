@@ -40,6 +40,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store/store';
 import { Loading } from '@/components/ui/loading';
 import { SubmitButton } from '@/components/ui/submit-button';
+import { Required } from '@/components/ui/required';
 
 const formSchema = z.object({
   collection_name: z
@@ -218,7 +219,9 @@ export default function AddCollection() {
                       name="collection_name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Collection Name</FormLabel>
+                          <FormLabel>
+                            Collection Name <Required />
+                          </FormLabel>
                           <FormControl>
                             <Input {...field} />
                           </FormControl>
@@ -232,7 +235,9 @@ export default function AddCollection() {
                       name="collection_description"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Collection Description</FormLabel>
+                          <FormLabel>
+                            Collection Description <Required />
+                          </FormLabel>
                           <FormControl>
                             <Textarea id="description" {...field} />
                           </FormControl>
@@ -249,7 +254,9 @@ export default function AddCollection() {
                         name="products"
                         render={() => (
                           <FormItem>
-                            <FormLabel>Products</FormLabel>
+                            <FormLabel>
+                              Products <Required />
+                            </FormLabel>
                             <Command
                               onKeyDown={handleKeyDown}
                               className="overflow-visible bg-transparent"

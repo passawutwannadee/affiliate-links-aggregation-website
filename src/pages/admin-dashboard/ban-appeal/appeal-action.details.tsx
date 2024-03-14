@@ -25,16 +25,17 @@ import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { ticketAPI, unbanAPI } from '@/services/admin-api';
 import { Textarea } from '@/components/ui/textarea';
+import { Required } from '@/components/ui/required';
 
 const unbanSchema = z.object({
   unban: z.literal('unban'),
   description: z
     .string()
     .min(10, {
-      message: 'Report detail must be at least 10 characters.',
+      message: 'Detail must be at least 10 characters.',
     })
     .max(255, {
-      message: 'Report detail must not be longer than 255 characters.',
+      message: 'Detail must not be longer than 255 characters.',
     }),
 });
 
@@ -189,7 +190,9 @@ export default function AppealActionDetails({
               name="unban"
               render={({ field }) => (
                 <FormItem className="space-y-3">
-                  <FormLabel>Unban this user?</FormLabel>
+                  <FormLabel>
+                    Unban this user? <Required />
+                  </FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -222,7 +225,9 @@ export default function AppealActionDetails({
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Detail</FormLabel>
+                      <FormLabel>
+                        Detail <Required />
+                      </FormLabel>
                       <FormControl>
                         <Textarea
                           id="description"

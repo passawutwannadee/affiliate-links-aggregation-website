@@ -41,10 +41,10 @@ const warnSchema = z.object({
   description: z
     .string()
     .min(10, {
-      message: 'Report detail must be at least 10 characters.',
+      message: 'Detail must be at least 10 characters.',
     })
-    .max(160, {
-      message: 'Report detail must not be longer than 30 characters.',
+    .max(255, {
+      message: 'Detail must not be longer than 255 characters.',
     }),
   category: z.string().nonempty({
     message: 'Please enter product name.',
@@ -224,7 +224,7 @@ export default function CollectionActionDetails({
               render={({ field }) => (
                 <FormItem className="space-y-3">
                   <FormLabel>
-                    Remove this collection and issue warning?
+                    Remove this collection and issue warning? <Required />
                   </FormLabel>
                   <FormControl>
                     <RadioGroup
@@ -295,7 +295,9 @@ export default function CollectionActionDetails({
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Detail</FormLabel>
+                      <FormLabel>
+                        Detail <Required />
+                      </FormLabel>
                       <FormControl>
                         <Textarea
                           id="description"

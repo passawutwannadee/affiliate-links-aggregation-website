@@ -227,7 +227,9 @@ export default function ProductActionDetails({
               name="warn"
               render={({ field }) => (
                 <FormItem className="space-y-3">
-                  <FormLabel>Remove this product and issue warning?</FormLabel>
+                  <FormLabel>
+                    Remove this product and issue warning? <Required />
+                  </FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -297,7 +299,9 @@ export default function ProductActionDetails({
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Detail</FormLabel>
+                      <FormLabel>
+                        Detail <Required />
+                      </FormLabel>
                       <FormControl>
                         <Textarea
                           id="description"

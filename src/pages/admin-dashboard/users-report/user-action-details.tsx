@@ -41,10 +41,10 @@ const banSchema = z.object({
   description: z
     .string()
     .min(10, {
-      message: 'Report detail must be at least 10 characters.',
+      message: 'Detail must be at least 10 characters.',
     })
     .max(255, {
-      message: 'Report detail must not be longer than 255 characters.',
+      message: 'Detail must not be longer than 255 characters.',
     }),
   category: z.string().nonempty({
     message: 'Please enter product name.',
@@ -226,7 +226,9 @@ export default function UserActionDetails({
               name="ban"
               render={({ field }) => (
                 <FormItem className="space-y-3">
-                  <FormLabel>Ban this user?</FormLabel>
+                  <FormLabel>
+                    Ban this user? <Required />
+                  </FormLabel>
                   <FormControl>
                     <RadioGroup
                       onValueChange={field.onChange}
@@ -296,7 +298,9 @@ export default function UserActionDetails({
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Detail</FormLabel>
+                      <FormLabel>
+                        Detail <Required />
+                      </FormLabel>
                       <FormControl>
                         <Textarea
                           id="description"

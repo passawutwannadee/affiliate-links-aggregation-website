@@ -42,6 +42,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { SubmitButton } from '@/components/ui/submit-button';
 import { Loading } from '@/components/ui/loading';
+import { Required } from '@/components/ui/required';
 
 const formSchema = z.object({
   collection_name: z.string().nonempty({
@@ -256,7 +257,9 @@ export default function ManageCollection({
                       name="collection_name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Collection Name</FormLabel>
+                          <FormLabel>
+                            Collection Name <Required />
+                          </FormLabel>
                           <FormControl>
                             <Input {...field} />
                           </FormControl>
@@ -270,7 +273,9 @@ export default function ManageCollection({
                       name="collection_description"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Collection Description</FormLabel>
+                          <FormLabel>
+                            Collection Description <Required />
+                          </FormLabel>
                           <FormControl>
                             <Textarea id="description" {...field} />
                           </FormControl>
@@ -284,7 +289,9 @@ export default function ManageCollection({
                       name="products"
                       render={() => (
                         <FormItem>
-                          <FormLabel>Products</FormLabel>
+                          <FormLabel>
+                            Products <Required />
+                          </FormLabel>
                           <Command
                             onKeyDown={handleKeyDown}
                             className="overflow-visible bg-transparent"

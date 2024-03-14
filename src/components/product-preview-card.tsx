@@ -61,13 +61,65 @@ export function ProductPreviewCard({
 
   return (
     <>
-      <Card className="w-full h-full">
-        <Link to={`/product/${productId}`}>
-          <img
-            src={image}
-            className="w-full aspect-square object-cover hover:cursor-pointer border rounded-t-lg"
-          />
-        </Link>
+      <Card className="w-full h-full static">
+        <div className="relative">
+          <Link to={`/product/${productId}`}>
+            <img
+              src={image}
+              className="w-full aspect-square object-cover hover:cursor-pointer border rounded-t-lg"
+            />
+          </Link>
+          {meatballsMenu ? (
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger
+                asChild
+                className="absolute bottom-0 right-0"
+              >
+                <Button
+                  variant="ghost"
+                  className="text-xl bg-primary-foreground rounded-b-none rounded-r-none"
+                >
+                  ⋯
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {username === currentUser ? (
+                  <>
+                    <DropdownMenuItem onSelect={() => setEditOpen(true)}>
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onSelect={() => setDeleteOpen(true)}
+                      className="text-red-600"
+                    >
+                      Delete
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem
+                      onSelect={
+                        session() && emailVerified === 1
+                          ? () => setReportOpen(true)
+                          : session() && emailVerified === 0
+                          ? () => navigate('/verify-email')
+                          : () =>
+                              toast('Do you want to report this product?', {
+                                action: {
+                                  label: 'Sign in',
+                                  onClick: () => navigate('/login'),
+                                },
+                              })
+                      }
+                    >
+                      Report
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : null}
+        </div>
         <CardHeader>
           <div className="flex flex-row justify-between items-center">
             <Link
@@ -78,50 +130,6 @@ export function ProductPreviewCard({
                 {title}
               </CardTitle>
             </Link>
-            {meatballsMenu ? (
-              <DropdownMenu modal={false}>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="text-xl">
-                    ⋯
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  {username === currentUser ? (
-                    <>
-                      <DropdownMenuItem onSelect={() => setEditOpen(true)}>
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onSelect={() => setDeleteOpen(true)}
-                        className="text-red-600"
-                      >
-                        Delete
-                      </DropdownMenuItem>
-                    </>
-                  ) : (
-                    <>
-                      <DropdownMenuItem
-                        onSelect={
-                          session() && emailVerified === 1
-                            ? () => setReportOpen(true)
-                            : session() && emailVerified === 0
-                            ? () => navigate('/verify-email')
-                            : () =>
-                                toast('Do you want to report this product?', {
-                                  action: {
-                                    label: 'Sign in',
-                                    onClick: () => navigate('/login'),
-                                  },
-                                })
-                        }
-                      >
-                        Report
-                      </DropdownMenuItem>
-                    </>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : null}
           </div>
           <Link to={`/product/${productId}`}>
             <CardDescription className="line-clamp-3 text-xs">
