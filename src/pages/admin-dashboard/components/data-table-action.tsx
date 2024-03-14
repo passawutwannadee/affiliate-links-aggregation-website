@@ -24,6 +24,9 @@ export type Data = {
   product_report_category?: string;
   collection_report_category?: string;
   ban_reason?: string;
+  warn_reason?: string;
+  warn_reason_detail?: string;
+  unban_reason_detail?: string;
 };
 
 interface Props {
@@ -39,15 +42,9 @@ export function TableAction({ info }: Props) {
 
   return (
     <>
-      {info.ticket_status_id === 1 ? (
-        <Button onClick={() => setDetailsOpen(true)} className="w-12 h-8">
-          <MousePointerSquare />
-        </Button>
-      ) : (
-        <Button disabled className="w-12 h-8">
-          <MousePointerSquare />
-        </Button>
-      )}
+      <Button onClick={() => setDetailsOpen(true)} className="w-12 h-8">
+        <MousePointerSquare />
+      </Button>
       <Sheet open={detailsOpen} onOpenChange={setDetailsOpen}>
         {/* user if doesn't provide product_id and collection_id */}
         {!info.product_id && !info.collection_id ? (
@@ -59,7 +56,10 @@ export function TableAction({ info }: Props) {
             reportedUser={info.username!}
             reportReason={info.user_report_category!}
             reportInformation={info.report_information!}
+            ticketStatusId={info.ticket_status_id}
             userId={info.user_id}
+            banReason={info.ban_reason}
+            banReasonDetail={info.ban_reason_detail}
           />
         ) : null}
 
@@ -73,7 +73,10 @@ export function TableAction({ info }: Props) {
             reportedUser={info.username!}
             reportReason={info.product_report_category!}
             reportInformation={info.report_information!}
+            ticketStatusId={info.ticket_status_id}
             userId={info.user_id}
+            warnReason={info.warn_reason}
+            warnReasonDetail={info.warn_reason_detail}
           />
         ) : null}
 
@@ -87,7 +90,10 @@ export function TableAction({ info }: Props) {
             reportedUser={info.username!}
             reportReason={info.collection_report_category!}
             reportInformation={info.report_information!}
+            ticketStatusId={info.ticket_status_id}
             userId={info.user_id}
+            warnReason={info.warn_reason}
+            warnReasonDetail={info.warn_reason_detail}
           />
         ) : null}
 
@@ -103,6 +109,8 @@ export function TableAction({ info }: Props) {
               banReason={info.ban_reason!}
               banReasonDetail={info.ban_reason_detail!}
               appealInformation={info.appeal_information!}
+              ticketStatusId={info.ticket_status_id}
+              unbanReasonDetail={info.unban_reason_detail}
             />
           </Sheet>
         ) : null}

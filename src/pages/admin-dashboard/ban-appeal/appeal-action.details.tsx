@@ -54,6 +54,8 @@ interface ChildProps {
   banReason: string;
   banReasonDetail: string;
   appealInformation: string;
+  ticketStatusId: number;
+  unbanReasonDetail?: string;
 }
 
 export default function AppealActionDetails({
@@ -65,6 +67,8 @@ export default function AppealActionDetails({
   banReason,
   banReasonDetail,
   appealInformation,
+  ticketStatusId,
+  unbanReasonDetail,
 }: ChildProps) {
   const queryClient = useQueryClient();
 
@@ -183,77 +187,96 @@ export default function AppealActionDetails({
 
         <Separator className="mt-6 mb-6" />
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <FormField
-              control={form.control}
-              name="unban"
-              render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel>
-                    Unban this user? <Required />
-                  </FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex flex-col space-y-1"
-                    >
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="unban" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Unban</FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="no" />
-                        </FormControl>
-                        <FormLabel className="font-normal">No</FormLabel>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        {ticketStatusId === 2 ? (
+          <>
+            <div>
+              <p className="font-bold">Unban Detail</p>
+              <p>{unbanReasonDetail}</p>
+            </div>
+          </>
+        ) : null}
 
-            {unban === 'unban' ? (
-              <>
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Detail <Required />
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          id="description"
-                          // placeholder="Please include all information relevant to your issue."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </>
-            ) : null}
+        {ticketStatusId === 1 ? (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+              <FormField
+                control={form.control}
+                name="unban"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>
+                      Unban this user? <Required />
+                    </FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="unban" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Unban</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="no" />
+                          </FormControl>
+                          <FormLabel className="font-normal">No</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <SheetFooter>
-              <SheetClose>
-                <Button variant="secondary" type="button">
-                  Close
-                </Button>
-              </SheetClose>
-              <SubmitButton isLoading={isSending} type="submit">
-                Close Ticket
-              </SubmitButton>
-            </SheetFooter>
-          </form>
-        </Form>
+              {unban === 'unban' ? (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Detail <Required />
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            id="description"
+                            // placeholder="Please include all information relevant to your issue."
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              ) : null}
+
+              <SheetFooter>
+                <SheetClose>
+                  <Button variant="secondary" type="button">
+                    Close
+                  </Button>
+                </SheetClose>
+                <SubmitButton isLoading={isSending} type="submit">
+                  Close Ticket
+                </SubmitButton>
+              </SheetFooter>
+            </form>
+          </Form>
+        ) : (
+          <SheetFooter>
+            <SheetClose className="w-full">
+              <Button variant="secondary" type="button" className="w-full">
+                Cancel
+              </Button>
+            </SheetClose>
+          </SheetFooter>
+        )}
       </SheetDescription>
     </SheetContent>
   );

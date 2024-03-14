@@ -66,6 +66,9 @@ interface ChildProps {
   reportedUser: string;
   reportReason: string;
   reportInformation: string;
+  ticketStatusId: number;
+  banReason?: string;
+  banReasonDetail?: string;
 }
 
 export default function UserActionDetails({
@@ -77,6 +80,9 @@ export default function UserActionDetails({
   reportedUser,
   reportReason,
   reportInformation,
+  ticketStatusId,
+  banReason,
+  banReasonDetail,
 }: ChildProps) {
   // get categories
   const { data, isLoading } = useQuery(['user_report_categories'], () =>
@@ -120,7 +126,7 @@ export default function UserActionDetails({
     onSuccess: (response) => {
       if (response.status === 200) {
         queryClient.invalidateQueries({
-          queryKey: ['user_report'],
+          queryKey: ['user_reports'],
         });
         toast(
           <>
@@ -216,106 +222,119 @@ export default function UserActionDetails({
             {`${import.meta.env.VITE_WEB_URL}/profile/${username}`}
           </a>
         </div>
-
         <Separator className="mt-6 mb-6" />
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <FormField
-              control={form.control}
-              name="ban"
-              render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel>
-                    Ban this user? <Required />
-                  </FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex flex-col space-y-1"
-                    >
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="ban" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Ban</FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="no" />
-                        </FormControl>
-                        <FormLabel className="font-normal">No</FormLabel>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        {ticketStatusId === 2 ? (
+          <>
+            <div>
+              <p className="font-bold">Ban Reason</p>
+              <p>{banReason}</p>
+            </div>
+            <div>
+              <p className="font-bold">Ban Detail</p>
+              <p>{banReasonDetail}</p>
+            </div>
+          </>
+        ) : null}
 
-            {ban === 'ban' ? (
-              <>
-                <FormField
-                  control={form.control}
-                  name="category"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Reason
-                        <Required />
-                      </FormLabel>
-                      <Select onValueChange={field.onChange}>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select Category" />
-                        </SelectTrigger>
-                        <SelectContent className="">
-                          {data!.data.map(
-                            (value: {
-                              report_category_name: string;
-                              report_category_id: string;
-                            }) => {
-                              return (
-                                <SelectItem
-                                  key={value.report_category_id}
-                                  value={value.report_category_id.toString()}
-                                  className="hover:bg-primary/10"
-                                >
-                                  {value.report_category_name}
-                                </SelectItem>
-                              );
-                            }
-                          )}
-                        </SelectContent>
+        {ticketStatusId === 1 ? (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+              <FormField
+                control={form.control}
+                name="ban"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>
+                      Ban this user? <Required />
+                    </FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="ban" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Ban</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="no" />
+                          </FormControl>
+                          <FormLabel className="font-normal">No</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {ban === 'ban' ? (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="category"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Reason
+                          <Required />
+                        </FormLabel>
+                        <Select onValueChange={field.onChange}>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select Category" />
+                          </SelectTrigger>
+                          <SelectContent className="">
+                            {data!.data.map(
+                              (value: {
+                                report_category_name: string;
+                                report_category_id: string;
+                              }) => {
+                                return (
+                                  <SelectItem
+                                    key={value.report_category_id}
+                                    value={value.report_category_id.toString()}
+                                    className="hover:bg-primary/10"
+                                  >
+                                    {value.report_category_name}
+                                  </SelectItem>
+                                );
+                              }
+                            )}
+                          </SelectContent>
+                          <FormMessage />
+                        </Select>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>
+                          Detail <Required />
+                        </FormLabel>
+                        <FormControl>
+                          <Textarea
+                            id="description"
+                            // placeholder="Please include all information relevant to your issue."
+                            {...field}
+                          />
+                        </FormControl>
                         <FormMessage />
-                      </Select>
-                    </FormItem>
-                  )}
-                />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              ) : null}
 
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Detail <Required />
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          id="description"
-                          // placeholder="Please include all information relevant to your issue."
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </>
-            ) : null}
-
-            {/* <FormField
+              {/* <FormField
                     control={form.control}
                     name="confirmpassword"
                     render={({ field }) => (
@@ -334,18 +353,27 @@ export default function UserActionDetails({
                     )}
                   /> */}
 
-            <SheetFooter>
-              <SheetClose>
-                <Button variant="secondary" type="button">
-                  Close
-                </Button>
-              </SheetClose>
-              <SubmitButton isLoading={isSending} type="submit">
-                Close Ticket
-              </SubmitButton>
-            </SheetFooter>
-          </form>
-        </Form>
+              <SheetFooter>
+                <SheetClose>
+                  <Button variant="secondary" type="button">
+                    Cancel
+                  </Button>
+                </SheetClose>
+                <SubmitButton isLoading={isSending} type="submit">
+                  Close Ticket
+                </SubmitButton>
+              </SheetFooter>
+            </form>
+          </Form>
+        ) : (
+          <SheetFooter>
+            <SheetClose className="w-full">
+              <Button variant="secondary" type="button" className="w-full">
+                Cancel
+              </Button>
+            </SheetClose>
+          </SheetFooter>
+        )}
       </SheetDescription>
     </SheetContent>
   );
