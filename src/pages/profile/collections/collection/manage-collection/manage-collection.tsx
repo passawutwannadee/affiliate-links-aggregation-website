@@ -238,14 +238,14 @@ export default function ManageCollection({
             setOpen(true);
           }}
         >
-          Manage Products
+          Manage Collection
         </Button>
       </SheetTrigger>
       <SheetContent className="flex">
         <ScrollArea className="h-[95vh] self-center w-full">
           <div className="m-6 mt-0 pb-5">
             <SheetHeader>
-              <SheetTitle>Manage Products</SheetTitle>
+              <SheetTitle>Manage Collection</SheetTitle>
               <SheetDescription>
                 <Form {...form}>
                   <form
