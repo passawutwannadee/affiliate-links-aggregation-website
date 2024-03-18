@@ -20,6 +20,7 @@ export type Report = {
   ban_reason_detail: string;
   appeal_information: string;
   unban_reason_detail: string;
+  appeal_picture?: string;
 };
 
 export const appealColumns: ColumnDef<Report>[] = [

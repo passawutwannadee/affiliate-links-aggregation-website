@@ -27,6 +27,7 @@ export type Data = {
   warn_reason?: string;
   warn_reason_detail?: string;
   unban_reason_detail?: string;
+  appeal_picture?: string;
 };
 
 interface Props {
@@ -111,6 +112,7 @@ export function TableAction({ info }: Props) {
               appealInformation={info.appeal_information!}
               ticketStatusId={info.ticket_status_id}
               unbanReasonDetail={info.unban_reason_detail}
+              appealPicture={info.appeal_picture}
             />
           </Sheet>
         ) : null}

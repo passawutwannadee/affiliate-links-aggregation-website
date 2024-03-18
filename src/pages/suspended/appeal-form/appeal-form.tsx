@@ -30,6 +30,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { banAppealAPI, banReasonAPI } from '@/services/users-api';
 import { Loading } from '@/components/ui/loading';
 
+const ACCEPTED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+];
+
 const formSchema = z.object({
   appeal_information: z
     .string()
@@ -42,6 +49,14 @@ const formSchema = z.object({
     .nonempty({
       message: 'Please enter appeal information.',
     }),
+  appeal_picture: z
+    .any()
+    .refine((file) => file?.size <= 1024 * 1024 * 20, `Max image size is 20MB.`)
+    .refine(
+      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      'Only .jpg, .jpeg, .png and .webp formats are supported.'
+    )
+    .optional(),
 });
 
 export default function AppealForm() {
@@ -105,6 +120,7 @@ export default function AppealForm() {
     mutate({
       ban_id: data!.data.ban_id,
       appeal_information: values.appeal_information,
+      appeal_picture: values.appeal_picture,
     });
   }
 
@@ -141,6 +157,29 @@ export default function AppealForm() {
                     <FormControl>
                       <Textarea {...field} />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="appeal_picture"
+                render={({ field: { onChange } }) => (
+                  <FormItem>
+                    <FormLabel>Attachment ( jpeg, jpg, png or webp )</FormLabel>
+                    <Input
+                      id="picture"
+                      type="file"
+                      onChange={(event) => {
+                        if (
+                          event.target.files &&
+                          event.target.files.length > 0
+                        ) {
+                          onChange(event.target.files[0]);
+                        }
+                      }}
+                    />
                     <FormMessage />
                   </FormItem>
                 )}

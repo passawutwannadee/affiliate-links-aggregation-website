@@ -37,15 +37,28 @@ export const banReasonAPI = async (): Promise<AxiosResponse> => {
 interface BanAppealForm {
   ban_id: string;
   appeal_information: string;
+  appeal_picture?: File;
 }
 
 export const banAppealAPI = async (
   args: BanAppealForm
 ): Promise<AxiosResponse> => {
+  // Create a FormData object
+  const formData = new FormData();
+
+  // Append data to the FormData object
+  formData.append('ban_id', args.ban_id);
+  formData.append('appeal_information', args.appeal_information);
+
+  if (args.appeal_picture) {
+    formData.append('appeal_picture', args.appeal_picture);
+  }
+
   try {
-    const response = await axiosInstance.post(`/users/ban/appeal`, {
-      ban_id: args.ban_id,
-      appeal_information: args.appeal_information,
+    const response = await axiosInstance.post(`/users/ban/appeal`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data', // Important for sending FormData
+      },
     });
 
     return response;
