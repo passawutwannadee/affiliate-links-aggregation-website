@@ -47,48 +47,69 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/webp',
 ];
 
-const formSchema = z.object({
-  product_name: z
-    .string()
-    .nonempty({
+const formSchema = z
+  .object({
+    product_name: z
+      .string()
+      .nonempty({
+        message: 'Please enter product name.',
+      })
+      .min(1)
+      .max(30, {
+        message: 'Product name cannot be longer than 30 characters.',
+      }),
+    product_description: z
+      .string()
+      .nonempty({
+        message: 'Please enter product name.',
+      })
+      .min(1)
+      .max(1024, {
+        message: 'Product description cannot be longer than 1024 characters.',
+      }),
+    category: z.string().nonempty({
       message: 'Please enter product name.',
-    })
-    .min(1)
-    .max(30, { message: 'Product name cannot be longer than 30 characters.' }),
-  product_description: z
-    .string()
-    .nonempty({
-      message: 'Please enter product name.',
-    })
-    .min(1)
-    .max(1024, {
-      message: 'Product description cannot be longer than 1024 characters.',
     }),
-  category: z.string().nonempty({
-    message: 'Please enter product name.',
-  }),
-  product_image: z
-    .any()
-    .refine((file) => file?.size <= 1024 * 1024 * 20, `Max image size is 20MB.`)
-    .refine(
-      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-      'Only .jpg, .jpeg, .png and .webp formats are supported.'
+    product_image: z
+      .any()
+      .refine(
+        (file) => file?.size <= 1024 * 1024 * 20,
+        `Max image size is 20MB.`
+      )
+      .refine(
+        (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+        'Only .jpg, .jpeg, .png and .webp formats are supported.'
+      ),
+    product_links: z.array(
+      z.object({
+        value: z
+          .string()
+          .nonempty({
+            message: 'Please enter product URL.',
+          })
+          .url({ message: 'Please enter a valid URL.' })
+          .min(1)
+          .max(255, {
+            message: 'Links cannot be longer than 255 characters.',
+          }),
+      })
     ),
-  product_links: z.array(
-    z.object({
-      value: z
-        .string()
-        .nonempty({
-          message: 'Please enter product URL.',
-        })
-        .url({ message: 'Please enter a valid URL.' })
-        .min(1)
-        .max(255, {
-          message: 'Links cannot be longer than 255 characters.',
-        }),
-    })
-  ),
-});
+    other_category: z
+      .string()
+      .max(30, {
+        message: 'Category name cannot be longer than 30 characters.',
+      })
+      .optional(),
+  })
+  .refine(
+    (data) =>
+      data.category !== '16' ||
+      (data.category === '16' && data.other_category?.length !== 0),
+    {
+      message: 'Please enter category name.',
+      path: ['other_category'],
+    }
+  );
 
 export default function AddProduct() {
   const [open, setOpen] = useState<boolean>(false);
@@ -143,6 +164,7 @@ export default function AddProduct() {
       product_name: '',
       product_description: '',
       category: '',
+      other_category: '',
       product_image: '',
       product_links: [{ value: '' }],
     },
@@ -162,17 +184,23 @@ export default function AddProduct() {
     const productName = values.product_name;
     const productDescription = values.product_description;
     const category = values.category;
+    const otherCategory = values.other_category;
     const productImage = values.product_image;
     const productLinks = values.product_links;
+
+    console.log(values);
 
     mutate({
       productName,
       productDescription,
       category,
+      otherCategory,
       productImage,
       productLinks,
     });
   }
+
+  const currentCategory = form.watch('category');
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -275,6 +303,25 @@ export default function AddProduct() {
                         </FormItem>
                       )}
                     />
+
+                    {currentCategory === '16' ? (
+                      <FormField
+                        control={form.control}
+                        name="other_category"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>
+                              Category Name:
+                              <Required />
+                            </FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    ) : null}
 
                     <FormField
                       control={form.control}

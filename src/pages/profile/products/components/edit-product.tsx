@@ -62,6 +62,12 @@ const productNoImage = z.object({
         .url({ message: 'Please enter a valid URL.' }),
     })
   ),
+  other_category: z
+    .string()
+    .max(30, {
+      message: 'Category name cannot be longer than 30 characters.',
+    })
+    .optional(),
   changeImage: z.literal(false),
 });
 
@@ -91,13 +97,26 @@ const productWithImage = z.object({
         .url({ message: 'Please enter a valid URL.' }),
     })
   ),
+  other_category: z
+    .string()
+    .max(30, {
+      message: 'Category name cannot be longer than 30 characters.',
+    })
+    .optional(),
   changeImage: z.literal(true),
 });
 
-const formSchema = z.discriminatedUnion('changeImage', [
-  productNoImage,
-  productWithImage,
-]);
+const formSchema = z
+  .discriminatedUnion('changeImage', [productNoImage, productWithImage])
+  .refine(
+    (data) =>
+      data.category !== '16' ||
+      (data.category === '16' && data.other_category?.length !== 0),
+    {
+      message: 'Please enter category name.',
+      path: ['other_category'],
+    }
+  );
 
 interface ChildProps {
   productId: number;
@@ -184,6 +203,7 @@ export default function EditProduct({
     defaultValues: {
       changeImage: false,
       product_links: linkValue,
+      other_category: '',
     },
     mode: 'onChange',
     shouldUnregister: true,
@@ -212,6 +232,7 @@ export default function EditProduct({
     const productName = values.product_name;
     const productDescription = values.product_description;
     const category = values.category;
+    const otherCategory = values.other_category;
     const productImage = values.product_image;
     const productLinks = values.product_links;
 
@@ -220,6 +241,7 @@ export default function EditProduct({
       productName,
       productDescription,
       category,
+      otherCategory,
       productImage,
       productLinks,
     });
@@ -227,6 +249,8 @@ export default function EditProduct({
 
     // setOpen(false);
   }
+
+  const currentCategory = form.watch('category');
 
   return (
     <>
@@ -306,6 +330,26 @@ export default function EditProduct({
                           </FormItem>
                         )}
                       />
+
+                      {currentCategory === '16' ? (
+                        <FormField
+                          defaultValue={data?.data[0].other_category}
+                          control={form.control}
+                          name="other_category"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>
+                                Category Name:
+                                <Required />
+                              </FormLabel>
+                              <FormControl>
+                                <Input {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      ) : null}
 
                       <div className="flex flex-col gap-3">
                         <FormLabel>

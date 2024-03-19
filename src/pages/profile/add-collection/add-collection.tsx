@@ -207,7 +207,7 @@ export default function AddCollection() {
         <ScrollArea className="h-[95vh] self-center w-full">
           <div className="m-6 mt-0 pb-5">
             <SheetHeader>
-              <SheetTitle>Add Product</SheetTitle>
+              <SheetTitle>Add Collection</SheetTitle>
               <SheetDescription>
                 <Form {...form}>
                   <form
