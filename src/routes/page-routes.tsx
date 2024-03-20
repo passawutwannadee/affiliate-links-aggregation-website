@@ -61,6 +61,8 @@ import AuthRoutes from './auth-routes';
 import SuspendedRoutes from './suspended-routes';
 import AdminRoutes from './admin-routes';
 import { Loading } from '@/components/ui/loading';
+import ForgotPassword from '@/pages/forgot-password/forgot-password';
+import ResetPassword from '@/pages/forgot-password/reset-password';
 
 function PageRoutes() {
   const dispatch = useDispatch();
@@ -97,6 +99,7 @@ function PageRoutes() {
               <Route path="/product/:id" element={<Product />} />
               <Route path="/verify-email/verify" element={<VerifyEmail />} />
               <Route path="/collection/:id" element={<Collection />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
             </Route>
             <Route element={<VerifyEmailRoute />}>
               <Route path="/verify-email" element={<VerifyEmailAlert />} />
@@ -107,6 +110,7 @@ function PageRoutes() {
               <Route path="/" element={<Login />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
             </Route>
 
             {/* ///////////////////////// PRIVATE ROUTES ////////////////////////// */}

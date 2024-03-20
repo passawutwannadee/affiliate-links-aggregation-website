@@ -27,6 +27,7 @@ import { ring2 } from 'ldrs';
 import { SubmitButton } from '@/components/ui/submit-button';
 import { toast } from 'sonner';
 import { ErrorAlert } from '@/components/ui/error-alert';
+import { Button } from '@/components/ui/button';
 
 ring2.register();
 
@@ -124,15 +125,22 @@ export default function Login() {
                 <SubmitButton isLoading={isLoading}>Login</SubmitButton>
               </form>
             </Form>
+            <div className="flex items-center text-sm text-gray-800 before:flex-[1_1_0%] before:border-t before:border-gray-200 before:me-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ms-6 dark:text-white dark:before:border-gray-600 dark:after:border-gray-600">
+              Or
+            </div>
+            <Link to="/register" className="w-full">
+              <Button className="w-full" variant={'secondary'}>
+                Register
+              </Button>
+            </Link>
           </CardContent>
-          <CardFooter className="self-center gap-1">
-            Don't have an account?
+
+          <CardFooter className="self-center gap-1 flex flex-col">
             <Link
-              to="/register"
+              to="/forgot-password"
               className="flex text-primary font-bold hover:text-primary/70"
             >
-              {' '}
-              Register
+              Forgot Password?
             </Link>
           </CardFooter>
         </Card>

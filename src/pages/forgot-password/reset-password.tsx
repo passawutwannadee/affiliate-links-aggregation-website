@@ -1,7 +1,7 @@
 import {
   Card,
   CardContent,
-  CardFooter,
+  CardDescription,
   // CardDescription,
   // CardFooter,
   CardHeader,
@@ -21,23 +21,16 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Required } from '@/components/ui/required';
 import { useMutation } from 'react-query';
-import { registerAPI } from '@/services/register-api';
 import { SubmitButton } from '@/components/ui/submit-button';
 import { toast } from 'sonner';
 import { ErrorAlert } from '@/components/ui/error-alert';
+import { resetPasswordAPI } from '@/services/password-api';
 
 const formSchema = z
   .object({
-    displayname: z.string(),
-    username: z.string().min(2, {
-      message: 'Username must be at least 2 characters.',
-    }),
-    email: z.string().email({
-      message: 'Invalid email address.',
-    }),
     password: z
       .string()
       .regex(
@@ -53,24 +46,22 @@ const formSchema = z
     path: ['confirmpassword'],
   });
 
-export default function Register() {
+export default function ResetPassword() {
+  const urlParams = new URLSearchParams(location.search);
   const navigate = useNavigate();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      displayname: '',
-      username: '',
-      email: '',
       password: '',
       confirmpassword: '',
     },
   });
 
-  const { mutate, isLoading } = useMutation(registerAPI, {
+  const { mutate, isLoading } = useMutation(resetPasswordAPI, {
     onSuccess: (response) => {
-      if (response.status === 201) {
+      if (response.status === 200) {
         toast(
           <>
             {' '}
@@ -90,8 +81,8 @@ export default function Register() {
               />
             </svg>
             <p>
-              Account successfully created. Please check your email for
-              verification link.
+              Password reset successful. You can now login with your new
+              password.
             </p>
           </>
         );
@@ -100,17 +91,10 @@ export default function Register() {
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onError: (response: any) => {
-      if (response.status === 409 && response.data?.status === 40911) {
+      if (response.status === 406) {
         toast(
           <>
-            <ErrorAlert>Email already in use.</ErrorAlert>
-          </>
-        );
-      }
-      if (response.status === 409 && response.data?.status === 40912) {
-        toast(
-          <>
-            <ErrorAlert>Username already taken.</ErrorAlert>
+            <ErrorAlert>Token expired or invalid.</ErrorAlert>
           </>
         );
       }
@@ -122,73 +106,22 @@ export default function Register() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
 
-    const email = values.email;
-    const password = values.password;
-    const username = values.username;
-    const display_name = values.displayname;
-
-    mutate({ email, password, username, display_name });
-
-    console.log(values);
+    mutate({
+      new_password: values.password,
+      reset_password_token: urlParams.get('token')!,
+    });
   }
 
   return (
     <div className="container mx-auto flex items-center justify-center mt-36 lg:mt-30 2xl:mt-0 lg:h-[85vh] ">
       <Card className="w-full lg:w-96">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-center">
-            Create an account
-          </CardTitle>
+          <CardTitle className="text-2xl text-center">Reset Password</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4">
+          <CardDescription>Please enter your new password.</CardDescription>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Email <Required />
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="JohnDoe@example.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="displayname"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Display Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="JohnDoe123" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      Username <Required />
-                    </FormLabel>
-                    <FormControl>
-                      <Input placeholder="JohnDoe123" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <FormField
                 control={form.control}
                 name="password"
@@ -226,19 +159,10 @@ export default function Register() {
                 )}
               />
 
-              <SubmitButton isLoading={isLoading}>Create Account</SubmitButton>
+              <SubmitButton isLoading={isLoading}>Reset password</SubmitButton>
             </form>
           </Form>
         </CardContent>
-        <CardFooter className="self-center gap-1">
-          Already have an account?
-          <Link
-            to="/login"
-            className="flex text-primary font-bold hover:text-primary/70"
-          >
-            Login
-          </Link>
-        </CardFooter>
       </Card>
     </div>
   );

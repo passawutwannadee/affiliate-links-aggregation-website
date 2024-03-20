@@ -24,3 +24,44 @@ export const changePasswordAPI = async (
     }
   }
 };
+
+export const forgotPasswordAPI = async (
+  email: string
+): Promise<AxiosResponse> => {
+  try {
+    const response = await axiosInstance.post(`/auth/forgot-password`, {
+      email,
+    });
+
+    return response;
+  } catch (e) {
+    if (axios.isAxiosError(e)) {
+      throw e.response;
+    } else {
+      throw e;
+    }
+  }
+};
+
+export const resetPasswordAPI = async ({
+  new_password,
+  reset_password_token,
+}: {
+  new_password: string;
+  reset_password_token: string;
+}): Promise<AxiosResponse> => {
+  try {
+    const response = await axiosInstance.patch(`/auth/reset-password`, {
+      new_password,
+      reset_password_token,
+    });
+
+    return response;
+  } catch (e) {
+    if (axios.isAxiosError(e)) {
+      throw e.response;
+    } else {
+      throw e;
+    }
+  }
+};
