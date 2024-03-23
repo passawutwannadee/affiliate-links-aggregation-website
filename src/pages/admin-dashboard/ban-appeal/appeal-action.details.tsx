@@ -59,6 +59,7 @@ interface ChildProps {
   ticketStatusId: number;
   unbanReasonDetail?: string;
   appealPicture?: string;
+  appealDate: string;
 }
 
 export default function AppealActionDetails({
@@ -73,6 +74,7 @@ export default function AppealActionDetails({
   ticketStatusId,
   unbanReasonDetail,
   appealPicture,
+  appealDate,
 }: ChildProps) {
   const queryClient = useQueryClient();
 
@@ -203,6 +205,10 @@ export default function AppealActionDetails({
                   </DialogContent>
                 </Dialog>
               </div>
+            </div>
+            <div>
+              <p className="font-bold">Appeal Date</p>
+              <p>{appealDate}</p>
             </div>
 
             <Separator className="mt-6 mb-6" />

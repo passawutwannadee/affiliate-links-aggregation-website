@@ -20,6 +20,7 @@ export type Report = {
   user_id: number;
   ban_reason: string;
   ban_reason_detail: string;
+  report_date: string;
 };
 
 export const userColumns: ColumnDef<Report>[] = [
@@ -74,6 +75,13 @@ export const userColumns: ColumnDef<Report>[] = [
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
+    },
+  },
+  {
+    accessorKey: 'report_date',
+    header: () => <div className="text-left">Report Date</div>,
+    cell: ({ row }) => {
+      return <div>{row.getValue('report_date')}</div>;
     },
   },
   {

@@ -70,6 +70,7 @@ interface ChildProps {
   ticketStatusId: number;
   banReason?: string;
   banReasonDetail?: string;
+  reportDate: string;
 }
 
 export default function UserActionDetails({
@@ -84,6 +85,7 @@ export default function UserActionDetails({
   ticketStatusId,
   banReason,
   banReasonDetail,
+  reportDate,
 }: ChildProps) {
   // get categories
   const { data, isLoading } = useQuery(['user_report_categories'], () =>
@@ -224,6 +226,10 @@ export default function UserActionDetails({
               >
                 {`${import.meta.env.VITE_WEB_URL}/profile/${username}`}
               </a>
+            </div>
+            <div>
+              <p className="font-bold">Report Date</p>
+              <p>{reportDate}</p>
             </div>
             <Separator className="mt-6 mb-6" />
 

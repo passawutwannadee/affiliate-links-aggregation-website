@@ -70,6 +70,7 @@ interface ChildProps {
   ticketStatusId: number;
   warnReason?: string;
   warnReasonDetail?: string;
+  reportDate: string;
 }
 
 export default function CollectionActionDetails({
@@ -84,6 +85,7 @@ export default function CollectionActionDetails({
   ticketStatusId,
   warnReason,
   warnReasonDetail,
+  reportDate,
 }: ChildProps) {
   // get categories
   const { data, isLoading } = useQuery(['collection_report_categories'], () =>
@@ -223,6 +225,10 @@ export default function CollectionActionDetails({
               >
                 {`${import.meta.env.VITE_WEB_URL}/collection/${collectionId}`}
               </a>
+            </div>
+            <div>
+              <p className="font-bold">Report Date</p>
+              <p>{reportDate}</p>
             </div>
 
             <Separator className="mt-6 mb-6" />

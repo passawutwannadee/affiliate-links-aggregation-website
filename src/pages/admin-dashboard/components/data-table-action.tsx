@@ -28,6 +28,8 @@ export type Data = {
   warn_reason_detail?: string;
   unban_reason_detail?: string;
   appeal_picture?: string;
+  report_date?: string;
+  appeal_date?: string;
 };
 
 interface Props {
@@ -61,6 +63,7 @@ export function TableAction({ info }: Props) {
             userId={info.user_id}
             banReason={info.ban_reason}
             banReasonDetail={info.ban_reason_detail}
+            reportDate={info.report_date!}
           />
         ) : null}
 
@@ -78,6 +81,7 @@ export function TableAction({ info }: Props) {
             userId={info.user_id}
             warnReason={info.warn_reason}
             warnReasonDetail={info.warn_reason_detail}
+            reportDate={info.report_date!}
           />
         ) : null}
 
@@ -95,6 +99,7 @@ export function TableAction({ info }: Props) {
             userId={info.user_id}
             warnReason={info.warn_reason}
             warnReasonDetail={info.warn_reason_detail}
+            reportDate={info.report_date!}
           />
         ) : null}
 
@@ -113,6 +118,7 @@ export function TableAction({ info }: Props) {
               ticketStatusId={info.ticket_status_id}
               unbanReasonDetail={info.unban_reason_detail}
               appealPicture={info.appeal_picture}
+              appealDate={info.appeal_date!}
             />
           </Sheet>
         ) : null}

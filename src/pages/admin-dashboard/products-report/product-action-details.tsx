@@ -70,6 +70,7 @@ interface ChildProps {
   ticketStatusId: number;
   warnReason?: string;
   warnReasonDetail?: string;
+  reportDate: string;
 }
 
 export default function ProductActionDetails({
@@ -84,6 +85,7 @@ export default function ProductActionDetails({
   ticketStatusId,
   warnReason,
   warnReasonDetail,
+  reportDate,
 }: ChildProps) {
   // get categories
   const { data, isLoading } = useQuery(['product_report_categories'], () =>
@@ -225,6 +227,10 @@ export default function ProductActionDetails({
               >
                 {`${import.meta.env.VITE_WEB_URL}/product/${productId}`}
               </a>
+            </div>
+            <div>
+              <p className="font-bold">Report Date</p>
+              <p>{reportDate}</p>
             </div>
 
             <Separator className="mt-6 mb-6" />
