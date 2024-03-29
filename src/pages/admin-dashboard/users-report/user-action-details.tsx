@@ -192,11 +192,11 @@ export default function UserActionDetails({
   return (
     <SheetContent>
       <SheetHeader>
-        <SheetTitle>Report</SheetTitle>
+        <SheetTitle>User Report</SheetTitle>
       </SheetHeader>
-      <SheetDescription className="flex flex-col gap-2">
+      <SheetDescription className="flex flex-col gap-2 mt-2">
         <ScrollArea className="h-[90vh] self-center w-full pr-4">
-          <div className="mx-1">
+          <div className="mx-1 flex flex-col gap-3">
             <div>
               <p className="font-bold">Report ID</p>
               <p>{reportId}</p>
@@ -231,7 +231,7 @@ export default function UserActionDetails({
               <p className="font-bold">Report Date</p>
               <p>{reportDate}</p>
             </div>
-            <Separator className="mt-6 mb-6" />
+            <Separator className="mt-2 mb-2" />
 
             {ticketStatusId === 2 ? (
               <>

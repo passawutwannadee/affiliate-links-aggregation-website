@@ -226,7 +226,7 @@ export default function Register() {
                 )}
               />
 
-              <SubmitButton isLoading={isLoading}>Create Account</SubmitButton>
+              <SubmitButton isLoading={isLoading}>Create account</SubmitButton>
             </form>
           </Form>
         </CardContent>

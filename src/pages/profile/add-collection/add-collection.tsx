@@ -200,14 +200,14 @@ export default function AddCollection() {
           }}
         >
           <PlusIcon className="mr-2 h-4 w-4" />
-          Add Collection
+          Add collection
         </Button>
       </SheetTrigger>
       <SheetContent className="flex">
         <ScrollArea className="h-[95vh] self-center w-full">
           <div className="m-6 mt-0 pb-5">
             <SheetHeader>
-              <SheetTitle>Add Collection</SheetTitle>
+              <SheetTitle>Add collection</SheetTitle>
               <SheetDescription>
                 <Form {...form}>
                   <form
@@ -220,7 +220,7 @@ export default function AddCollection() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Collection Name <Required />
+                            Collection name <Required />
                           </FormLabel>
                           <FormControl>
                             <Input {...field} />
@@ -236,7 +236,7 @@ export default function AddCollection() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Collection Description <Required />
+                            Collection description <Required />
                           </FormLabel>
                           <FormControl>
                             <Textarea id="description" {...field} />

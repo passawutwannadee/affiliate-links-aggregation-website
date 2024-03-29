@@ -105,22 +105,20 @@ export function TableAction({ info }: Props) {
 
         {/* appeal if provide ban_id*/}
         {info.ban_id ? (
-          <Sheet open={detailsOpen} onOpenChange={setDetailsOpen}>
-            <AppealActionDetails
-              closeSheet={handleDetailsClose}
-              banId={info.ban_id}
-              appealId={info.appeal_id!}
-              userId={info.user_id}
-              username={info.username!}
-              banReason={info.ban_reason!}
-              banReasonDetail={info.ban_reason_detail!}
-              appealInformation={info.appeal_information!}
-              ticketStatusId={info.ticket_status_id}
-              unbanReasonDetail={info.unban_reason_detail}
-              appealPicture={info.appeal_picture}
-              appealDate={info.appeal_date!}
-            />
-          </Sheet>
+          <AppealActionDetails
+            closeSheet={handleDetailsClose}
+            banId={info.ban_id}
+            appealId={info.appeal_id!}
+            userId={info.user_id}
+            username={info.username!}
+            banReason={info.ban_reason!}
+            banReasonDetail={info.ban_reason_detail!}
+            appealInformation={info.appeal_information!}
+            ticketStatusId={info.ticket_status_id}
+            unbanReasonDetail={info.unban_reason_detail}
+            appealPicture={info.appeal_picture}
+            appealDate={info.appeal_date!}
+          />
         ) : null}
       </Sheet>
     </>

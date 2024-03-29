@@ -193,11 +193,11 @@ export default function CollectionActionDetails({
   return (
     <SheetContent>
       <SheetHeader>
-        <SheetTitle>Report</SheetTitle>
+        <SheetTitle>Collection Report</SheetTitle>
       </SheetHeader>
-      <SheetDescription className="flex flex-col gap-2">
+      <SheetDescription className="flex flex-col gap-2 mt-2">
         <ScrollArea className="h-[90vh] self-center w-full pr-4">
-          <div className="mx-1">
+          <div className="mx-1 flex flex-col gap-3">
             <div>
               <p className="font-bold">Reporter's Email</p>
               <p>{reporterEmail}</p>
@@ -231,7 +231,7 @@ export default function CollectionActionDetails({
               <p>{reportDate}</p>
             </div>
 
-            <Separator className="mt-6 mb-6" />
+            <Separator className="mt-2 mb-2" />
 
             {ticketStatusId === 2 ? (
               <>

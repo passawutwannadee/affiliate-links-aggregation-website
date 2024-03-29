@@ -170,11 +170,11 @@ export default function AppealActionDetails({
   return (
     <SheetContent>
       <SheetHeader>
-        <SheetTitle>Report</SheetTitle>
+        <SheetTitle>Ban Appeal</SheetTitle>
       </SheetHeader>
-      <SheetDescription className="flex flex-col gap-2">
+      <SheetDescription className="flex flex-col gap-2 mt-2">
         <ScrollArea className="h-[90vh] self-center w-full pr-4">
-          <div className="mx-1">
+          <div className="mx-1 flex flex-col gap-3">
             <div className="flex flex-col gap-2">
               <div>
                 <p className="font-bold">Username</p>
@@ -194,24 +194,29 @@ export default function AppealActionDetails({
                 <p>{appealInformation}</p>
               </div>
 
-              <div>
-                <p className="font-bold">Appeal Infomation</p>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <img src={appealPicture} className="hover:cursor-pointer" />
-                  </DialogTrigger>
-                  <DialogContent className="w-auto max-w-fit">
-                    <img src={appealPicture} />
-                  </DialogContent>
-                </Dialog>
-              </div>
+              {appealPicture !== null ? (
+                <div>
+                  <p className="font-bold">Appeal Infomation</p>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <img
+                        src={appealPicture}
+                        className="hover:cursor-pointer"
+                      />
+                    </DialogTrigger>
+                    <DialogContent className="w-auto max-w-fit">
+                      <img src={appealPicture} />
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              ) : null}
             </div>
             <div>
               <p className="font-bold">Appeal Date</p>
               <p>{appealDate}</p>
             </div>
 
-            <Separator className="mt-6 mb-6" />
+            <Separator className="mt-2 mb-2" />
 
             {ticketStatusId === 2 ? (
               <>

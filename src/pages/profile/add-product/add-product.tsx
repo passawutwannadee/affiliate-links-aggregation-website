@@ -55,8 +55,8 @@ const formSchema = z
         message: 'Please enter product name.',
       })
       .min(1)
-      .max(30, {
-        message: 'Product name cannot be longer than 30 characters.',
+      .max(50, {
+        message: 'Product name cannot be longer than 50 characters.',
       }),
     product_description: z
       .string()
@@ -212,14 +212,14 @@ export default function AddProduct() {
           }}
         >
           <PlusIcon className="mr-2 h-4 w-4" />
-          Add Product
+          Add product
         </Button>
       </SheetTrigger>
       <SheetContent className="flex">
         <ScrollArea className="h-[95vh] self-center w-full">
           <div className="m-6 mt-0 pb-5">
             <SheetHeader>
-              <SheetTitle>Add Product</SheetTitle>
+              <SheetTitle>Add product</SheetTitle>
               <SheetDescription>
                 <Form {...form}>
                   <form
@@ -232,7 +232,7 @@ export default function AddProduct() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Product Name
+                            Product name
                             <Required />
                           </FormLabel>
                           <FormControl>
@@ -249,7 +249,7 @@ export default function AddProduct() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Product Description
+                            Product description
                             <Required />
                           </FormLabel>
                           <FormControl>
@@ -311,7 +311,7 @@ export default function AddProduct() {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              Category Name:
+                              Category name:
                               <Required />
                             </FormLabel>
                             <FormControl>
@@ -329,7 +329,7 @@ export default function AddProduct() {
                       render={({ field: { onChange } }) => (
                         <FormItem>
                           <FormLabel>
-                            Product Image ( 1:1 ratio )
+                            Product image ( 1:1 ratio )
                             <Required />
                           </FormLabel>
                           <Input
@@ -351,7 +351,7 @@ export default function AddProduct() {
 
                     <div className="flex flex-col gap-3">
                       <FormLabel>
-                        Product Links
+                        Product links
                         <Required />
                       </FormLabel>
                       {fields.map((field, index) => (

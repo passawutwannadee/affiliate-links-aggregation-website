@@ -238,14 +238,14 @@ export default function ManageCollection({
             setOpen(true);
           }}
         >
-          Manage Collection
+          Edit Collection
         </Button>
       </SheetTrigger>
       <SheetContent className="flex">
         <ScrollArea className="h-[95vh] self-center w-full">
           <div className="m-6 mt-0 pb-5">
             <SheetHeader>
-              <SheetTitle>Manage Collection</SheetTitle>
+              <SheetTitle>Edit collection</SheetTitle>
               <SheetDescription>
                 <Form {...form}>
                   <form
@@ -274,7 +274,7 @@ export default function ManageCollection({
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Collection Description <Required />
+                            Collection description <Required />
                           </FormLabel>
                           <FormControl>
                             <Textarea id="description" {...field} />
@@ -417,7 +417,7 @@ export default function ManageCollection({
                         Cancel
                       </Button>
                       <SubmitButton type="submit" isLoading={isSending}>
-                        Apply
+                        Edit collection
                       </SubmitButton>
                     </SheetFooter>
                   </form>

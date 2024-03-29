@@ -258,7 +258,7 @@ export default function EditProduct({
         <ScrollArea className="h-[95vh] self-center w-full">
           <div className="m-6 mt-0 pb-5">
             <SheetHeader>
-              <SheetTitle>Edit Product</SheetTitle>
+              <SheetTitle>Edit product</SheetTitle>
               <SheetDescription>
                 {isLoading ? (
                   <LoadingSmall />
@@ -275,7 +275,7 @@ export default function EditProduct({
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              Product Name
+                              Product name
                               <Required />
                             </FormLabel>
                             <FormControl>
@@ -293,7 +293,7 @@ export default function EditProduct({
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              Product Description
+                              Product description
                               <Required />
                             </FormLabel>
                             <FormControl>
@@ -339,7 +339,7 @@ export default function EditProduct({
                           render={({ field }) => (
                             <FormItem>
                               <FormLabel>
-                                Category Name:
+                                Category name:
                                 <Required />
                               </FormLabel>
                               <FormControl>
@@ -353,7 +353,7 @@ export default function EditProduct({
 
                       <div className="flex flex-col gap-3">
                         <FormLabel>
-                          Product Image ( 1:1 ratio )
+                          Product image ( 1:1 ratio )
                           <Required />
                         </FormLabel>
                         {form.watch('changeImage') ? (
@@ -398,7 +398,7 @@ export default function EditProduct({
                               type="button"
                               onClick={() => form.setValue('changeImage', true)}
                             >
-                              Change Image
+                              Change image
                             </Button>
                           </div>
                         )}
@@ -406,7 +406,7 @@ export default function EditProduct({
 
                       <div className="flex flex-col gap-3">
                         <FormLabel>
-                          Product Links
+                          Product links
                           <Required />
                         </FormLabel>
                         {fields.map((field, index) => (
@@ -492,7 +492,7 @@ export default function EditProduct({
                           </Button>
                         </SheetClose>
                         <SubmitButton type="submit" isLoading={isSending}>
-                          Edit Product
+                          Edit product
                         </SubmitButton>
                       </SheetFooter>
                     </form>
