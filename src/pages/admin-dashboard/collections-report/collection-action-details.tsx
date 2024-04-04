@@ -193,21 +193,25 @@ export default function CollectionActionDetails({
   return (
     <SheetContent>
       <SheetHeader>
-        <SheetTitle>Collection Report</SheetTitle>
+        <SheetTitle>Collection report</SheetTitle>
       </SheetHeader>
       <SheetDescription className="flex flex-col gap-2 mt-2">
         <ScrollArea className="h-[90vh] self-center w-full pr-4">
           <div className="mx-1 flex flex-col gap-3">
             <div>
-              <p className="font-bold">Reporter's Email</p>
+              <p className="font-bold">Report ID</p>
+              <p>{reportId}</p>
+            </div>
+            <div>
+              <p className="font-bold">Reporter's email</p>
               <p>{reporterEmail}</p>
             </div>
             <div>
-              <p className="font-bold">Reported User</p>
+              <p className="font-bold">Reported user</p>
               <p>{reportedUser}</p>
             </div>
             <div>
-              <p className="font-bold">Report Reason</p>
+              <p className="font-bold">Report reason</p>
               <p>{reportReason}</p>
             </div>
             <div>
@@ -227,7 +231,7 @@ export default function CollectionActionDetails({
               </a>
             </div>
             <div>
-              <p className="font-bold">Report Date</p>
+              <p className="font-bold">Report date</p>
               <p>{reportDate}</p>
             </div>
 
@@ -236,11 +240,11 @@ export default function CollectionActionDetails({
             {ticketStatusId === 2 ? (
               <>
                 <div>
-                  <p className="font-bold">Warn Reason</p>
+                  <p className="font-bold">Warn reason</p>
                   <p>{warnReason}</p>
                 </div>
                 <div>
-                  <p className="font-bold">Warn Detail</p>
+                  <p className="font-bold">Warn detail</p>
                   <p>{warnReasonDetail}</p>
                 </div>
               </>
@@ -372,7 +376,7 @@ export default function CollectionActionDetails({
                       </Button>
                     </SheetClose>
                     <SubmitButton isLoading={isSending} type="submit">
-                      Close Ticket
+                      Close ticket
                     </SubmitButton>
                   </SheetFooter>
                 </form>

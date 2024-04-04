@@ -97,7 +97,7 @@ export default function ForgotPassword() {
       <Card className="w-full lg:w-96">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">
-            Forgot Password?
+            Forgot password?
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4">
@@ -133,7 +133,7 @@ export default function ForgotPassword() {
             className="flex text-primary font-bold hover:text-primary/70"
           >
             {' '}
-            Login
+            login
           </Link>
         </CardFooter>
       </Card>

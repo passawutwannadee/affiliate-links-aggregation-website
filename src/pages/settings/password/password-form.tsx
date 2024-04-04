@@ -145,7 +145,7 @@ export function PasswordForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Confirm Password <Required />
+                Confirm password <Required />
               </FormLabel>
               <FormControl>
                 <Input {...field} type="password" />
@@ -155,7 +155,7 @@ export function PasswordForm() {
           )}
         />
         <SubmitButton type="submit" isLoading={isSending} className="w-auto">
-          Change Password
+          Change password
         </SubmitButton>
       </form>
     </Form>

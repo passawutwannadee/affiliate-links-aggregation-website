@@ -238,7 +238,7 @@ export default function ManageCollection({
             setOpen(true);
           }}
         >
-          Edit Collection
+          Edit collection
         </Button>
       </SheetTrigger>
       <SheetContent className="flex">
@@ -258,7 +258,7 @@ export default function ManageCollection({
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>
-                            Collection Name <Required />
+                            Collection name <Required />
                           </FormLabel>
                           <FormControl>
                             <Input {...field} />

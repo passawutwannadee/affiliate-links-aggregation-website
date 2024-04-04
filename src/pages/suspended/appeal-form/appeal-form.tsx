@@ -133,7 +133,7 @@ export default function AppealForm() {
       <Card className="w-full lg:w-96">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl text-center">
-            Ban Appeal Form
+            Ban appeal form
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4">
@@ -188,9 +188,7 @@ export default function AppealForm() {
               <p className="pt-2 pb-2">
                 Note: Appeal form can only be sent once.
               </p>
-              <SubmitButton isLoading={isSending}>
-                Submit Appeal Form
-              </SubmitButton>
+              <SubmitButton isLoading={isSending}>Submit</SubmitButton>
             </form>
           </Form>
         </CardContent>

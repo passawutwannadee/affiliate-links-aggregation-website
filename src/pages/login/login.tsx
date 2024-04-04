@@ -140,7 +140,7 @@ export default function Login() {
               to="/forgot-password"
               className="flex text-primary font-bold hover:text-primary/70"
             >
-              Forgot Password?
+              Forgot password?
             </Link>
           </CardFooter>
         </Card>

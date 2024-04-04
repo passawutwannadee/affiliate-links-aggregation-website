@@ -175,7 +175,7 @@ export function AccountForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Display Name <Required />
+                Display name <Required />
               </FormLabel>
               <FormControl>
                 <Input placeholder="shadcn" {...field} />

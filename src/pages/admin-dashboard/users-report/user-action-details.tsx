@@ -192,7 +192,7 @@ export default function UserActionDetails({
   return (
     <SheetContent>
       <SheetHeader>
-        <SheetTitle>User Report</SheetTitle>
+        <SheetTitle>User report</SheetTitle>
       </SheetHeader>
       <SheetDescription className="flex flex-col gap-2 mt-2">
         <ScrollArea className="h-[90vh] self-center w-full pr-4">
@@ -202,19 +202,19 @@ export default function UserActionDetails({
               <p>{reportId}</p>
             </div>
             <div>
-              <p className="font-bold">Reporter's Email</p>
+              <p className="font-bold">Reporter's email</p>
               <p>{reporterEmail}</p>
             </div>
             <div>
-              <p className="font-bold">Reported User</p>
+              <p className="font-bold">Reported user</p>
               <p>{reportedUser}</p>
             </div>
             <div>
-              <p className="font-bold">Report Reason</p>
+              <p className="font-bold">Report reason</p>
               <p>{reportReason}</p>
             </div>
             <div>
-              <p className="font-bold">Report Detail</p>
+              <p className="font-bold">Report detail</p>
               <p>{reportInformation}</p>
             </div>
             <div>
@@ -228,7 +228,7 @@ export default function UserActionDetails({
               </a>
             </div>
             <div>
-              <p className="font-bold">Report Date</p>
+              <p className="font-bold">Report date</p>
               <p>{reportDate}</p>
             </div>
             <Separator className="mt-2 mb-2" />
@@ -236,11 +236,11 @@ export default function UserActionDetails({
             {ticketStatusId === 2 ? (
               <>
                 <div>
-                  <p className="font-bold">Ban Reason</p>
+                  <p className="font-bold">Ban reason</p>
                   <p>{banReason}</p>
                 </div>
                 <div>
-                  <p className="font-bold">Ban Detail</p>
+                  <p className="font-bold">Ban detail</p>
                   <p>{banReasonDetail}</p>
                 </div>
               </>
@@ -372,7 +372,7 @@ export default function UserActionDetails({
                       </Button>
                     </SheetClose>
                     <SubmitButton isLoading={isSending} type="submit">
-                      Close Ticket
+                      Close ticket
                     </SubmitButton>
                   </SheetFooter>
                 </form>

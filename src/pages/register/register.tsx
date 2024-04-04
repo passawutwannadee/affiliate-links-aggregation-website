@@ -236,7 +236,7 @@ export default function Register() {
             to="/login"
             className="flex text-primary font-bold hover:text-primary/70"
           >
-            Login
+            login
           </Link>
         </CardFooter>
       </Card>

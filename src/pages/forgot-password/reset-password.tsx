@@ -116,7 +116,7 @@ export default function ResetPassword() {
     <div className="container mx-auto flex items-center justify-center mt-36 lg:mt-30 2xl:mt-0 lg:h-[85vh] ">
       <Card className="w-full lg:w-96">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-center">Reset Password</CardTitle>
+          <CardTitle className="text-2xl text-center">Reset password</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4">
           <CardDescription>Please enter your new password.</CardDescription>
@@ -149,7 +149,7 @@ export default function ResetPassword() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
-                      Confirm Password <Required />
+                      Confirm password <Required />
                     </FormLabel>
                     <FormControl>
                       <Input {...field} type="password" />
