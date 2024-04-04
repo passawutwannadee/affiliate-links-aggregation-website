@@ -18,6 +18,7 @@ export type Report = {
   reporter_email: string;
   user_id: number;
   collection_id: number;
+  report_date: string;
 };
 
 export const collectionColumns: ColumnDef<Report>[] = [
@@ -56,6 +57,13 @@ export const collectionColumns: ColumnDef<Report>[] = [
         {row.getValue('collection_report_category')}
       </div>
     ),
+  },
+  {
+    accessorKey: 'report_date',
+    header: () => <div className="text-left">Report Date</div>,
+    cell: ({ row }) => {
+      return <div>{row.getValue('report_date')}</div>;
+    },
   },
   {
     accessorKey: 'ticket_status',

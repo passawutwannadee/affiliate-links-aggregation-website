@@ -170,7 +170,7 @@ export default function Profile() {
                     </div>
                     <div className="px-3 py-2">
                       <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-                        Product Name
+                        Product name
                       </h2>
                       <div className="space-y-1">
                         <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -201,7 +201,7 @@ export default function Profile() {
                   <div className="space-y-4 py-4">
                     <div className="px-3 py-2">
                       <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-                        Collection Name
+                        Collection name
                       </h2>
                       <div className="space-y-1">
                         <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -298,7 +298,7 @@ export default function Profile() {
                           </div>
                           <div className="px-3 py-2">
                             <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-                              Product Name
+                              Product name
                             </h2>
                             <div className="space-y-1">
                               <div className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Loading } from '@/components/ui/loading';
 import { Card, CardDescription } from '@/components/ui/card';
-import ManageCollection from './manage-collection/manage-collection';
+import ManageCollection from './edit-collection/edit-collection';
 import {
   DropdownMenu,
   DropdownMenuContent,

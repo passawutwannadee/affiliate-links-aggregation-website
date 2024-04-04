@@ -61,7 +61,7 @@ export default function Product() {
             src={data!.data[0].product_image}
             className="flex self-center w-96 aspect-square rounded-lg object-cover border"
           />
-          <div className="flex flex-col self-center gap-16 items w-full">
+          <div className="flex flex-col self-center gap-6 items w-full">
             <div className="flex flex-col gap-2 items-center lg:items-start">
               <p className="text-4xl font-bold text-center lg:text-left">
                 {data!.data[0].product_name}
@@ -126,6 +126,21 @@ export default function Product() {
                     {line}
                   </p>
                 ))}
+              {data!.data[0].category_id !== 16 ? (
+                <p className="text-sm font-bold mt-5">
+                  Category:{' '}
+                  <span className="font-medium">
+                    {data!.data[0].category_name}
+                  </span>
+                </p>
+              ) : (
+                <p className="text-sm font-bold mt-5">
+                  Category:{' '}
+                  <span className="font-medium">
+                    {data!.data[0].other_category}
+                  </span>
+                </p>
+              )}
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 w-full py-10">

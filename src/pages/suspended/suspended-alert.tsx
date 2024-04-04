@@ -57,7 +57,7 @@ export default function SuspendedAlert() {
                 className="w-full"
                 onClick={() => navigate('/appeal-form')}
               >
-                Appeal Form
+                Appeal
               </Button>
             ) : null}
           </CardFooter>

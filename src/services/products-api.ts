@@ -90,6 +90,9 @@ export const addProductsAPI = async (
   formData.append('product_name', info.productName);
   formData.append('product_description', info.productDescription);
   formData.append('category_id', info.category);
+  if (info.otherCategory) {
+    formData.append('other_category', info.otherCategory);
+  }
   formData.append('product_image', info.productImage);
   info.productLinks.forEach((element, index) => {
     formData.append(`product_links[${index}]`, element.value);
@@ -123,6 +126,9 @@ export const editProductsAPI = async (
   formData.append('product_name', info.productName);
   formData.append('product_description', info.productDescription);
   formData.append('category_id', info.category);
+  if (info.otherCategory) {
+    formData.append('other_category', info.otherCategory);
+  }
   formData.append('product_image', info.productImage);
   info.productLinks.forEach((element, index) => {
     formData.append(`product_links[${index}]`, element.value);

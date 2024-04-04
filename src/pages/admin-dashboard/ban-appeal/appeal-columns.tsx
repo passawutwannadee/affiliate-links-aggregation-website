@@ -20,6 +20,8 @@ export type Report = {
   ban_reason_detail: string;
   appeal_information: string;
   unban_reason_detail: string;
+  appeal_picture?: string;
+  appeal_date: string;
 };
 
 export const appealColumns: ColumnDef<Report>[] = [
@@ -56,6 +58,13 @@ export const appealColumns: ColumnDef<Report>[] = [
     cell: ({ row }) => (
       <div className="uowercase">{row.getValue('ban_reason')}</div>
     ),
+  },
+  {
+    accessorKey: 'appeal_date',
+    header: () => <div className="text-left">Appeal Date</div>,
+    cell: ({ row }) => {
+      return <div>{row.getValue('appeal_date')}</div>;
+    },
   },
   {
     accessorKey: 'ticket_status',

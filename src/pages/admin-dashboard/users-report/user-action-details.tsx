@@ -70,6 +70,7 @@ interface ChildProps {
   ticketStatusId: number;
   banReason?: string;
   banReasonDetail?: string;
+  reportDate: string;
 }
 
 export default function UserActionDetails({
@@ -84,6 +85,7 @@ export default function UserActionDetails({
   ticketStatusId,
   banReason,
   banReasonDetail,
+  reportDate,
 }: ChildProps) {
   // get categories
   const { data, isLoading } = useQuery(['user_report_categories'], () =>
@@ -190,29 +192,29 @@ export default function UserActionDetails({
   return (
     <SheetContent>
       <SheetHeader>
-        <SheetTitle>Report</SheetTitle>
+        <SheetTitle>User report</SheetTitle>
       </SheetHeader>
-      <SheetDescription className="flex flex-col gap-2">
+      <SheetDescription className="flex flex-col gap-2 mt-2">
         <ScrollArea className="h-[90vh] self-center w-full pr-4">
-          <div className="mx-1">
+          <div className="mx-1 flex flex-col gap-3">
             <div>
               <p className="font-bold">Report ID</p>
               <p>{reportId}</p>
             </div>
             <div>
-              <p className="font-bold">Reporter's Email</p>
+              <p className="font-bold">Reporter's email</p>
               <p>{reporterEmail}</p>
             </div>
             <div>
-              <p className="font-bold">Reported User</p>
+              <p className="font-bold">Reported user</p>
               <p>{reportedUser}</p>
             </div>
             <div>
-              <p className="font-bold">Report Reason</p>
+              <p className="font-bold">Report reason</p>
               <p>{reportReason}</p>
             </div>
             <div>
-              <p className="font-bold">Report Detail</p>
+              <p className="font-bold">Report detail</p>
               <p>{reportInformation}</p>
             </div>
             <div>
@@ -225,16 +227,20 @@ export default function UserActionDetails({
                 {`${import.meta.env.VITE_WEB_URL}/profile/${username}`}
               </a>
             </div>
-            <Separator className="mt-6 mb-6" />
+            <div>
+              <p className="font-bold">Report date</p>
+              <p>{reportDate}</p>
+            </div>
+            <Separator className="mt-2 mb-2" />
 
             {ticketStatusId === 2 ? (
               <>
                 <div>
-                  <p className="font-bold">Ban Reason</p>
+                  <p className="font-bold">Ban reason</p>
                   <p>{banReason}</p>
                 </div>
                 <div>
-                  <p className="font-bold">Ban Detail</p>
+                  <p className="font-bold">Ban detail</p>
                   <p>{banReasonDetail}</p>
                 </div>
               </>
@@ -366,7 +372,7 @@ export default function UserActionDetails({
                       </Button>
                     </SheetClose>
                     <SubmitButton isLoading={isSending} type="submit">
-                      Close Ticket
+                      Close ticket
                     </SubmitButton>
                   </SheetFooter>
                 </form>

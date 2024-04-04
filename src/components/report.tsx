@@ -32,6 +32,7 @@ import { Loading } from './ui/loading';
 import { toast } from 'sonner';
 import { SubmitButton } from './ui/submit-button';
 import { Button } from './ui/button';
+import { ScrollArea } from './ui/scroll-area';
 
 const formSchema = z.object({
   description: z
@@ -126,70 +127,75 @@ export default function Report({
 
   return (
     <SheetContent>
-      <SheetHeader>
-        <SheetTitle>Report</SheetTitle>
-      </SheetHeader>
-      <SheetDescription>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Report Category
-                    <Required />
-                  </FormLabel>
-                  <Select onValueChange={field.onChange}>
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select Category" />
-                    </SelectTrigger>
-                    <SelectContent className="">
-                      {data!.data.map(
-                        (value: {
-                          report_category_name: string;
-                          report_category_id: string;
-                        }) => {
-                          return (
-                            <SelectItem
-                              key={value.report_category_id}
-                              value={value.report_category_id.toString()}
-                              className="hover:bg-primary/10"
-                            >
-                              {value.report_category_name}
-                            </SelectItem>
-                          );
-                        }
-                      )}
-                    </SelectContent>
-                    <FormMessage />
-                  </Select>
-                </FormItem>
-              )}
-            />
+      <ScrollArea className="h-[95vh] self-center w-full">
+        <div className="m-6 mt-0 pb-5">
+          <SheetHeader>
+            <SheetTitle>Report</SheetTitle>
+          </SheetHeader>
+          <SheetDescription>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-3"
+              >
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        Report category
+                        <Required />
+                      </FormLabel>
+                      <Select onValueChange={field.onChange}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select Category" />
+                        </SelectTrigger>
+                        <SelectContent className="">
+                          {data!.data.map(
+                            (value: {
+                              report_category_name: string;
+                              report_category_id: string;
+                            }) => {
+                              return (
+                                <SelectItem
+                                  key={value.report_category_id}
+                                  value={value.report_category_id.toString()}
+                                  className="hover:bg-primary/10"
+                                >
+                                  {value.report_category_name}
+                                </SelectItem>
+                              );
+                            }
+                          )}
+                        </SelectContent>
+                        <FormMessage />
+                      </Select>
+                    </FormItem>
+                  )}
+                />
 
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Report Detail <Required />
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      id="description"
-                      // placeholder="Please include all information relevant to your issue."
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                        Report detail <Required />
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          id="description"
+                          // placeholder="Please include all information relevant to your issue."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            {/* <FormField
+                {/* <FormField
                   control={form.control}
                   name="confirmpassword"
                   render={({ field }) => (
@@ -208,17 +214,19 @@ export default function Report({
                   )}
                 /> */}
 
-            <SheetFooter>
-              <SheetClose>
-                <Button variant="secondary" type="button">
-                  Close
-                </Button>
-              </SheetClose>
-              <SubmitButton type="submit">Submit</SubmitButton>
-            </SheetFooter>
-          </form>
-        </Form>
-      </SheetDescription>
+                <SheetFooter>
+                  <SheetClose>
+                    <Button variant="secondary" type="button">
+                      Close
+                    </Button>
+                  </SheetClose>
+                  <SubmitButton type="submit">Submit</SubmitButton>
+                </SheetFooter>
+              </form>
+            </Form>
+          </SheetDescription>
+        </div>
+      </ScrollArea>
       {/* <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction type="submit">Continue</AlertDialogAction>

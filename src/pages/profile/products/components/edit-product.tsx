@@ -62,6 +62,12 @@ const productNoImage = z.object({
         .url({ message: 'Please enter a valid URL.' }),
     })
   ),
+  other_category: z
+    .string()
+    .max(30, {
+      message: 'Category name cannot be longer than 30 characters.',
+    })
+    .optional(),
   changeImage: z.literal(false),
 });
 
@@ -91,13 +97,26 @@ const productWithImage = z.object({
         .url({ message: 'Please enter a valid URL.' }),
     })
   ),
+  other_category: z
+    .string()
+    .max(30, {
+      message: 'Category name cannot be longer than 30 characters.',
+    })
+    .optional(),
   changeImage: z.literal(true),
 });
 
-const formSchema = z.discriminatedUnion('changeImage', [
-  productNoImage,
-  productWithImage,
-]);
+const formSchema = z
+  .discriminatedUnion('changeImage', [productNoImage, productWithImage])
+  .refine(
+    (data) =>
+      data.category !== '16' ||
+      (data.category === '16' && data.other_category?.length !== 0),
+    {
+      message: 'Please enter category name.',
+      path: ['other_category'],
+    }
+  );
 
 interface ChildProps {
   productId: number;
@@ -184,6 +203,7 @@ export default function EditProduct({
     defaultValues: {
       changeImage: false,
       product_links: linkValue,
+      other_category: '',
     },
     mode: 'onChange',
     shouldUnregister: true,
@@ -212,6 +232,7 @@ export default function EditProduct({
     const productName = values.product_name;
     const productDescription = values.product_description;
     const category = values.category;
+    const otherCategory = values.other_category;
     const productImage = values.product_image;
     const productLinks = values.product_links;
 
@@ -220,6 +241,7 @@ export default function EditProduct({
       productName,
       productDescription,
       category,
+      otherCategory,
       productImage,
       productLinks,
     });
@@ -228,13 +250,15 @@ export default function EditProduct({
     // setOpen(false);
   }
 
+  const currentCategory = form.watch('category');
+
   return (
     <>
       <SheetContent className="flex">
         <ScrollArea className="h-[95vh] self-center w-full">
           <div className="m-6 mt-0 pb-5">
             <SheetHeader>
-              <SheetTitle>Edit Product</SheetTitle>
+              <SheetTitle>Edit product</SheetTitle>
               <SheetDescription>
                 {isLoading ? (
                   <LoadingSmall />
@@ -251,7 +275,7 @@ export default function EditProduct({
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              Product Name
+                              Product name
                               <Required />
                             </FormLabel>
                             <FormControl>
@@ -269,7 +293,7 @@ export default function EditProduct({
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>
-                              Product Description
+                              Product description
                               <Required />
                             </FormLabel>
                             <FormControl>
@@ -307,9 +331,29 @@ export default function EditProduct({
                         )}
                       />
 
+                      {currentCategory === '16' ? (
+                        <FormField
+                          defaultValue={data?.data[0].other_category}
+                          control={form.control}
+                          name="other_category"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>
+                                Category name:
+                                <Required />
+                              </FormLabel>
+                              <FormControl>
+                                <Input {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      ) : null}
+
                       <div className="flex flex-col gap-3">
                         <FormLabel>
-                          Product Image ( 1:1 ratio )
+                          Product image ( 1:1 ratio )
                           <Required />
                         </FormLabel>
                         {form.watch('changeImage') ? (
@@ -354,7 +398,7 @@ export default function EditProduct({
                               type="button"
                               onClick={() => form.setValue('changeImage', true)}
                             >
-                              Change Image
+                              Change image
                             </Button>
                           </div>
                         )}
@@ -362,7 +406,7 @@ export default function EditProduct({
 
                       <div className="flex flex-col gap-3">
                         <FormLabel>
-                          Product Links
+                          Product links
                           <Required />
                         </FormLabel>
                         {fields.map((field, index) => (
@@ -448,7 +492,7 @@ export default function EditProduct({
                           </Button>
                         </SheetClose>
                         <SubmitButton type="submit" isLoading={isSending}>
-                          Edit Product
+                          Edit product
                         </SubmitButton>
                       </SheetFooter>
                     </form>

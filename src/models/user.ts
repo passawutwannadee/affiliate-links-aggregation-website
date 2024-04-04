@@ -10,6 +10,7 @@ interface Product {
   productName: string;
   productDescription: string;
   category: string;
+  otherCategory?: string;
   productImage: Blob;
   productLinks: { value: string }[];
 }

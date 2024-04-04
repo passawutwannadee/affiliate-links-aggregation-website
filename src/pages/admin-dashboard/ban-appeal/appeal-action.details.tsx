@@ -27,6 +27,7 @@ import { ticketAPI, unbanAPI } from '@/services/admin-api';
 import { Textarea } from '@/components/ui/textarea';
 import { Required } from '@/components/ui/required';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 const unbanSchema = z.object({
   unban: z.literal('unban'),
@@ -57,6 +58,8 @@ interface ChildProps {
   appealInformation: string;
   ticketStatusId: number;
   unbanReasonDetail?: string;
+  appealPicture?: string;
+  appealDate: string;
 }
 
 export default function AppealActionDetails({
@@ -70,6 +73,8 @@ export default function AppealActionDetails({
   appealInformation,
   ticketStatusId,
   unbanReasonDetail,
+  appealPicture,
+  appealDate,
 }: ChildProps) {
   const queryClient = useQueryClient();
 
@@ -165,35 +170,62 @@ export default function AppealActionDetails({
   return (
     <SheetContent>
       <SheetHeader>
-        <SheetTitle>Report</SheetTitle>
+        <SheetTitle>Ban appeal</SheetTitle>
       </SheetHeader>
-      <SheetDescription className="flex flex-col gap-2">
+      <SheetDescription className="flex flex-col gap-2 mt-2">
         <ScrollArea className="h-[90vh] self-center w-full pr-4">
-          <div className="mx-1">
-            <div>
-              <p className="font-bold">Username</p>
-              <p>{username}</p>
+          <div className="mx-1 flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
+              <div>
+                <p className="font-bold">appeal ID</p>
+                <p>{appealId}</p>
+              </div>
+              <div>
+                <p className="font-bold">Username</p>
+                <p>{username}</p>
+              </div>
+              <div>
+                <p className="font-bold">Ban reason</p>
+                <p>{banReason}</p>
+              </div>
+              <div>
+                <p className="font-bold">Ban detail</p>
+                <p>{banReasonDetail}</p>
+              </div>
+
+              <div>
+                <p className="font-bold">Appeal infomation</p>
+                <p>{appealInformation}</p>
+              </div>
+
+              {appealPicture !== null ? (
+                <div>
+                  <p className="font-bold">Appeal infomation</p>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <img
+                        src={appealPicture}
+                        className="hover:cursor-pointer"
+                      />
+                    </DialogTrigger>
+                    <DialogContent className="w-auto max-w-fit">
+                      <img src={appealPicture} />
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              ) : null}
             </div>
             <div>
-              <p className="font-bold">Ban Reason</p>
-              <p>{banReason}</p>
-            </div>
-            <div>
-              <p className="font-bold">Ban Detail</p>
-              <p>{banReasonDetail}</p>
+              <p className="font-bold">Appeal date</p>
+              <p>{appealDate}</p>
             </div>
 
-            <div>
-              <p className="font-bold">Appeal Infomation</p>
-              <p>{appealInformation}</p>
-            </div>
-
-            <Separator className="mt-6 mb-6" />
+            <Separator className="mt-2 mb-2" />
 
             {ticketStatusId === 2 ? (
               <>
                 <div>
-                  <p className="font-bold">Unban Detail</p>
+                  <p className="font-bold">Unban detail</p>
                   <p>{unbanReasonDetail}</p>
                 </div>
               </>
@@ -264,14 +296,18 @@ export default function AppealActionDetails({
                     </>
                   ) : null}
 
-                  <SheetFooter>
+                  <SheetFooter className="gap-2 sm:gap-0">
                     <SheetClose>
-                      <Button variant="secondary" type="button">
+                      <Button
+                        variant="secondary"
+                        type="button"
+                        className="w-full"
+                      >
                         Close
                       </Button>
                     </SheetClose>
                     <SubmitButton isLoading={isSending} type="submit">
-                      Close Ticket
+                      Close ticket
                     </SubmitButton>
                   </SheetFooter>
                 </form>

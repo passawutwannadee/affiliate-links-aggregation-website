@@ -19,6 +19,7 @@ export type Report = {
   user_id: number;
   warn_reason: string;
   warn_reason_detail: string;
+  report_date: string;
 };
 
 export const productColumns: ColumnDef<Report>[] = [
@@ -55,6 +56,13 @@ export const productColumns: ColumnDef<Report>[] = [
     cell: ({ row }) => (
       <div className="uowercase">{row.getValue('product_report_category')}</div>
     ),
+  },
+  {
+    accessorKey: 'report_date',
+    header: () => <div className="text-left">Report Date</div>,
+    cell: ({ row }) => {
+      return <div>{row.getValue('report_date')}</div>;
+    },
   },
   {
     accessorKey: 'ticket_status',

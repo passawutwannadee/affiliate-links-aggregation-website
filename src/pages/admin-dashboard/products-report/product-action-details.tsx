@@ -70,6 +70,7 @@ interface ChildProps {
   ticketStatusId: number;
   warnReason?: string;
   warnReasonDetail?: string;
+  reportDate: string;
 }
 
 export default function ProductActionDetails({
@@ -84,6 +85,7 @@ export default function ProductActionDetails({
   ticketStatusId,
   warnReason,
   warnReasonDetail,
+  reportDate,
 }: ChildProps) {
   // get categories
   const { data, isLoading } = useQuery(['product_report_categories'], () =>
@@ -191,29 +193,29 @@ export default function ProductActionDetails({
   return (
     <SheetContent>
       <SheetHeader>
-        <SheetTitle>Report</SheetTitle>
+        <SheetTitle>Product report</SheetTitle>
       </SheetHeader>
-      <SheetDescription className="flex flex-col gap-2">
+      <SheetDescription className="flex flex-col gap-2 mt-2">
         <ScrollArea className="h-[90vh] self-center w-full pr-4">
-          <div className="mx-1">
+          <div className="mx-1 flex flex-col gap-3">
             <div>
               <p className="font-bold">Report ID</p>
               <p>{reportId}</p>
             </div>
             <div>
-              <p className="font-bold">Reporter's Email</p>
+              <p className="font-bold">Reporter's email</p>
               <p>{reporterEmail}</p>
             </div>
             <div>
-              <p className="font-bold">Reported User</p>
+              <p className="font-bold">Reported user</p>
               <p>{reportedUser}</p>
             </div>
             <div>
-              <p className="font-bold">Report Reason</p>
+              <p className="font-bold">Report reason</p>
               <p>{reportReason}</p>
             </div>
             <div>
-              <p className="font-bold">Report Detail</p>
+              <p className="font-bold">Report detail</p>
               <p>{reportInformation}</p>
             </div>
             <div>
@@ -226,17 +228,21 @@ export default function ProductActionDetails({
                 {`${import.meta.env.VITE_WEB_URL}/product/${productId}`}
               </a>
             </div>
+            <div>
+              <p className="font-bold">Report date</p>
+              <p>{reportDate}</p>
+            </div>
 
-            <Separator className="mt-6 mb-6" />
+            <Separator className="mt-2 mb-2" />
 
             {ticketStatusId === 2 ? (
               <>
                 <div>
-                  <p className="font-bold">Warn Reason</p>
+                  <p className="font-bold">Warn reason</p>
                   <p>{warnReason}</p>
                 </div>
                 <div>
-                  <p className="font-bold">Warn Detail</p>
+                  <p className="font-bold">Warn detail</p>
                   <p>{warnReasonDetail}</p>
                 </div>
               </>
@@ -368,7 +374,7 @@ export default function ProductActionDetails({
                       </Button>
                     </SheetClose>
                     <SubmitButton isLoading={isSending} type="submit">
-                      Close Ticket
+                      Close ticket
                     </SubmitButton>
                   </SheetFooter>
                 </form>
