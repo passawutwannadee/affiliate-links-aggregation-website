@@ -6,12 +6,6 @@
 pnpm install
 ```
 
-### Run database
-
-```bash
-docker compose up
-```
-
 ### Run dev environment
 
 ```bash
