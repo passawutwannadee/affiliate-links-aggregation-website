@@ -110,7 +110,7 @@ export function PasswordForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                Current Password <Required />
+                Current password <Required />
               </FormLabel>
               <FormControl>
                 <Input {...field} type="password" />
