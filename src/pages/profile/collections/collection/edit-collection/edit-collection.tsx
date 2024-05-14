@@ -45,12 +45,24 @@ import { Loading } from '@/components/ui/loading';
 import { Required } from '@/components/ui/required';
 
 const formSchema = z.object({
-  collection_name: z.string().nonempty({
-    message: 'Please enter collection name.',
-  }),
-  collection_description: z.string().nonempty({
-    message: 'Please enter collection description.',
-  }),
+  collection_name: z
+    .string()
+    .nonempty({
+      message: 'Please enter collection name.',
+    })
+    .min(1)
+    .max(50, {
+      message: 'Collection Name cannot be longer than 50 characters.',
+    }),
+  collection_description: z
+    .string()
+    .nonempty({
+      message: 'Please enter collection description.',
+    })
+    .min(1)
+    .max(255, {
+      message: 'Collection description cannot be longer than 255 characters.',
+    }),
   products: z.any().array().min(2, {
     message: 'Please select at least two products.',
   }),
