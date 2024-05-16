@@ -5,7 +5,7 @@ import { MousePointerSquare } from 'lucide-react';
 import UserActionDetails from '../users-report/user-action-details';
 import ProductActionDetails from '../products-report/product-action-details';
 import CollectionActionDetails from '../collections-report/collection-action-details';
-import AppealActionDetails from '../ban-appeal/appeal-action.details';
+import AppealActionDetails from '../ban-appeal/appeal-action-details';
 
 export type Data = {
   report_id?: number;
@@ -50,7 +50,7 @@ export function TableAction({ info }: Props) {
       </Button>
       <Sheet open={detailsOpen} onOpenChange={setDetailsOpen}>
         {/* user if doesn't provide product_id and collection_id */}
-        {!info.product_id && !info.collection_id ? (
+        {!info.product_id && !info.collection_id && !info.ban_id ? (
           <UserActionDetails
             closeSheet={handleDetailsClose}
             username={info.username!}
@@ -68,7 +68,7 @@ export function TableAction({ info }: Props) {
         ) : null}
 
         {/* product if provide product_id*/}
-        {info.product_id ? (
+        {info.product_id && !info.ban_id ? (
           <ProductActionDetails
             closeSheet={handleDetailsClose}
             productId={info.product_id}
@@ -86,7 +86,7 @@ export function TableAction({ info }: Props) {
         ) : null}
 
         {/* collection if provide collection_id*/}
-        {info.collection_id ? (
+        {info.collection_id && !info.ban_id ? (
           <CollectionActionDetails
             closeSheet={handleDetailsClose}
             collectionId={info.collection_id}
