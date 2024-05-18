@@ -165,6 +165,7 @@ export default function EditProduct({
 
   const [linkValue, setlinkValue] = useState<{ value: string }[]>([]);
   const [categoryValue, setCategoryValue] = useState<string>('');
+  const [otherCategoryValue, setOtherCategoryValue] = useState<string>('');
 
   const { data, isLoading } = useQuery(
     ['product_data', productId],
@@ -183,6 +184,7 @@ export default function EditProduct({
         // });
 
         setCategoryValue(response?.data[0].category_id.toString());
+        setOtherCategoryValue(response?.data[0].other_category);
         setlinkValue(links);
         form.setValue('changeImage', false);
       },
@@ -235,7 +237,7 @@ export default function EditProduct({
     defaultValues: {
       changeImage: false,
       product_links: linkValue,
-      other_category: '',
+      other_category: otherCategoryValue,
     },
     mode: 'onChange',
     shouldUnregister: true,
@@ -254,7 +256,7 @@ export default function EditProduct({
     form.setValue('changeImage', false);
     form.setValue('category', categoryValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [linkValue, categoryValue]);
+  }, [linkValue, categoryValue, otherCategoryValue]);
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
